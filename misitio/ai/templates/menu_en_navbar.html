@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE <html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel = "stylesheet" href = "{% static 'css/mycss.css' %}" >
+    <title id = "title">AI-Asistencia Integral</title>
+</head>
+
+<body>
+	{% csrf_token %}
+	
+
+	<!-- Iinicio del MENU -->
+	<nav class = "navbar navbar-default">
+	   	<div class="navbar-header">
+	   		<button type = "button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+		   		<span class="sr-only">Cambiar navegación</span>
+		   		<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<!-- <a href="#" class="navbar-brand">Devcode.la</a> -->
+		</div>
+		<div class = "collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href = "#" class="dropdown-toggle" data-toggle = "dropdown">Maestros mantenedores<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Asistente</a></li>
+					<li><a href="#">Pacientes</a></li>
+					<li><a href="#">Apoderados</a></li>
+					<li><a href="#">Parametros</a></li>
+				</ul>
+
+				<li><a href = "#">Servicios </a></li>
+
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle = "dropdown">Parámetros<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Bootstrap</a></li>
+					<li><a href="#">Django</a></li>
+					<li><a href="#">Python</a></li>
+					<li><a href="#">jQuery</a></li>
+				</ul>
+			</ul>
+			<!--
+	        <form class="form-inline ml-auto" action  = "">
+	            <input type="text" class="form-control mr-sm-2" placeholder="Search">
+	            <button type="submit" class="btn btn-outline-light">Search</button>
+	        </form>
+	    	-->
+		</div>	
+	</nav>
+  <!-- FIN MENU -->	
+	<!-- -->
+	<section class=section>
+ 		<h4><b href="#">Cuidado y acompañamiento al paciente</<b></h4>
+	    <div class="contenedor">
+	    	<img src="{% static 'img/Logo_AsistenciaIntegral.jpeg' %}" width="300" height="200" />
+        </a>
+	    </div>
+		<br>
+		<article class=article>
+		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
+		a la persona que tiene el cuidado y acompañamiento al paciente.
+		Aqui se gestiona la ficha con todos los antecedentes del asistente al paciente. Además se controlan los turnos, lugares de la prestación y los honorarios correspondientes. Se mantiene también los antecedentes del paciente y su respectivo apoderado. 
+    </article>
+   </section>
+
+    {% block content %}{% endblock %}
+
+    <br>
+    <footer class = 'footer'>
+      Derechos Reservados | GMI Desarrollos de Sistemas &copy | Antonio Castillo R.
+    </footer>
+
+  </body>
+</html>

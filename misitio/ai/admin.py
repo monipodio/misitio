@@ -6,8 +6,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from .models import Pacientes
 from .models import Param
-#from .models import Apoderados
 from .models import Cuidadores
+from .models import Pauta
 
 #titulo principal del panel Admin
 admin.site.site_header = 'Administracion sistema: Asistencia Integral'
@@ -27,13 +27,14 @@ class AdminCuidadores(admin.ModelAdmin):
 	list_display = ["nombre","rut","direccion","fono_cuid","fono2_cuid","correo"]
 	search_fields = ['nombre', 'direccion']
 
-#class AdminApoderados(admin.ModelAdmin):
-#	list_display = ["nombre","rut","direccion"]
-#	search_fields = ['nombre', 'rut']
+class AdminPauta(admin.ModelAdmin):
+	list_display = ["fe_ini","paciente","rut","rut_t1",
+	"turno1","rut_t2","turno2","rut_t3","turno3"]
+	search_fields = ['fe_ini', 'paciente']
 
 
 admin.site.register(Pacientes,AdminPacientes)
 admin.site.register(Param,AdminParametros)
 #admin.site.register(Apoderados,AdminApoderados)
 admin.site.register(Cuidadores,AdminCuidadores)
-
+admin.site.register(Pauta,AdminPauta)

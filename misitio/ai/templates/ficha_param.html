@@ -1,0 +1,120 @@
+{% extends 'plantilla_base.html' %}
+
+{% block content %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+		
+		<form id="form" name="form" method="POST" action=""> 
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+	
+			<!-- muestra mensajes de error creado en la VIEWS.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        	{% endfor %}
+    		</ul>    
+			{% endif %}
+			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->			
+
+			<table border = "1"  class="table table-striped">	
+			<tr>
+				<td>Tipo</td> 
+				<td>
+					<d>{{ form.tipo|attr:'requiered:True'|attr:'size:10'|attr:'onkeyup:mayuscula(this)'|attr:'readonly:True'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Codigo</td>
+				<td>
+					<d>{{ form.codigo|attr:'requiered:True'|attr:'size:10'|attr:'readonly:True'}}</d>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Descripcion</td> 
+				<td>
+					<d>	
+					{{form.descrip|attr:'size:60'|attr:'type:text'|attr:'requiered:True'|attr:'onkeyup:mayuscula(this)'}}
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Valor1</td> 
+				<td>
+					<d>{{form.valor1|attr:'size:17'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Valor2</td>
+				<td>
+					<d>{{form.valor2|attr:'size:17'}}</d>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td>Valor3</td>
+				<td>
+					<d>{{form.valor3|attr:'size:17'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Switch 1</td>
+				<td>
+					<d>{{form.sw_1}}</d>
+				</td>
+			</tr>
+
+			<td>Switch 2</td>
+				<td>
+					<d>{{form.sw_2}}</d>
+				</td>			
+			</tr>
+
+			<td>Fecha</td>
+				<td>
+					<d>	
+					{{form.fecha|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'}}
+					</d>
+				</td>			
+			</tr>
+
+			<td>Fecha2</td>
+				<td>
+					<d>	
+					{{form.fecha2|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'}}
+					</d>
+				</td>			
+			</tr>
+
+			<td>Correlativo</td>
+				<td>
+					<d>{{form.corr|attr:'size:17'}}</d>
+				</td>			
+			</tr>
+
+			<tr>
+			<td>Observaciones</td>
+				<td>
+					<d>{{form.notas|attr:'size:200'|attr:'id:notas'}}</d>
+				</td>
+			</tr>
+
+			</table>
+
+			<br>
+			<span id='span1'><span>
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+
+{% endblock %}

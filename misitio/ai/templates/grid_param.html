@@ -1,0 +1,79 @@
+{% extends 'plantilla_base.html' %}
+
+{% block content %}
+	<section class='section2'>
+
+		{% if user.username == None %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>    
+			{% endif %}
+
+			<form  class = "" method='GET' action= "{% url 'grid_paramBusca' %}">
+					{% csrf_token %}
+	
+				<table border="0">
+    				<tbody>	
+					<tr>
+						<td width="240">
+						<label for="mySearch">Busca por:</label>
+						<input type="text" class = "search-query" size="12" name = "buscar" value='{{buscar}}' title="busca en columna TIPO" id="busca" placeholder="vacio todos" onfocus="limpia()">
+						</td>
+
+						<td width="90">
+				     	<input type="submit" value="Busca" class="btn btn-primary">
+						</td>
+
+						<td width="240">
+						<input type="checkbox" id="chbox1" name="check1" label for="chbox1"> busca en descripción</label>
+						</td>	
+
+						<td width="290" align="right">
+						<label>
+							<u>
+								<a href="{% url 'principal' %}">Inicio</a>
+							</u>
+						</label>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</form>
+		<table class="table table-striped w-auto" border="1">	
+		    <tr>
+		    	<thead class="thead-dark">
+		    		<th>Tipo</th>
+			        <th width="50">Codigo</th>
+			        <th width="290">Descripcion</th>
+			        <th class = "th_acciones">Accion</th>
+		    	</thead>
+		    </tr>
+	
+		    {% for param in param %}
+			    <tr>
+			        <td>{{ param.tipo}}</td>
+			        <td>{{ param.codigo}}</td>
+			        <td   width="250">{{ param.descrip }}</td>
+			        <td align="center">
+					<a class="btn btn-primary" href="{% url 'FichaParam' param.id %}" role="button">Modifica</a>
+					
+					<!--
+					<a class="btn btn-danger" href="{% url 'EliminaParam' param.id %}" role="button">Elimina</a>
+					-->
+
+			        </td>	
+			    </tr>
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		<form id="form" name="form" method="POST" action=""> 
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+
+
+			<table  class="table table-dark" border = '1'>
+				<tr>
+				<td width="280">Nombre Paciente:</td>
+				<td>{{form.paciente|attr:'size:60'|attr:'readonly:True'}}</td>
+				</tr>
+
+				<tr>
+				<td >Pauta a ingresar o modificar:</td>
+				<td>{{form.fe_ini|attr:'readonly:True'}}</td>
+				</tr>
+
+				<tr>
+				<td>R.U.T.:</td>
+				<td>{{form.rut|attr:'size:10'|attr:'readonly:True'}}</td>
+				</tr>
+		
+				<!--	
+				<tr>
+				<td>Estadia</td>
+				<td>
+				<select	name="yace" id = "yace" tabindex="11">
+					{% for yace in yace %}
+						{% if yace.codigo == var_yace %}	
+							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				</td>
+				</tr>
+				-->
+		
+				<tr>
+				<td>Estadia</td>
+				<td>
+				<select	name="yace" id = "yace" tabindex="11">
+					{% for yace in yace %}
+						{% if yace.codigo == var_yace %}	
+							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
+						{% else %}
+							<option value ="{{yace.codigo}}">{{yace.descrip}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				</td>
+				</tr>
+
+
+				<tr>
+				<td>Turno de mañana</td>
+				<td>
+				<!-- <d>{{valor_t1}}</d> -->	
+				<select	name="rut_t1" tabindex="20">
+					{% for r in turno1 %}
+						{% if r.rut == var_rutcui1 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+				</td>
+				</tr>
+
+
+				<tr>
+				<td>Turno Tarde</td>
+				<td>
+				<!-- <d>{{valor_t2}}</d> -->	
+
+				<select	name="rut_t2" tabindex="20">
+					{% for r in turno2 %}
+						{% if r.rut == var_rutcui2 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+				</td>
+				</tr>
+
+				<tr>
+				<td>Turno noche</td>
+				<td>
+				<!-- <d>{{valor_t3}}</d> -->
+				<select	name="rut_t3" tabindex="20">
+					{% for r in turno3 %}
+						{% if r.rut == var_rutcui3 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+				</td>
+				</tr>
+
+				<d>
+				<p align="right"><u><a href="{% url 'grid_pauta' %}">Regresa /</a></u>
+				<u><a href="{% url 'principal' %}">Inicio</a></u>
+				</p>
+				</d>
+
+			</table>
+
+			<Span id='span1'><span>
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+
+{% endblock %}

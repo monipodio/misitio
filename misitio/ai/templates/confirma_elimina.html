@@ -1,0 +1,46 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+
+{% block content %}
+	<section>
+        <form method="POST">
+        {% csrf_token %}          
+ 
+        <div class="table-responsive">       
+        <article class=article>
+
+        <h4 width="750" halign="center">
+            Se eliminara el registro:
+        </h4>
+        <br>
+        <h4> Descripcion: {{form.nombre}} </h4>
+ 
+        <br><br>
+        <table border = "0">
+
+            <td width="300">
+            </td>
+
+            <td width="90">
+            <button type="submit">Eliminar</button>
+            </td>
+            <td>
+            <a href = "{% url 'grid_pacientes' %}">Cancela</a>
+            </td>
+        </table>
+        <br>
+        </article>
+        </div>
+ 
+        <div class="table-responsive">
+		<article class=article>
+    		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
+    		a la persona que tiene el cuidado y acompañamiento al paciente.
+    		Aqui se gestiona la ficha con todos los antecedentes del asistente al paciente. Además se controlan los turnos, lugares de la prestación y los honorarios correspondientes. Se mantiene también los antecedentes del paciente y su respectivo apoderado. 
+    	</article>
+        </div>
+    	<br>
+        </form>
+    </section>
+{% endblock %}  
+

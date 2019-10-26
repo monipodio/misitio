@@ -1,0 +1,60 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+
+{% block content %}
+	<section>
+    <table border="0">
+    <tbody>   
+    {% csrf_token %}     
+    <tr>   
+        <td width="260" valign="top">     
+		<br>
+        <aside class="col-xs-12 col-md-3"> 
+        	<div class="btn-group-vertical">
+            {% if not user.is_active %} 
+                <a href="{% url 'login_ini' %}">
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'grid_cuidadores' %}" role="button" style="margin: 5px">Cuidadores</a>
+
+            <a class="btn btn-primary" href="{% url 'grid_pacientes' %}" role="button" style="margin: 5px">Pacientes</a>
+
+			<a class="btn btn-primary" href="{% url 'grid_apoderados' %}" role="button" style="margin: 5px">Apoderados</a>
+			
+            <a class="btn btn-primary" href="{% url 'grid_pauta' %}" role="button" style="margin: 5px">Pautas</a>
+
+			<a class="btn btn-primary" href="{% url 'MenuParam' %}" role="button" style="margin: 5px">Parametros</a>
+
+        	</div>
+        </aside>
+        </td>
+
+        <td>
+        <div>
+           <br> 
+
+        <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" border:3px/>
+       
+        </div>
+		<br>
+        </td>
+
+        <td width="270" valign="top">
+            <d>
+            <p align="right"><u><a href="{% url 'log_out' %}">Cerrar sesion</a></u></p>
+            </d>
+        </td>    
+
+    </tr>
+    </tbody>    
+    </table>
+        <div class="table-responsive">
+		<article class=article>
+    		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
+    		a la persona que tiene el cuidado y acompañamiento al paciente.
+    		Aqui se gestiona la ficha con todos los antecedentes del asistente al paciente. Además se controlan los turnos, lugares de la prestación y los honorarios correspondientes. Se mantiene también los antecedentes del paciente y su respectivo apoderado. 
+    	</article>
+        </div>
+    	<br>
+    </section>
+{% endblock %}  
+

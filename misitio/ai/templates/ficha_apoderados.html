@@ -1,0 +1,122 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		
+		{% if not user.is_authenticated %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+		<form id="form" name="form" method="POST" action=""> 
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+
+		
+			<table class="table table-dark"  border = '0'>		
+			
+		    {% if error_new == "error1" %}
+    	    	<p class="error1">R.U.T. ya existe !!</p>
+        	{% endif %}
+
+			<tr>
+				<td>R.U.T.:</td>
+				<td>
+
+				{% if variable2 == 'modifica_rut' %}	
+					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'}}
+				{% else %}
+					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
+				{% endif %}
+
+				</td>
+				<d>
+					<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
+				</d>
+			</tr>
+			
+			<tr>
+				<td>Nombre</td> 
+				<td>
+					<d>{{ form.nombre|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Direccion</td>
+				<td>
+					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Fonos</td>
+				<td>
+					<d>{{form.fono_apod|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_cuid'}}</d>
+					
+					<d>{{form.fono2_apod|attr:'size:12'|attr:'placeholder:Opcional'}}</d>
+				</td>
+			</tr>
+
+
+			<tr>
+			<td>Parentezco</td> 
+				<td>
+				{{form.parentezco|attr:'size:60'|attr:'type:text'|attr:'placeholder:es madre, padre, etc. del paciente'}}
+				</d>
+				</td>
+			</tr>
+
+
+			<tr>
+			<td>Correo</td>
+				<td>
+					<d>{{form.correo|attr:'onblur:return validaemail()'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'}}</d>
+				</td>
+			</tr>
+
+
+			<td>Region</td>
+				<td>
+					<select name="region">
+					{% for r in region %}
+						{% if r.codigo == var_region %}
+							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
+						{% else %}
+							<option value ="{{r.codigo}}">{{r.descrip}}</option>
+						{% endif %}	
+					{% endfor %}
+					</select>			
+				</td>			
+			</tr>
+
+			<td>Comuna</td>
+				<td>
+					<select	name="comuna">
+					{% for c in comuna %}
+						{% if c.codigo == var_comuna %}
+						<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
+						{% else %}	
+						<option value ="{{c.codigo}}">{{c.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+
+
+			<tr>
+			<td>Observaciones</td>
+				<td>
+					<d>{{form.notas|attr:'size:200'|attr:'id:notas'}}</d>
+				</td>
+			</tr>
+
+
+			</table>
+
+			<Span id='span1'><span>
+				
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+
+{% endblock %}

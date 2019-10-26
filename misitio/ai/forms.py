@@ -1,5 +1,5 @@
 from django import forms
-from aintegral.ai.models import Cuidadores,Pacientes,Apoderados,Param
+from misitio.ai.models import Cuidadores,Pacientes,Apoderados,Param,Pauta
 from datetime import datetime
 
 class ParamForm(forms.ModelForm):
@@ -46,7 +46,15 @@ class ApoderadosForm(forms.ModelForm):
 		def __str__(self):
 			return self.nombre
 
-#class DateInput(forms.DateInput):
-#	input_type = 'date'
+class PautaForm(forms.ModelForm):
+	class Meta:
+		model = Pauta
+		widgets = {
+			'fe_ini': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
+		}
+		fields = "__all__"
+
+		def __str__(self):
+			return self.paciente
 
 

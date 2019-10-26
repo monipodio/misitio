@@ -1,0 +1,213 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+{% block content %}
+	<section class='section2'>
+		<!-- esta ficha es llamada desde la view ActualizaCui3 -->
+		{% if not user.is_authenticated %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+		<form id="form" name="form" method="POST" action="" enctype="multipart/form-data"> 
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+			
+			<table class="table table-striped" border = '0'>
+		    {% if error_new == "error1" %}
+    	    	<p class="error1">R.U.T. ya existe !!</p>
+        	{% endif %}
+		
+			<td>
+				<img  src="{{ fotito }}"/>
+			</td>	
+
+			<tr>
+				<td>R.U.T.:</td>
+				<td >
+				{% if variable2 == 'modifica_rut' %}	
+					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut_cui()'|attr:'onchange:upperCase()'|attr:'tabindex:1'}}
+				{% else %}
+					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
+				{% endif %}
+
+
+				{% if variable2 == 'nomodifica_rut' %}
+				<d>
+				{{form.extran|attr:'type:checkbox'|attr:'disabled:True'|attr:'id:extran'}} extranjero
+				</d>
+				{% else %}
+				<d>
+				{{form.extran|attr:'type:checkbox'|attr:'id:extran'}} extranjero
+				</d>
+				{% endif %}
+
+
+				</td>
+				<d>
+					<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
+				</d>
+	
+			</tr>
+
+			<d>
+				{{form.estado|attr:'type:checkbox'}} Pasivo (estado)
+				
+				{{form.elim_foto|attr:'type:checkbox'|attr:'value:0'}} Elimina foto
+		
+			</d>
+
+			<tr>
+				<td>Nombre</td> 
+				<td>
+					<d>{{ form.nombre|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:2'}}</d>
+				</td>
+			</tr>
+
+		
+			<tr>
+				<td>Tipo Contrato</td>
+				<td>
+				<select	name="tipo" id="tipo">
+					{% for tip in tipo %}
+						{% if tip.codigo == var_tip %}	
+							<option value ="{{tip.codigo}}" selected="selected">{{tip.descrip}} </option>
+						{% else %}
+							<option value ="{{tip.codigo}}">{{tip.descrip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+			
+			<tr>
+				<td>Clasificacion</td>
+				<td>
+				<select	name="clasi" id="clasi">
+					{% for cla in clasi %}
+						{% if cla.codigo == var_clasi %}	
+							<option value ="{{cla.codigo}}" selected="selected">{{cla.descrip}} </option>
+						{% else %}
+							<option value ="{{cla.codigo}}">{{cla.descrip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Sexo</td>
+				<td>
+				<select	name="sexo" id="sexo">
+					{% for sex in sexo %}
+						{% if sex.codigo == var_sex %}	
+							<option value ="{{sex.codigo}}" selected="selected">{{sex.descrip}} </option>
+						{% else %}
+							<option value ="{{sex.codigo}}">{{sex.descrip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Nivel educacional</td>
+				<td>
+				<select	name="instr" id="instr">
+					{% for inst in instr %}
+						{% if inst.codigo == var_instr %}	
+							<option value ="{{inst.codigo}}" selected="selected">{{inst.descrip}} </option>
+						{% else %}
+							<option value ="{{inst.codigo}}">{{inst.descrip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Fecha Inicio</td> 
+				<td>
+					<d>	
+					{{form.fe_ini|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:3'}}
+					</d>
+					<!--<input type="text" id="caja" value ="{{xx}}" hidden > -->
+				</td>
+			</tr>
+
+			<tr>
+			<td>Fecha Nacimiento</td> 
+				<td>
+				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'requiered:True'|attr:'tabindex:4'}}
+				</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Direccion</td>
+				<td>
+					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:5'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Fonos</td>
+				<td>
+					<d>{{form.fono_cuid|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_cuid'|attr:'tabindex:6'}}</d>
+					
+					<d>{{form.fono2_cuid|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:7'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Correo</td>
+				<td>
+					<d>{{form.correo|attr:'onblur:return validaemail()'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:8'}}</d>
+				</td>
+			</tr>
+
+
+			<td>Region</td>
+				<td>
+					<select name="region">
+					{% for r in region %}
+						{% if r.codigo == var_region %}
+							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
+						{% else %}
+							<option value ="{{r.codigo}}">{{r.descrip}}</option>
+						{% endif %}	
+					{% endfor %}
+					</select>			
+				</td>			
+			</tr>
+
+			<td>Comuna</td>
+				<td>
+					<select	name="comuna">
+					{% for c in comuna %}
+						{% if c.codigo == var_comuna %}
+						<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
+						{% else %}	
+						<option value ="{{c.codigo}}">{{c.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+
+
+			<tr>
+			<td>Observaciones</td>
+				<td>
+					<d>{{form.notas|attr:'size:200'|attr:'id:notas'|attr:'tabindex:9'}}</d>
+				</td>
+			</tr>
+
+
+			</table>
+
+			<Span id='span1'><span>
+				
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+
+{% endblock %}

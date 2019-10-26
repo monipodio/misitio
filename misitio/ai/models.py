@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 
-my_store = FileSystemStorage(location='static/img/fotos')
 
+my_store = FileSystemStorage(location='static/img/fotos')
 
 class Pacientes(models.Model):
     rut = models.CharField(max_length=10)
@@ -22,16 +22,20 @@ class Pacientes(models.Model):
     n_apod = models.CharField(max_length=80,verbose_name="Nombre Apoderado")
     rut_apod = models.CharField(max_length=10)
     dir_apod = models.CharField(max_length=61, blank=True,null=True)
-    f_apod   = models.CharField(max_length=12)
+    f_apod   = models.CharField(max_length=12, blank=True,null=True)
     fono2_apod = models.CharField(max_length=12, blank=True,null=True)
     parentes = models.CharField(max_length=30, blank=True,null=True)
-    medico = models.CharField(max_length=60)
     correo_apod = models.CharField(max_length=40, blank=True,null=True)
+    medico = models.CharField(max_length=60, blank=True,null=True)
     notas = models.TextField(blank=True)
     cob =  models.CharField(max_length=1, null=True)
     estado = models.BooleanField(blank=True,default=0)  # pasivo - Activo
-    clasi = models.CharField(max_length=1, blank=True) # particular, institucion
+    clasi = models.CharField(max_length=1, blank=True, default='') # particular, institucion
     abon  = models.CharField(max_length=1, blank=True) # Efec,Cheq,Tarjeta,...
+    yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,,etc
+    valor_t1 =  models.IntegerField(blank=True,default=0)
+    valor_t2 =  models.IntegerField(blank=True,default=0)
+    valor_t3 =  models.IntegerField(blank=True,default=0)
 
     def __str__(self):
         return self.nombre.strip() 
@@ -56,8 +60,8 @@ class Cuidadores(models.Model):
     notas = models.TextField(blank=True)
     tipo =  models.CharField(max_length=1, blank=True) #contratado - honorarios 
     media = models.FileField(upload_to='fotos/',blank=True,default='') #si no existe, la crea
-    clasi  = models.CharField(max_length=1, blank=True) # superior-intermedio-Stand
-    extran = models.BooleanField(blank=True,default=0)  # si es extrajero
+    clasi  = models.CharField(max_length=1, blank=True,default='') # superior-intermedio-Stand
+    extran = models.CharField(max_length=1,blank=True,default='0')  # si es extrajero
     estado = models.BooleanField(blank=True,default=0)  # Activo - Pasivo
     instr  = models.CharField(max_length=1, blank=True) # nivel educacional
     elim_foto =  models.CharField(max_length=1, blank=True)  # switch para borrar archivo foto
@@ -104,3 +108,26 @@ class Param(models.Model):
     class Meta:
         ordering = ['tipo','descrip']
         verbose_name = 'Parametro'
+
+class Pauta(models.Model):
+    rut = models.CharField(max_length=10,blank=True)
+    paciente = models.CharField(max_length=80,verbose_name="Nombre Paciente",null=True)
+    fe_ini = models.DateTimeField(blank=True,verbose_name="Fecha de Inicio")
+    fecha  = models.DateTimeField(blank=True,verbose_name="Fecha Pauta")
+    rut_t1 = models.CharField(max_length=10,blank=True)
+    turno1 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    rut_t2 = models.CharField(max_length=10,blank=True)
+    turno2 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    rut_t3 = models.CharField(max_length=10,blank=True)
+    turno3 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    valor_t1 = models.IntegerField(blank=True)
+    valor_t2 = models.IntegerField(blank=True)
+    valor_t3 = models.IntegerField(blank=True)
+    notas = models.TextField(blank=True)
+    yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,etc 
+    def __str__(self):
+        return self.paciente.strip() 
+    
+    class Meta:
+        ordering = ['paciente']
+        verbose_name = 'Pauta'

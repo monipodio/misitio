@@ -1,0 +1,323 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+		<form id="form" name="form" method="POST" action=""> 
+			
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+	
+			<!-- muestra mensajes de error creado en la VIEWS.PY -->
+			{% if messages %}
+    			<ul class="messages">
+        		{% for message in messages %}
+        			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        		{% endfor %}
+    			</ul>    
+			{% endif %}
+			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->		
+
+			<!--
+			<table class="table table-striped " border = '1'>	
+			-->
+
+			<table  class="table table-dark" border = '1'>
+
+		    {% if error_new == "error1" %}
+    	    	<p class="error1">R.U.T. de Paciente ya existe !!</p>
+        	{% endif %}
+
+			<tr>
+				<td>R.U.T.:</td>
+				<td>
+				<d>
+				{% if variable2 == 'modifica_rut' %}	
+					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}}
+				{% else %}
+					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
+				{% endif %}
+				</d>
+				
+				<d>
+				{{form.estado|attr:'type:checkbox'|attr:'readonly:True'}} Pasivo
+				</d>	
+
+				</td>
+
+				<d>
+				<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
+				</d>
+			</tr>
+			
+			<tr>
+				<td>Nombre paciente</td> 
+				<td>
+					<d>{{ form.nombre|attr:'size:60'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td id="div6_id">Nombre Apoderado</td> 
+				<td>
+					<d id="div4_id">
+					{% if variable2 == 'modifica_rut' %}	
+						{{ form.rut_apod|attr:'size:10'|attr:'id:rut_apod'|attr:'onblur:return validarut2()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'title:dato obligatorio'|attr:'tabindex:3'}}
+					{% else %}
+						{{form.rut_apod|attr:'size:10'|attr:'readonly:True'}} 
+					{% endif %}
+					</d>
+
+					<d id="div5_id">
+						{{form.n_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'placeholder:paterno materno nombres'|attr:'title:dato obligatorio'|attr:'tabindex:4'}} 
+					</d>	
+
+					<d>
+						<u>
+						<a href="#" onclick="Ocultar()">Accion</a>
+						</u>
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td id="div0_id">Direcc. Apoderado</td>
+				<td>
+					<d id="div1_id">
+					{{form.dir_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'tabindex:5'}} 
+					</d>	
+				</td>
+			</tr>
+
+			<tr>
+				<td id="div2_id">Fono Apoderado</td>
+				<td>
+					<d id="div3_id">
+					{{form.f_apod|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:6'}} 
+					</d>
+				</td>
+			</tr>
+	
+			<tr>
+				<td id="div7_id">Fono2 Apod.</td>
+				<td>
+					<d id="div8_id">
+					{{form.fono2_apod|attr:'size:12'|attr:'tabindex:7'}} 
+					</d>
+				</td>
+			</tr>
+	
+			<tr>
+				<td id="div9_id">Parentezco</td>
+				<td>
+					<d id="div10_id">
+					{{form.parentes|attr:'size:40'|attr:'placeholder:El apoderado qué es del paciente ?'|attr:'onKeyup:mayuscula(this)'|attr:'tabindex:8'}} 
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td id="div11_id">Correo Apod.</td>
+				<td>
+					<d id="div12_id">
+					{{form.correo_apod|attr:'size:40'|attr:'onblur:return validaemail("correo_apod")'|attr:'id:correo_apod'|attr:'tabindex:9'}} 
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Clasificacion - Lugar</td>
+				<td>
+				
+				<select	name="clasi" id = "clasi" tabindex="10">
+					{% for cla in clasi %}
+						{% if cla.codigo == var_clasi %}	
+							<option value ="{{cla.codigo}}" selected="selected">{{cla.descrip}}</option>
+						{% else %}
+							<option value ="{{cla.codigo}}">{{cla.descrip}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+
+				<select	name="yace" id = "yace" tabindex="11">
+					{% for yace in yace %}
+						{% if yace.codigo == var_yace %}	
+							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
+						{% else %}
+							<option value ="{{yace.codigo}}">{{yace.descrip}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Cobranza</td>
+				<td>
+				<select	name="cob" id = "cob" tabindex="11">
+					{% for cobr in cob %}
+						{% if cobr.codigo == var_cob %}	
+							<option value ="{{cobr.codigo}}" selected="selected">{{cobr.descrip}}</option>
+						{% else %}
+							<option value ="{{cobr.codigo}}">{{cobr.descrip}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Medico</td>
+				<td>
+					<d >
+					{{form.medico|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:12'|attr:'onKeyup:mayuscula(this)'}} 
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Sexo Paciente</td>
+				<td>
+				<select	name="sexo" id="sexo" tabindex="13">
+					{% for sex in sexo %}
+						{% if sex.codigo == var_sex %}	
+							<option value ="{{sex.codigo}}" selected="selected">{{sex.descrip}}</option>
+						{% else %}
+							<option value ="{{sex.codigo}}">{{sex.descrip}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+			</tr>
+
+			<tr>
+				<td>Fecha Inicio</td> 
+				<td>
+					<d>	
+					{{form.fe_ini|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:14'}}
+					</d>
+
+					<!-- <input type="text" id="caja" value ="{{xx}}" hidden > -->
+				</td>
+			</tr>
+
+			<tr>
+			<td>Fecha Nacimiento</td> 
+				<td>
+				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
+				</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Direccion</td>
+				<td>
+					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:15'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Fonos</td>
+				<td>
+					<d>{{form.fono_pcte|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:16'}}</d>
+					
+					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:17'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Correo</td>
+				<td>
+					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:17'}}</d>
+				</td>
+			</tr>
+
+
+			<td>Region</td>
+				<td>
+					<select name="region" tabindex="18">
+					{% for r in region %}
+						{% if r.codigo == var_region %}
+							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
+						{% else %}
+							<option value ="{{r.codigo}}">{{r.descrip}}</option>
+						{% endif %}	
+					{% endfor %}
+					</select>			
+				</td>			
+			</tr>
+
+			<td>Comuna</td>
+				<td>
+					<select	name="comuna" tabindex="19">
+					{% for c in comuna %}
+						{% if c.codigo == var_comuna %}
+							<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
+						{% else %}	
+							<option value ="{{c.codigo}}">{{c.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+			<tr>
+
+			<td>Tipo de abono</td>
+				<td>
+					<select	name="abon" tabindex="20">
+					{% for abo in abon %}
+						{% if abo.codigo == var_abon %}
+							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
+						{% else %}	
+							<option value ="{{abo.codigo}}">{{abo.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+			<tr>
+
+
+			<tr>
+			<td>Turno mañana $</td>
+				<td>
+					<d>{{form.valor_t1|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:21'|attr:'id:valor_t1'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Turno tarde $</td>
+				<td>
+					<d>{{form.valor_t2|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t2'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Turno noche $</td>
+				<td>
+					<d>{{form.valor_t3|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t3'}}</d>
+				</td>
+			</tr>
+
+
+			<td>Observaciones</td>
+				<td>
+				<d>
+				{{form.notas|attr:'size:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:24'}}
+				</d>
+				</td>
+			</tr>
+
+			</table>
+
+			<Span id='span1'><span>
+				
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+
+{% endblock %}

@@ -1,1 +1,1 @@
-web: gunicorn aintegral.wsgi --log-file -
+web: gunicorn misitio.wsgi --log-file -
