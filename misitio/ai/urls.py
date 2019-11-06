@@ -8,7 +8,7 @@ from misitio.ai.views import ActualizaPac
 from misitio.ai.forms import CuidadoresForm
 from misitio.ai.forms import PacientesForm
 from misitio.ai.views import ficha_cuidadores
-from misitio.ai.views import ficha_pacientes
+#from misitio.ai.views import ficha_pacientes
 from misitio.ai.forms import ApoderadosForm
 from misitio.ai.views import ActualizaApod
 from misitio.ai.views import ficha_apoderados
@@ -28,7 +28,7 @@ urlpatterns = [
 	path('grid_pautaBusca/',views.grid_pautaBusca, name="grid_pautaBusca"),	
 	path('grid_pauta/',views.grid_pauta, name="grid_pauta"),
 	path('ficha_cuidadores/<int:id>',views.ficha_cuidadores, name="ficha_cuidadores"),
-	path('ficha_pacientes/<int:id>',views.ficha_pacientes, name="ficha_pacientes"),
+	#path('ficha_pacientes/<int:id>',views.ficha_pacientes, name="ficha_pacientes"),
 	path('ActualizaPauta/<int:id>',views.ActualizaPauta, name="ActualizaPauta"),
 	path('ActualizaCui/<int:id>',views.ActualizaCui, name="ActualizaCui"),
 	path('ActualizaPac/<int:id>',views.ActualizaPac, name="ActualizaPac"),
@@ -44,6 +44,4 @@ urlpatterns = [
 	path('grid_param/',views.grid_param,name="grid_param"),
 	path('FichaParam/<int:id>',views.FichaParam,name="FichaParam"),
 	path('siexisterut/<rut>/',views.siexisterut,name="siexisterut"),
-	path('Despliegapauta/',views.Despliegapauta,name="Despliegapauta"),
-
 ]

@@ -57,7 +57,7 @@
 			        <th>Acciones</th>
 		    	</thead>
 		    </tr>
-	
+		
 		    {% for paciente in pacientes %}
 			    <tr>
 			        <td>{{ paciente.id}}</td>
@@ -67,7 +67,6 @@
 			
 			        <td>
 					<a class="btn btn-primary" href="{% url 'ActualizaPac' paciente.id %}" role="button">Modifica</a>
-
 
 					<a class="btn btn-danger" href="{% url 'EliminaPac' paciente.id %}" role="button">Elimina</a>
 

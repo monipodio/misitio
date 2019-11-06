@@ -74,7 +74,6 @@
 					<d id="div5_id">
 						{{form.n_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'placeholder:paterno materno nombres'|attr:'title:dato obligatorio'|attr:'tabindex:4'}} 
 					</d>	
-
 					<d>
 						<u>
 						<a href="#" onclick="Ocultar()">Accion</a>
@@ -158,7 +157,7 @@
 			<tr>
 				<td>Cobranza</td>
 				<td>
-				<select	name="cob" id = "cob" tabindex="11">
+				<select	name="cob" id = "cob" tabindex="12">
 					{% for cobr in cob %}
 						{% if cobr.codigo == var_cob %}	
 							<option value ="{{cobr.codigo}}" selected="selected">{{cobr.descrip}}</option>
@@ -174,7 +173,7 @@
 				<td>Medico</td>
 				<td>
 					<d >
-					{{form.medico|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:12'|attr:'onKeyup:mayuscula(this)'}} 
+					{{ form.medico|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:13'|attr:'onKeyup:mayuscula(this)'}} 
 					</d>
 				</td>
 			</tr>
@@ -182,7 +181,7 @@
 			<tr>
 				<td>Sexo Paciente</td>
 				<td>
-				<select	name="sexo" id="sexo" tabindex="13">
+				<select	name="sexo" id="sexo" tabindex="14">
 					{% for sex in sexo %}
 						{% if sex.codigo == var_sex %}	
 							<option value ="{{sex.codigo}}" selected="selected">{{sex.descrip}}</option>
@@ -198,17 +197,15 @@
 				<td>Fecha Inicio</td> 
 				<td>
 					<d>	
-					{{form.fe_ini|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:14'}}
+				{{form.fe_ini|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
 					</d>
-
-					<!-- <input type="text" id="caja" value ="{{xx}}" hidden > -->
 				</td>
 			</tr>
 
 			<tr>
 			<td>Fecha Nacimiento</td> 
 				<td>
-				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
+				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:16'}}
 				</d>
 				</td>
 			</tr>
@@ -216,30 +213,30 @@
 			<tr>
 				<td>Direccion</td>
 				<td>
-					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:15'}}</d>
+					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:17'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Fonos</td>
 				<td>
-					<d>{{form.fono_pcte|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:16'}}</d>
+					<d>{{form.fono_pcte|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:17'}}</d>
 					
-					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:17'}}</d>
+					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:18'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Correo</td>
 				<td>
-					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:17'}}</d>
+					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:18'}}</d>
 				</td>
 			</tr>
 
 
 			<td>Region</td>
 				<td>
-					<select name="region" tabindex="18">
+					<select name="region" tabindex="19">
 					{% for r in region %}
 						{% if r.codigo == var_region %}
 							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
@@ -253,7 +250,7 @@
 
 			<td>Comuna</td>
 				<td>
-					<select	name="comuna" tabindex="19">
+					<select	name="comuna" tabindex="20">
 					{% for c in comuna %}
 						{% if c.codigo == var_comuna %}
 							<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
@@ -268,7 +265,7 @@
 
 			<td>Tipo de abono</td>
 				<td>
-					<select	name="abon" tabindex="20">
+					<select	name="abon" tabindex="21">
 					{% for abo in abon %}
 						{% if abo.codigo == var_abon %}
 							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
@@ -281,33 +278,52 @@
 			</tr>
 			<tr>
 
-
 			<tr>
-			<td>Turno mañana $</td>
+			<td>Tarifa mañana $</td>
 				<td>
-					<d>{{form.valor_t1|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:21'|attr:'id:valor_t1'}}</d>
+					<d>{{form.valor_t1|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t1'}}</d>
 				</td>
 			</tr>
 
 			<tr>
-			<td>Turno tarde $</td>
+			<td>Tarifa tarde $</td>
 				<td>
-					<d>{{form.valor_t2|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t2'}}</d>
+					<d>{{form.valor_t2|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t2'}}</d>
 				</td>
 			</tr>
 
 			<tr>
-			<td>Turno noche $</td>
+			<td>Tarifa noche $</td>
 				<td>
-					<d>{{form.valor_t3|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t3'}}</d>
+					<d>{{form.valor_t3|attr:'size:40'|attr:'tabindex:24'|attr:'id:valor_t3'}}</d>
 				</td>
 			</tr>
 
+			<tr>
+			<td>Documento de cobro</td>
+			<td>
+				{% if var_doc_cobro == "1" %}
+					<input type="radio" name="doc_cobro" value="1" checked> Boleta<br>
+					<input type="radio" name="doc_cobro" value="2" > Factura<br>
+					<input type="radio" name="doc_cobro" value="3"> Otro
+				{% endif %}
+				{% if var_doc_cobro == "2" %}
+					<input type="radio" name="doc_cobro" value="1" > Boleta<br>
+					<input type="radio" name="doc_cobro" value="2" checked> Factura<br>
+					<input type="radio" name="doc_cobro" value="3"> Otro
+				{% endif %}
+				{% if var_doc_cobro == "3" %}
+					<input type="radio" name="doc_cobro" value="1" > Boleta<br>
+					<input type="radio" name="doc_cobro" value="2" > Factura<br>
+					<input type="radio" name="doc_cobro" value="3" checked> Otro
+				{% endif %}
+			</td>
+			</tr>
 
 			<td>Observaciones</td>
 				<td>
 				<d>
-				{{form.notas|attr:'size:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:24'}}
+				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:25'}}
 				</d>
 				</td>
 			</tr>
@@ -319,5 +335,5 @@
 			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
 		</form>
 	</section>
-
 {% endblock %}
+

@@ -26,7 +26,7 @@ class Pacientes(models.Model):
     fono2_apod = models.CharField(max_length=12, blank=True,null=True)
     parentes = models.CharField(max_length=30, blank=True,null=True)
     correo_apod = models.CharField(max_length=40, blank=True,null=True)
-    medico = models.CharField(max_length=60, blank=True,null=True)
+    medico = models.CharField(max_length=60, blank=True)
     notas = models.TextField(blank=True)
     cob =  models.CharField(max_length=1, null=True)
     estado = models.BooleanField(blank=True,default=0)  # pasivo - Activo
@@ -36,6 +36,7 @@ class Pacientes(models.Model):
     valor_t1 =  models.IntegerField(blank=True,default=0)
     valor_t2 =  models.IntegerField(blank=True,default=0)
     valor_t3 =  models.IntegerField(blank=True,default=0)
+    doc_cobro = models.CharField(max_length=1, blank=True,null=True)
 
     def __str__(self):
         return self.nombre.strip() 
@@ -45,7 +46,7 @@ class Pacientes(models.Model):
   
 
 class Cuidadores(models.Model):
-    TIPO_CONTRATO = [('1', 'Contratado'),('2', 'Honorarios'),]
+    TIPO_CONTRATO = [('1', 'Contratado'),('2', 'Honorarios')]
     rut = models.CharField(max_length=10, blank=False)
     nombre = models.CharField(max_length=80, blank=True)
     fe_ini = models.DateTimeField(blank=True, null=True)
@@ -65,6 +66,10 @@ class Cuidadores(models.Model):
     estado = models.BooleanField(blank=True,default=0)  # Activo - Pasivo
     instr  = models.CharField(max_length=1, blank=True) # nivel educacional
     elim_foto =  models.CharField(max_length=1, blank=True)  # switch para borrar archivo foto
+    apago1  = models.IntegerField(blank=True,default=0) # salario
+    apago2  = models.IntegerField(blank=True,default=0) # salario
+    apago3  = models.IntegerField(blank=True,default=0) # salario
+
     def __str__(self):
         return self.nombre 
     class Meta:
@@ -125,8 +130,11 @@ class Pauta(models.Model):
     valor_t3 = models.IntegerField(blank=True)
     notas = models.TextField(blank=True)
     yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,etc 
+    tipo_turno1= models.CharField(max_length=1, blank=True,null=True) #
+    tipo_turno2= models.CharField(max_length=1, blank=True,null=True) #
+    tipo_turno3 = models.CharField(max_length=1, blank=True,null=True) #
     def __str__(self):
-        return self.paciente.strip() 
+        return self.paciente.strip()
     
     class Meta:
         ordering = ['paciente']

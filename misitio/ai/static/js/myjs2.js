@@ -70,7 +70,7 @@ function validarut() {
 				}
 
 				if(dv==0-0) {
-					alert("El rut es incorrecto por formato digitado!!");
+					alert("El rut es incorrecto por formato digitado...!!");
 					return false;
 				}
 
@@ -84,7 +84,7 @@ function validarut() {
         			document.getElementById("rut").style.border = '2px solid red';
         	   		document.getElementById("rut").focus();		
         	   		document.getElementById("rut").value = '';			
-					alert("El rut es incorrecto !!");
+					alert("El rut es incorrecto...!!");
 					return false;
 				}
 
@@ -93,7 +93,7 @@ function validarut() {
 			    document.getElementById("rut").style.border = '2px solid red';
         	   	document.getElementById("rut").focus();	  
         	   	document.getElementById("rut").value = ''; 
-				alert("RUT incorrecto por formato digitado!!");
+				alert("RUT incorrecto por formato digitado...!!");
 				return false;
 			}
 
@@ -266,6 +266,44 @@ function Ocultar() {
  		document.getElementById('div11_id').style.display = 'none';
  		document.getElementById('div12_id').style.display = 'none'; 		
  	}
+}
+
+
+function ValidarForm() {
+	var yace = document.getElementById("yace").value 
+	var rut_t1 = document.getElementById("rut_t1").value 
+	var rut_t2 = document.getElementById("rut_t2").value 
+	var rut_t3 = document.getElementById("rut_t3").value 
+	var tipo_turno1 = document.getElementById("tipo_turno1").value 
+	var tipo_turno2 = document.getElementById("tipo_turno2").value 
+	var tipo_turno2 = document.getElementById("tipo_turno2").value
+
+	if (yace == '6'){
+		alert("No ha especificado la ESTADIA !!")
+		return false;	
+	}
+
+	if(rut_t1 == '0-0' && rut_t2 == '0-0' && rut_t3 == '0-0' ){
+		alert("Error!!..no ha asignado CUIDADOR");
+		return false;
+	}
+
+	if(rut_t1 != '0-0' && tipo_turno1 == '0'){
+		alert("Error!!..todo cuidador debe tener su respectivo TIPO DE TURNO");
+		return false;
+	}
+
+	if(rut_t2 != '0-0' && tipo_turno2 == '0'){
+		alert("Error!!..todo cuidador debe tener su respectivo TIPO DE TURNO");
+		return false;
+	}
+
+	if(rut_t3 != '0-0' && tipo_turno3 == '0'){
+		alert("Error!!..todo cuidador debe tener su respectivo TIPO DE TURNO");
+		return false;
+	}
+
+
 }
 
 

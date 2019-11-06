@@ -16,19 +16,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from os import remove
-from datetime import datetime,timedelta
 #
+from datetime import datetime,timedelta
 from django.db import DatabaseError, transaction
 from django.db import connection
-
-
-#from os.path import basename
-#import os
-
-#def index(request):
-#	variable1 = 'PAGINA PRINCIPAL'
-#	context ={ "variable1":variable1,}
-#	return render(request,'index.html',context)
+import calendar
 
 def principal(request):
     variable1 = 'PAGINA PRINCIPAL'
@@ -86,7 +78,6 @@ def grid_apoderados(request):
 	}
 	return render(request,'grid_apoderados.html',context)
 
-
 def grid_pacientes(request):
 	variable1 = 'Despliegue de Pacientes'
 	paciente = Pacientes.objects.all().order_by('nombre')
@@ -95,50 +86,6 @@ def grid_pacientes(request):
 		"variable1":variable1,
 	}
 	return render(request,'grid_pacientes.html',context)
-
-
-def grid_pauta(request):
-	variable1 = 'Pauta Diaria'
-	#solo vigentes
-	#pauta = Pauta.objects.filter(Q(estado=False))
-	pauta =  Pauta.objects.all().order_by('paciente')
-	fechahoy = datetime.now() 
-	dia_hoy  = fechahoy.day 
-	mes_hoy  = fechahoy.month
-	ano_hoy  = fechahoy.year
-	dias = []
-	k=1
-
-	for k in range(dia_hoy+1):
-		if k !=0:
-			dias.append(k)
-			k=k+1
-
-
-	# el indice de los arreglos parten de cero		
-	meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-	'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-	meses[mes_hoy:12]=[]  # borra desde hoy hasta el final
-	mes_hoy = meses[-1]   # entrega el ultimo del arreglo (mes actual)
-
-
-	# define 4 años para atras
-	ano = [0,0,0,ano_hoy]
-	ano[-2] = ano_hoy -1
-	ano[-3] = ano_hoy -2
-	ano[-4] = ano_hoy -3
-
-	context = {
-		"pauta":pauta,
-		"variable1":variable1,
-		"dias":dias,
-		"meses":meses,
-		"ano":ano,
-		"dia_hoy":dia_hoy,
-		"mes_hoy":mes_hoy,
-		"ano_hoy":ano_hoy,}
-	#return HttpResponse("context: "+str(mes_hoy))
-	return render(request,'grid_pauta.html',context)
 
 
 def grid_param(request):
@@ -155,7 +102,6 @@ def grid_param(request):
 def grid_cuidadorBusca(request):
 	variable1 = 'Buscando Cuidadores'
 	queryset = request.GET.get('buscar').strip()
-	#return HttpResponse("Viene con: "+str(queryset))
 	cuidador = Cuidadores.objects.all().order_by('nombre')
 	cuidador = Cuidadores.objects.filter(Q(nombre__icontains=queryset))
 	context = {
@@ -164,11 +110,9 @@ def grid_cuidadorBusca(request):
 	}
 	return render(request,'grid_cuidadores.html',context)
 
-
 def grid_pacienteBusca(request):
 	variable1 = 'Buscando Paciente'
 	queryset = request.GET.get('buscar').strip()
-	#return HttpResponse("Viene con: "+str(queryset))
 	paciente = Pacientes.objects.all().order_by('nombre')
 	paciente =  Pacientes.objects.filter(Q(nombre__icontains=queryset))
 	context = {
@@ -177,41 +121,6 @@ def grid_pacienteBusca(request):
 	}
 	return render(request,'grid_pacientes.html',context)
 
-
-def grid_pautaBusca(request):
-	variable1 = 'Pauta Diaria'
-	queryset = request.GET.get('buscar').strip()
-	#pauta =  Pauta.objects.filter(Q(paciente__icontains=queryset) & Q(estado=False))
-	pauta =  Pauta.objects.filter(Q(paciente__icontains=queryset))
-	fechahoy = datetime.now() 
-	dia_hoy  = fechahoy.day 
-	mes_hoy  = fechahoy.month
-	ano_hoy  = fechahoy.year
-
-	dias = []
-	k=1
-	for i in range(31):
-		dias.append(k)
-		k=k+1
-
-	meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-	'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-	# el indice de los arreglos parten de cero
-	mes_hoy = meses[mes_hoy - 1]
-
-	ano = [2018,2019,2020,2021,2022]
-
-	context = {
-		"pauta":pauta,
-		"variable1":variable1,
-		"dias":dias,
-		"meses":meses,
-		"ano":ano,
-		"dia_hoy":dia_hoy,
-		"mes_hoy":mes_hoy,
-		"ano_hoy":ano_hoy,
-	}
-	return render(request,'grid_pauta.html',context)
 
 def grid_paramBusca(request):
 	variable1 = 'Buscando Parametro'
@@ -266,23 +175,6 @@ def ficha_apoderados(request,id):
 	}
 	return render(request,'ficha_apoderados.html',context)
 
-
-def ficha_pacientes(request,id):
-	variable1 = 'Ficha del Paciente'
-	variable2 = 'modifica_rut'
-	obj = Pacientes.objects.get(id=id)
-	context = {
-	   	"rut":obj.rut,
-	   	"nombre":obj.nombre,
-		"direccion":obj.direccion,
-		"fe_ini":obj.fe_ini,
-		"fono_cuid":obj.fono_cuid,
-	   	"fono2_cuid":obj.fono2_cuid,
-	   	"fe_nac":obj.fe_nac,
-	   	"variable1":variable1,
-	   	"variable2":variable2,
-	}
-	return render(request,'ficha_pacientes.html',context)
 
 #def ficha_pauta(request,id):
 #	variable1 = 'Ficha de Pauta diaria'
@@ -361,8 +253,9 @@ def NuevoCui(request):
 		cuidador = Cuidadores
 		rut_x = request.POST.get('rut') # valor del template
 		existe = cuidador.objects.filter(rut=rut_x).exists()
+		#return HttpResponse("existe: "+str(existe))
 		direcc_x = request.POST.get('direccion') # valor del template
-		if existe == True or direcc_x == '':
+		if existe == True:
 			error_new = 'error1'
 			context = {
 				'form':form,
@@ -418,7 +311,7 @@ def NuevoApod(request):
 				apoderado = Apoderados
 				form.save()
 				return redirect('grid_apoderados')
-	return render(request, 'ficha_apoderados.html',context)
+	return render(request,'ficha_apoderados.html',context)
 
 
 def siexisterut(request):
@@ -444,6 +337,7 @@ def NuevoPac(request):
 	clasi     =  Param.objects.filter(tipo='PROC').order_by('codigo') # particular - instit.
 	abon      =  Param.objects.filter(tipo='ABON').order_by('codigo') # Efec,Cheq,Tarj
 	yace      = Param.objects.filter(tipo='YACE').order_by('-codigo') #Hosp.Domici.Cli
+
 	context = {
 		'form':form,
 		'variable1':variable1,
@@ -456,7 +350,7 @@ def NuevoPac(request):
 		'abon':abon,
 		'error_new':error_new,
 		'yace':yace,
-	}
+		'car_doc_cobro':"3",}
 	if request.method == "POST":
 		paciente = Pacientes    # modelo
 		rut_x = request.POST.get('rut') # valor del template
@@ -475,6 +369,7 @@ def NuevoPac(request):
 				'abon':abon,
 				'error_new':error_new,
 				'yace':yace,
+				'var_doc_cobro':var_doc_cobro,
 			}
 		else:
 			if form.is_valid():
@@ -594,6 +489,9 @@ def ActualizaPac(request,id):
 	variable2 = 'nomodifica_rut'
 	paciente  =  Pacientes.objects.get(id=id) # registro en tabla
 	form 	=  PacientesForm(request.POST,instance=paciente) # reg. en form
+	var_fe_ini = paciente.fe_ini
+	#return HttpResponse("viene con:"+str(paciente.nombre)+" "+str(var_fe_ini))
+	#
 	region  =  Param.objects.filter(tipo='REGI').order_by('descrip')
 	comuna  =  Param.objects.filter(tipo='COMU').order_by('descrip')
 	sexo    =  Param.objects.filter(tipo='SEXO').order_by('codigo')
@@ -602,13 +500,11 @@ def ActualizaPac(request,id):
 	abon    =  Param.objects.filter(tipo='ABON').order_by('codigo')
 	yace	=  Param.objects.filter(tipo='YACE').order_by('-valor1')
 	#
-	#cuidador =  Cuidadores.objects.all().order_by('nombre') #todos los cuidadores
-	#
 	if request.method == 'POST':
 		if (form.is_valid()):
 			form.save()
 			return redirect('grid_pacientes')
-	#render(request,'ficha_pacientes.html',context)
+		
 	#despliega el template para modificacion
 	form = PacientesForm(instance=paciente) # trae el registro completo
 	var_region = paciente.region # entrega valor del campo de la tabla
@@ -619,7 +515,11 @@ def ActualizaPac(request,id):
 	var_clasi  = paciente.clasi
 	var_abon   = paciente.abon #
 	var_yace   = paciente.yace #Hosp,domicilio,clinica,MaAyuda
+	var_doc_cobro = paciente.doc_cobro
+	if paciente.doc_cobro == None:
+		var_doc_cobro = "3"
 
+	#return HttpResponse("Viene con :"+str(var_doc_cobro))
 	context = {
 			"variable1":variable1,
 			"variable2":variable2,
@@ -638,80 +538,9 @@ def ActualizaPac(request,id):
 			"var_clasi":var_clasi,
 			"var_abon":var_abon,
 			"var_yace":var_yace,
+			"var_doc_cobro":var_doc_cobro,
 			}
 	return render(request,'ficha_pacientes.html',context)
-
-
-def ActualizaPauta(request,id):
-	error1= "ok"
-	variable1 = 'Definiendo / Actualizando Pauta'
-	pauta   =  Pauta.objects.get(id=id)		# registro en tabla
-	form 	=  PautaForm(request.POST,instance=pauta) # reg. en formulario HTML
-	#return HttpResponse("Cuando pauta: "+str(id)+" "+str(pauta.paciente)+" "+str(pauta.turno1))
-	turno1	=  Cuidadores.objects.all().order_by('nombre')
-	turno2 	=  Cuidadores.objects.all().order_by('nombre')
-	turno3 	=  Cuidadores.objects.all().order_by('nombre')
-	yace	=  Param.objects.filter(tipo='YACE').order_by('descrip')
-
-	rut_ = pauta.rut   # rut paciente
-	paciente = Pacientes.objects.filter(rut=rut_) # solo el paciente del RUT
-	for vt in paciente:
-		valor_t1 = vt.valor_t1	
-		valor_t2 = vt.valor_t2
-		valor_t3 = vt.valor_t3
-	
-	var_rutcui1 = pauta.rut_t1
-	var_rutcui2 = pauta.rut_t2
-	var_rutcui3 = pauta.rut_t3
-	#
-	if request.method == 'POST':
-		if (form.is_valid()):
-			#pauta.turno1 = "algun valor"
-			rut_t1 = request.POST.get('rut_t1') # valor del template PAUTA
-			rut_t2 = request.POST.get('rut_t2') # valor del template 
-			rut_t3 = request.POST.get('rut_t3') # valor del template 
-			#
-			# valores de variables asignadas a campos antes de grabar 
-			for r in turno1:
-				if r.rut == rut_t1:
-		   			pauta.turno1 = r.nombre	
-
-			for r in turno2:
-				if r.rut == rut_t2:
-		   			pauta.turno2 = r.nombre	
-
-			for r in turno3:
-				if r.rut == rut_t3:
-		   			pauta.turno3 = r.nombre	
-
-			pauta.valor_t1 = valor_t1	
-			pauta.valor_t2 = valor_t2
-			pauta.valor_t3 = valor_t3
-
-			form.save()
-			return redirect('grid_pauta')
-		else:
-			return HttpResponse("Algo salió mal y no ha grabado"+str(form))
-	#despliega el template para modificacion
-	form = PautaForm(instance=pauta) # trae el registro completo
-	var_yace = pauta.yace
-	context = {
-			"form":form,
-			"variable1":variable1,
-			"yace":yace,
-			"var_yace":var_yace,
-			"turno1":turno1,
-			"turno2":turno2,
-			"turno3":turno3,
-			"var_rutcui1":var_rutcui1,
-			"var_rutcui2":var_rutcui2,
-			"var_rutcui3":var_rutcui3,
-			"valor_t1":valor_t1,
-			"valor_t2":valor_t2,
-			"valor_t3":valor_t3,
-			}
-	#return HttpResponse("El contex viene: "+str(context))		
-	return render(request,'ficha_pauta.html',context)
 
 
 def MenuParam(request):
@@ -750,51 +579,61 @@ def FichaParam(request,id):
 	return render(request,'ficha_param.html',context)
 
 
-def Despliegapauta(request):
-	ano_var = request.GET.get('ano_var') # valor del template
-	# filter always returns a queryset.
+def no_esta(rut_x,lista):
+    if rut_x in lista:
+        return False
+    return True
+#
+
+# LLAMADA DESDE PRINCIPAL.HTML
+def grid_pauta(request):
 	variable1 = 'Pauta Diaria'
-	paciente = Pacientes.objects.filter(Q(estado=False))
-	#paciente =  Pacientes.objects.all().order_by('paciente')
-	form 	=  PautaForm(request.GET or None)
-	pauta =  Pauta.objects.all().order_by('paciente')
 	fechahoy = datetime.now() 
-	dia_hoy  = fechahoy.day 
+	dia_hoy  = fechahoy.day
 	mes_hoy  = fechahoy.month
 	ano_hoy  = fechahoy.year
+	paciente = Pacientes.objects.filter(Q(estado=False))
+	#
+	fecha = str(ano_hoy)+"-"+str(mes_hoy).zfill(2)+"-"+str(dia_hoy)+" 00:00:00"
+	#return HttpResponse("fecha para traer pauta :"+str(fecha))
+	pauta = Pauta.objects.filter(fecha=fecha)
+	#	     
+	# Total dias del mes
 	dias = []
-	k=1
+	totdias = calendar.monthrange(ano_hoy,mes_hoy)[1] 
+	for k in range(1,totdias+1):  # el rango superior lo excluye por eso el +1 
+		dias.append(k)
 
-	for k in range(dia_hoy+1):
-		if k !=0:
-			dias.append(k)
-			k=k+1
-	format_str = '%d/%m/%Y %H:%M:%S'
-	fecha_ = datetime.strptime('25/10/2019 00:00:00',format_str)
-	# el indice de los arreglos parten de cero		
+	# El indice de los arreglos parten con cero		
 	meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
 	'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-	meses[mes_hoy:12]=[]  # borra desde este mes+1 hasta Diciembre
-	mes_hoy = meses[-1]   # entrega el ultimo del arreglo (mes actual)
+	mes_hoy = meses[mes_hoy - 1]	# mes en palabras
+	mes_numerico = fechahoy.month   # mes en numero
 
-# define 4 años para atras
-	ano = [0,0,0,ano_hoy]
-	ano[-2] = ano_hoy -1
-	ano[-3] = ano_hoy -2
-	ano[-4] = ano_hoy -3
+	# define 3 años para atras + uno adelante
+	ano = [0,0,ano_hoy,0]
+	ano[0] = ano_hoy -2
+	ano[1] = ano_hoy - 1
+	ano[3] = ano_hoy + 1
+	
+	# Agregando RUT's al arreglo		
+	aPauta = []	
+	for j in pauta:
+		aPauta.append(j.rut)
 
-	#return HttpResponse("form: "+str(fechahoy))
-	if request.method == 'GET':
-		for k in paciente:
-			paciente = Pacientes
-			pauta.rut = k.rut
-			pauta.paciente = k.nombre
-			return HttpResponse("llega con: "+str(fecha_))
-			cursor = connection.cursor() #es necesario: from django.db import connection	
-			cursor.execute("insert into ai_pauta (rut,paciente,fecha) "
-				"values(%s,%s)",[pauta.rut,pauta.paciente,fecha_])	
+	#inserta registro en ai_pauta
+	fecha = str(ano_hoy)+"-"+str(mes_numerico).zfill(2)+"-"+str(dia_hoy).zfill(2)+" 00:00:00"
+	fecha2 = "2019-11-02 00:00:00"
+	#return HttpResponse("fecha insert, fecha y fecha2: "+str(fecha)+" "+str(fecha2))
+	cursor = connection.cursor() #es necesario: from django.db import connection
+	for k in paciente:
+		if  not k.rut in aPauta:
+			cursor.execute("insert into ai_pauta (rut,paciente,fecha,tipo_turno1,tipo_turno2,tipo_turno3) "
+					"values(%s,%s,%s,%s,%s,%s)",[k.rut,k.nombre,fecha,'0','0','0'])
+	cuenta = 0
+	for ss in pauta:
+		cuenta = cuenta + 1
 
-			row = cursor.fetchone()
 	context = {
 		"pauta":pauta,
 		"variable1":variable1,
@@ -803,8 +642,161 @@ def Despliegapauta(request):
 		"ano":ano,
 		"dia_hoy":dia_hoy,
 		"mes_hoy":mes_hoy,
-		"ano_hoy":ano_hoy,}
+		"ano_hoy":ano_hoy,
+		"cuenta":cuenta,
+		"mes_numerico":mes_numerico,}
 	return render(request,'grid_pauta.html',context)
 
 
+# BUSCA boton buscar
+def grid_pautaBusca(request):
+	variable1 = 'Pauta Diaria'
+	buscar = request.GET.get('buscar').strip()  # desde el template x method='GET'
+	dia_x  = request.GET.get('dias')  # desde el template x method='GET'
+	mes_x  = request.GET.get('meses') # desde el template x method='GET'
+	ano_x =  request.GET.get('ano')   # desde el template x method='GET'
+	#   
+	#pauta =  Pauta.objects.filter(Q(paciente__icontains=queryset) & Q(estado=False))
+	fechahoy = datetime.now() 
+	dia_hoy  = fechahoy.day
+	mes_hoy  = fechahoy.month
+	ano_hoy  = fechahoy.year
+	#
+	# llena arreglo con numeral de dias
+	dias = []
+	k=1
+	for i in range(31):
+		dias.append(k)
+		k=k+1
 
+	# El indice de los arreglos parten con cero		
+	meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+	'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
+	# define 3 años para atras + uno adelante
+	ano = [0,0,ano_hoy,0]
+	ano[0] = ano_hoy -2
+	ano[1] = ano_hoy - 1
+	ano[3] = ano_hoy + 1
+
+	#preparar para busqueda
+	dia_z = str(dia_x).zfill(2)  	# transforma a string y llena ceros izq.
+	mes_z = meses.index(mes_x) + 1  # entrega el numerico del mes
+	mes_z = str(mes_z).zfill(2)
+	fecha = str(ano_x)+"-"+mes_z+"-"+dia_z+" 00:00:00"
+	pauta =  Pauta.objects.filter(Q(paciente__icontains=buscar) & Q(fecha=fecha))
+
+	cuenta = 0	# numero de pactes segun busqueda
+	for ss in pauta:
+		cuenta = cuenta + 1
+
+	if cuenta == 0 :
+		#return HttpResponse("cuenta :"+str(cuenta))
+		grid_pauta(request)
+
+	# numerico, asi lo requiere combo-box en grid_pauta	
+	dia_hoy  = int(dia_x) 
+	mes_hoy  = mes_x
+
+	context = {
+		"pauta":pauta,
+		"variable1":variable1,
+		"dias":dias,
+		"meses":meses,
+		"ano":ano,
+		"dia_hoy":dia_hoy,
+		"mes_hoy":mes_hoy,
+		"ano_hoy":ano_hoy,
+		"cuenta":cuenta,}
+	return render(request,'grid_pauta.html',context)
+
+
+# ACTUALIZA FICHA DE PAUTA
+def ActualizaPauta(request,id):
+	error1= "ok"
+	variable1 = 'Definiendo / Actualizando Pauta'
+	tipo_turno = ['-No asignado','Contratado','Extra']
+	pauta   =  Pauta.objects.get(id=id)	# registro en tabla
+	form 	=  PautaForm(request.POST,instance=pauta) # reg. en formulario HTML
+	#
+	turno1	=  Cuidadores.objects.all().order_by('nombre')
+	turno2 	=  Cuidadores.objects.all().order_by('nombre')
+	turno3 	=  Cuidadores.objects.all().order_by('nombre')
+	yace	=  Param.objects.filter(tipo='YACE').order_by('descrip')
+	rut_    =  pauta.rut   # rut paciente, registro en tabla
+	paciente = Pacientes.objects.filter(rut=rut_) # solo el paciente del RUT
+	
+	var_rutcui1 = pauta.rut_t1
+	var_rutcui2 = pauta.rut_t2
+	var_rutcui3 = pauta.rut_t3
+	#
+	if request.method == 'POST':
+		if (form.is_valid()):
+			rut_t1 = request.POST.get('rut_t1') # contenido del template PAUTA
+			rut_t2 = request.POST.get('rut_t2') # contenido template 
+			rut_t3 = request.POST.get('rut_t3') # contenido template 
+			#
+			tipo_turno1 = request.POST.get('tipo_turno1')
+			tipo_turno2 = request.POST.get('tipo_turno2')
+			tipo_turno3 = request.POST.get('tipo_turno3')
+			pauta.tipo_turno1 = tipo_turno1   # es tipo caracter
+			pauta.tipo_turno2 = tipo_turno2   # es tipo caracter
+			pauta.tipo_turno3 = tipo_turno3   # es tipo caracter
+			#	
+			# valores de variables asignadas a campos antes de grabar 
+			for r in turno1:
+				if r.rut == rut_t1:
+		   			pauta.turno1 = r.nombre	
+		   			pauta.valor_t1 = r.apago1
+
+			for r in turno2:
+				if r.rut == rut_t2:
+		   			pauta.turno2 = r.nombre
+		   			pauta.valor_t2 = r.apago2	
+
+			for r in turno3:
+				if r.rut == rut_t3:
+		   			pauta.turno3 = r.nombre	
+		   			pauta.valor_t3 = r.apago3
+
+			form.save()
+			return redirect('grid_pauta')
+		else:
+			return HttpResponse("Algo salió mal y no ha grabado"+str(form))
+	#despliega el template para modificacion
+	form = PautaForm(instance=pauta) # trae el registro completo
+	var_yace = pauta.yace
+	var_tip1 = tipo_turno[int(pauta.tipo_turno1)] #  obtiene la glosa del arreglo
+	var_tip2 = tipo_turno[int(pauta.tipo_turno2)] #  obtiene la glosa del arreglo
+	var_tip3 = tipo_turno[int(pauta.tipo_turno3)] #  obtiene la glosa del arreglo
+
+	context = {
+			"form":form,
+			"variable1":variable1,
+			"yace":yace,
+			"var_yace":var_yace,
+			"turno1":turno1,
+			"turno2":turno2,
+			"turno3":turno3,
+			"var_rutcui1":var_rutcui1,
+			"var_rutcui2":var_rutcui2,
+			"var_rutcui3":var_rutcui3,
+			"var_tip1":var_tip1,
+			"var_tip2":var_tip2,
+			"var_tip3":var_tip3,
+			"tipo_turno":tipo_turno,
+			}
+	return render(request,'ficha_pauta.html',context)
+
+
+def is_int(s):
+    try:
+        return int(s)
+    except ValueError:
+        return False
+
+def	valida_tipoturno():
+	if request.POST.get('tipo_turno1') == '0':
+		return False
+
+	

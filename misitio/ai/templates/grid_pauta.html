@@ -27,15 +27,17 @@
 							Paciente:
 						</label>
 
-
+						<!-- caja glosa a buscar-->
 						<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 						</td>
 
-						<td width="80">
+						<!-- boton BUSCAR glosa de nombre -->
+						<td width="85">
 				     	<input type="submit" value="Busca" class="btn btn-primary">
 						</td>
 						
-						<!-- td de la fecha -->
+						
+						<!-- td de la fecha dd-mm-aaaa -->
 						<td width="280" align="Left">
 							<label>
 								Fecha:
@@ -44,7 +46,7 @@
 							<select	name="dias" id = "dias">
 							{% for dias_var in dias %}
 								{% if dias_var == dia_hoy %}
-									<option value ="{{dias_var}}" selected='selected'>	{{dia_hoy}}
+									<option value ="{{dias_var}}" selected='selected'>	{{dias_var}}
 										</option>
 									{% else %}
 										<option value ="{{dias_var}}">{{dias_var}}</option>
@@ -55,7 +57,7 @@
 							<select	name="meses" id = "meses">
 							{% for meses_var in meses %}
 								{% if meses_var == mes_hoy %}
-									<option value ="{{meses_var}}" selected='selected'>	{{mes_hoy}}</option>
+									<option value ="{{meses_var}}" selected='selected'>	{{meses_var}}</option>
 								{% else %}
 									<option value ="{{meses_var}}">{{meses_var}}</	option>
 								{% endif %}
@@ -73,18 +75,24 @@
 							</select>
 						</td>
 
-
-	    				<td width="150" align="left">
+	    				
+	    				<td width="120" align="left">
 						<label>
 							<u>
-							<a href="{% url 'Despliegapauta' %}">Despliega Pauta</a>
-							
 							</u>
 						</label>
 						</td>
+						
 
+						<!-- numero de registros -->
+           				<td width="45">
+              			<p align="bottom" class="text-right text-muted small">
+    		            {{cuenta}}
+	        		    </p>
+            			</td>
 
-					    <td width="120" align="right">
+						<!-- regresa al principal -->
+					    <td width="100" align="right">
 						<label>
 							<u>
 								<a href="{% url 'principal' %}">Inicio</a>
@@ -116,7 +124,6 @@
 			        <th style="background-color: #10106D; color:White">
 			        	Noche
 			    	</th>
-
 
 		    	</thead>
 		    </tr>
