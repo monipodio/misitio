@@ -7,7 +7,6 @@
             <a href="{% url 'login_ini' %}">
         {% endif %}
 
-
 			<!-- muestra mensajes de error creado en la VIEW.PY -->
 			{% if messages %}
     		<ul class="messages">
@@ -25,7 +24,7 @@
 				<table border="0">
     				<tbody>	
 					<tr>
-						<td width="240">
+						<td width="230">
 						<label for="mySearch">Busca por:</label>
 						<input type="text" class = "search-query" size="12" name = "buscar" value='{{buscar}}' title="busca en columna TIPO" id="busca" placeholder="vacio todos" onfocus="limpia()">
 						</td>
@@ -34,11 +33,16 @@
 				     	<input type="submit" value="Busca" class="btn btn-primary">
 						</td>
 
-						<td width="240">
+						<td width="200">
 						<input type="checkbox" id="chbox1" name="check1" label for="chbox1"> busca en descripción</label>
 						</td>	
 
-						<td width="290" align="right">
+						<!-- BOTON NUEVO -->
+						<td width="110">
+						<a class="btn btn-primary" href="{% url 'NuevoParam' %}" role="button" title="Segun claves TIPO ya existentes">Nuevo</a>
+					    </td>
+
+						<td width="210" align="right">
 						<label>
 							<u>
 								<a href="{% url 'principal' %}">Inicio</a>

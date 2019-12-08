@@ -8,6 +8,8 @@ from .models import Pacientes
 from .models import Param
 from .models import Cuidadores
 from .models import Pauta
+from .models import Resupauta
+from .models import Anticipos
 
 #titulo principal del panel Admin
 admin.site.site_header = 'Administracion sistema: Asistencia Integral'
@@ -32,9 +34,23 @@ class AdminPauta(admin.ModelAdmin):
 	"turno1","rut_t2","turno2","rut_t3","turno3"]
 	search_fields = ['fe_ini', 'paciente']
 
+class Resupauta(admin.ModelAdmin):
+	list_display = ["rut","nombre","fecha","tot_t1",
+	"tot_t2","tot_t3","tot_val"]
+	search_fields = ['nombre']
+
+class AdminAnticipos(admin.ModelAdmin):
+	list_display = ["rut","fecha","mes","ano","valor","abon"]
+	search_fields = ['rut']
+
+
 
 admin.site.register(Pacientes,AdminPacientes)
 admin.site.register(Param,AdminParametros)
 #admin.site.register(Apoderados,AdminApoderados)
 admin.site.register(Cuidadores,AdminCuidadores)
 admin.site.register(Pauta,AdminPauta)
+admin.site.register(Anticipos,AdminAnticipos)
+
+
+

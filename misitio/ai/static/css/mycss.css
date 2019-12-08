@@ -192,15 +192,32 @@ id_nombre {
     }   
 
 
-
 #div0_id, #div1_id, #div2_id,
 #div3_id, #div4_id, #div5_id,
 #div6_id, #div7_id, #div8_id,
 #div9_id, #div10_id, #div11_id,
 #div12_id { background: #62BF54;}
 
-/*
-body {
-    background-image: url("snow.png");
+.search-query {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
-*/
+
+th {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#notas {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+body {
+  backgroung-color:#F6F66F;
+}
+
+.napod {
+  background: #FFFFFF;
+}  
+

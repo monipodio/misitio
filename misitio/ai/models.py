@@ -4,13 +4,15 @@ from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 
+from datetime import datetime
 
-my_store = FileSystemStorage(location='static/img/fotos')
+#my_store = FileSystemStorage(location='/misitio/ai/static/img')
 
 class Pacientes(models.Model):
     rut = models.CharField(max_length=10)
     nombre = models.CharField(max_length=80,verbose_name="Nombre Paciente")
-    fe_ini = models.DateTimeField(blank=True, null=True,verbose_name="Fecha de Inicio")
+    #fe_ini = models.DateTimeField(blank=True, null=True,verbose_name="Fecha de Inicio")
+    fe_ini = models.DateTimeField(verbose_name="Fecha de Inicio")
     direccion = models.CharField(max_length=61)
     comuna= models.CharField(max_length=5)   
     region = models.CharField(max_length=2)
@@ -29,7 +31,7 @@ class Pacientes(models.Model):
     medico = models.CharField(max_length=60, blank=True)
     notas = models.TextField(blank=True)
     cob =  models.CharField(max_length=1, null=True)
-    estado = models.BooleanField(blank=True,default=0)  # pasivo - Activo
+    estado = models.BooleanField(blank=True,default='')  # pasivo - Activo
     clasi = models.CharField(max_length=1, blank=True, default='') # particular, institucion
     abon  = models.CharField(max_length=1, blank=True) # Efec,Cheq,Tarjeta,...
     yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,,etc
@@ -60,10 +62,10 @@ class Cuidadores(models.Model):
     correo = models.CharField(max_length=40, blank=True)
     notas = models.TextField(blank=True)
     tipo =  models.CharField(max_length=1, blank=True) #contratado - honorarios 
-    media = models.FileField(upload_to='fotos/',blank=True,default='') #si no existe, la crea
+    media = models.FileField(upload_to='misitio/ai/static/img/',blank=True,default='') #si no existe, la crea
     clasi  = models.CharField(max_length=1, blank=True,default='') # superior-intermedio-Stand
     extran = models.CharField(max_length=1,blank=True,default='0')  # si es extrajero
-    estado = models.BooleanField(blank=True,default=0)  # Activo - Pasivo
+    estado = models.BooleanField(blank=True,default='')  # Activo - Pasivo
     instr  = models.CharField(max_length=1, blank=True) # nivel educacional
     elim_foto =  models.CharField(max_length=1, blank=True)  # switch para borrar archivo foto
     apago1  = models.IntegerField(blank=True,default=0) # salario
@@ -74,7 +76,7 @@ class Cuidadores(models.Model):
         return self.nombre 
     class Meta:
         ordering = ['nombre']
-        verbose_name = 'Cuidadore'    
+        verbose_name = 'Cuidadores'    
 
 
 class Apoderados(models.Model):
@@ -130,12 +132,59 @@ class Pauta(models.Model):
     valor_t3 = models.IntegerField(blank=True)
     notas = models.TextField(blank=True)
     yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,etc 
-    tipo_turno1= models.CharField(max_length=1, blank=True,null=True) #
-    tipo_turno2= models.CharField(max_length=1, blank=True,null=True) #
-    tipo_turno3 = models.CharField(max_length=1, blank=True,null=True) #
+    tipo_turno1= models.CharField(max_length=1, default=0,null=True) #
+    tipo_turno2 = models.CharField(max_length=1, default=0,null=True) #
+    tipo_turno3 = models.CharField(max_length=1, default=0,null=True) #
+    recargo = models.CharField(max_length=1, blank=True,default='0') # cobro apoderado
+    reca_cui1 = models.CharField(max_length=1,default=0) # cobro apoderado
+    reca_cui2 = models.CharField(max_length=1,default=0) # cobro apoderado
+    reca_cui3 = models.CharField(max_length=1,default=0) # cobro apoderado
+
     def __str__(self):
         return self.paciente.strip()
     
     class Meta:
         ordering = ['paciente']
         verbose_name = 'Pauta'
+
+class Resupauta(models.Model):
+    rut = models.CharField(max_length=10,blank=True)
+    nombre = models.CharField(max_length=80,verbose_name="Nombre Cuidador",null=True)
+    mes = models.CharField(max_length=2,blank=True)
+    ano = models.CharField(max_length=4,blank=True)
+    tot_t1 = models.IntegerField(blank=True)
+    tot_t2 = models.IntegerField(blank=True)
+    tot_t3 = models.IntegerField(blank=True)
+    tot_val = models.IntegerField(blank=True)
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'resupauta'
+
+class Detapauta(models.Model):
+    rut = models.CharField(max_length=10, blank=False) # cuidador
+    paciente = models.CharField(max_length=60,verbose_name="Nombre Paciente",null=True)
+    fecha  = models.DateTimeField(blank=True,verbose_name="Fecha Pauta")
+    valor_t1 = models.IntegerField(blank=True)
+    tipo_turno1 = models.CharField(max_length=1,blank=True)
+    valor_t2 = models.IntegerField(blank=True)
+    tipo_turno2 = models.CharField(max_length=1,blank=True)
+    valor_t3 = models.IntegerField(blank=True)
+    tipo_turno3 = models.CharField(max_length=1,blank=True)
+    total = models.IntegerField(blank=True)
+    
+    class Meta:
+        ordering = ['fecha']
+        verbose_name = 'detapauta'    
+
+class Anticipos(models.Model):
+    rut = models.CharField(max_length=10, blank=False) # cuidador
+    fecha  = models.DateTimeField(verbose_name="Fecha anticipo")
+    mes = models.CharField(max_length=2,blank=True) # mes al que se imputa
+    ano = models.CharField(max_length=4,blank=True) # año al que se imputa
+    valor = models.IntegerField(blank=True)
+    abon  = models.CharField(max_length=1, blank=True) # Efec,Cheq,Tarjeta,...
+    notas = models.TextField(blank=True)
+    
+    class Meta:
+        ordering = ['fecha']
+        verbose_name = 'anticipos'    

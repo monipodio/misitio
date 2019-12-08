@@ -3,7 +3,7 @@
 
 {% block content %}
 	<section>
-        <form method="POST">
+        <form method='POST'>
         {% csrf_token %}          
  
         <div class="table-responsive">       
@@ -22,11 +22,22 @@
             </td>
 
             <td width="90">
-            <button type="submit">Eliminar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
             </td>
+            
             <td>
-            <a href = "{% url 'grid_pacientes' %}">Cancela</a>
+                
+            {% if sw1 == 'pac' %}
+                <a href = "{% url 'grid_pacientes' %}" class="btn btn-primary">Cancela</a>
+            {% endif %}
+
+            {% if sw1 == 'cui' %}
+                <a href = "{% url 'grid_cuidadores' %}" class="btn btn-primary">Cancela</a>
+            {% endif %}
+
             </td>
+            
+    
         </table>
         <br>
         </article>

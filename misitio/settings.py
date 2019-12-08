@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'misitio.ai',
+    'django.contrib.humanize',
+    'js_urls',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +126,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+#MEDIA_URL = '/ai/static/img/'

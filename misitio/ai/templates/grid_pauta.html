@@ -20,25 +20,26 @@
 			<form method='GET' action="{% url 'grid_pautaBusca' %}">
 				{% csrf_token %}
 				<table border="0">
+    				{% if error1 == "hay_error" %}
+   	    				<p class="error1">Error. !! El mes seleccionado no tiene ese numero de dia !!</p>
+       				{% endif %}
+
     				<tbody>
 					<tr>
-						<td>
-						<label>
-							Paciente:
-						</label>
-
+						<td width="230">
+						<label>Paciente:</label>
 						<!-- caja glosa a buscar-->
 						<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 						</td>
 
 						<!-- boton BUSCAR glosa de nombre -->
-						<td width="85">
-				     	<input type="submit" value="Busca" class="btn btn-primary">
+						<td width="180" title="Solo pacientes dentro del rango de fechas">
+				     	<input type="submit" value="Busca / Construye" class="btn btn-primary">
 						</td>
 						
 						
 						<!-- td de la fecha dd-mm-aaaa -->
-						<td width="280" align="Left">
+						<td width="290" align="Left">
 							<label>
 								Fecha:
 							</label>
@@ -74,22 +75,11 @@
 							{% endfor %}
 							</select>
 						</td>
-
-	    				
-	    				<td width="120" align="left">
-						<label>
-							<u>
-							</u>
-						</label>
-						</td>
 						
-
-						<!-- numero de registros -->
-           				<td width="45">
-              			<p align="bottom" class="text-right text-muted small">
-    		            {{cuenta}}
-	        		    </p>
-            			</td>
+						<!-- Envia a EXCEL -->
+					    <td width="80" align="right">
+						<a title="Pautas segun fecha seleccionada" href="{% url 'acsv' %}" width="30" height="30"><img src="{{ logo_excel }}" /></a>
+						</td>
 
 						<!-- regresa al principal -->
 					    <td width="100" align="right">
@@ -105,7 +95,7 @@
 				</table>
 			</form>
 
-			<table class="table table-hover table-fixed" border="1">
+			<table class="table table-hover table-fixed" border="0">
 		    <tr>
 		    	<thead class="thead-dark">
 
@@ -132,13 +122,27 @@
 			    <tr>
 			        <td  width="250" style="font-size:12px">
 						<li>
-						<a href="{% url 'ActualizaPauta' pauta.id %}">{{ pauta.paciente}}</a>
+						<a href="{% url 'ActualizaPauta' pauta.id %}" title="Verifique que todos los datos del paciente esten completos en la ficha">{{ pauta.paciente}}</a>
 						</li>
 			        </td>
+					
+					{% if pauta.turno1 != None %}
+			        	<td width="200">{{ pauta.turno1 }}</td>
+			        {%else%}
+			        	<td width="200"> </td>
+					{% endif %}
+					
+					{% if pauta.turno2 != None%}	
+			        	<td width="200">{{ pauta.turno2}}</td>
+					{% else %}
+			        	<td width="200"> </td>
+					{% endif %}
 
-			        <td width="200">{{ pauta.turno1 }}</td>
-			        <td width="200">{{ pauta.turno2}}</td>
-			        <td width="200">{{ pauta.turno3}}</td>
+					{% if pauta.turno3 != None%}	
+			        	<td width="200">{{ pauta.turno3}}</td>
+					{% else %}
+			        	<td width="200"> </td>
+					{% endif %}
 
 			        </td>
 

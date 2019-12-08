@@ -6,11 +6,10 @@
             <a href="{% url 'login_ini' %}">
         {% endif %}
 
-		<form id="form" name="form" method="POST" action=""> 
+		<form id="form" name="form" method="POST" action="#" onsubmit="return ValidaFichapac();"> 
 			
 			{% load widget_tweaks %} 			
  			{% csrf_token %}
-	
 			<!-- muestra mensajes de error creado en la VIEWS.PY -->
 			{% if messages %}
     			<ul class="messages">
@@ -20,12 +19,8 @@
     			</ul>    
 			{% endif %}
 			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->		
-
-			<!--
-			<table class="table table-striped " border = '1'>	
-			-->
-
-			<table  class="table table-dark" border = '1'>
+			
+			<table  class="table table-dark" border = '0'>
 
 		    {% if error_new == "error1" %}
     	    	<p class="error1">R.U.T. de Paciente ya existe !!</p>
@@ -34,29 +29,27 @@
 			<tr>
 				<td>R.U.T.:</td>
 				<td>
-				<d>
-				{% if variable2 == 'modifica_rut' %}	
+					<d>
+					{% if variable2 == 'modifica_rut' %}	
 					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}}
-				{% else %}
-					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
-				{% endif %}
-				</d>
-				
-				<d>
-				{{form.estado|attr:'type:checkbox'|attr:'readonly:True'}} Pasivo
-				</d>	
+					{% else %}
+					{{form.rut|attr:'id:rut'|attr:'size:10'|attr:'readonly:True'}} 
+					{% endif %}
+					</d>
 
+					<d>
+					{{form.estado|attr:'type:checkbox'|attr:'readonly:True'}} Pasivo
+					</d>	
 				</td>
 
-				<d>
-				<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
-				</d>
 			</tr>
 			
 			<tr>
 				<td>Nombre paciente</td> 
 				<td>
-					<d>{{ form.nombre|attr:'size:60'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}</d>
+					<d>{{ form.nombre|attr:'size:60'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}
+					</d>
+
 				</td>
 			</tr>
 
@@ -75,9 +68,11 @@
 						{{form.n_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'placeholder:paterno materno nombres'|attr:'title:dato obligatorio'|attr:'tabindex:4'}} 
 					</d>	
 					<d>
+						<!--
 						<u>
 						<a href="#" onclick="Ocultar()">Accion</a>
 						</u>
+						-->
 					</d>
 				</td>
 			</tr>
@@ -95,7 +90,7 @@
 				<td id="div2_id">Fono Apoderado</td>
 				<td>
 					<d id="div3_id">
-					{{form.f_apod|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:6'}} 
+					{{form.f_apod|attr:'id:f_apod'|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:6'}} 
 					</d>
 				</td>
 			</tr>
@@ -113,7 +108,7 @@
 				<td id="div9_id">Parentezco</td>
 				<td>
 					<d id="div10_id">
-					{{form.parentes|attr:'size:40'|attr:'placeholder:El apoderado qué es del paciente ?'|attr:'onKeyup:mayuscula(this)'|attr:'tabindex:8'}} 
+					{{form.parentes|attr:'id:parentes'|attr:'size:40'|attr:'placeholder:El apoderado qué es del paciente ?'|attr:'onKeyup:mayuscula(this)'|attr:'tabindex:8'}} 
 					</d>
 				</td>
 			</tr>
@@ -173,7 +168,7 @@
 				<td>Medico</td>
 				<td>
 					<d >
-					{{ form.medico|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:13'|attr:'onKeyup:mayuscula(this)'}} 
+					{{ form.medico|attr:'id:medico'|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:13'|attr:'onKeyup:mayuscula(this)'}} 
 					</d>
 				</td>
 			</tr>
@@ -194,10 +189,10 @@
 			</tr>
 
 			<tr>
-				<td>Fecha Inicio</td> 
+				<td>Fecha Inicio </td> 
 				<td>
 					<d>	
-				{{form.fe_ini|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
+				{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
 					</d>
 				</td>
 			</tr>
@@ -220,7 +215,7 @@
 			<tr>
 				<td>Fonos</td>
 				<td>
-					<d>{{form.fono_pcte|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:17'}}</d>
+					<d>{{form.fono_pcte|attr:'id:fono_pcte'|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:17'}}</d>
 					
 					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:18'}}</d>
 				</td>
@@ -261,11 +256,11 @@
 					</select>
 				</td>			
 			</tr>
-			<tr>
 
+			<tr>
 			<td>Tipo de abono</td>
 				<td>
-					<select	name="abon" tabindex="21">
+					<select	name="abon" tabindex="21" id="abon">
 					{% for abo in abon %}
 						{% if abo.codigo == var_abon %}
 							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
@@ -281,21 +276,21 @@
 			<tr>
 			<td>Tarifa mañana $</td>
 				<td>
-					<d>{{form.valor_t1|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t1'}}</d>
+					<d>{{form.valor_t1|attr:'id:valor_t1'|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t1'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Tarifa tarde $</td>
 				<td>
-					<d>{{form.valor_t2|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t2'}}</d>
+					<d>{{form.valor_t2|attr:'id:valor_t2'|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t2'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Tarifa noche $</td>
 				<td>
-					<d>{{form.valor_t3|attr:'size:40'|attr:'tabindex:24'|attr:'id:valor_t3'}}</d>
+					<d>{{form.valor_t3|attr:'id:valor_t3'|attr:'size:40'|attr:'tabindex:24'|attr:'id:valor_t3'}}</d>
 				</td>
 			</tr>
 
@@ -323,10 +318,16 @@
 			<td>Observaciones</td>
 				<td>
 				<d>
-				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:25'}}
+				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:25'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
 				</d>
 				</td>
 			</tr>
+
+			<d>
+			<p align="right"><u><a href="{% url 'grid_pacientes' %}">Regresa /</a></u>
+			<u><a href="{% url 'principal' %}">Inicio</a></u>
+			</p>
+			</d>
 
 			</table>
 

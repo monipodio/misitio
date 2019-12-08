@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <link src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js">
-
+  
     <title id = "title">AI-Asistencia Integral</title>
 </head>
 
@@ -39,8 +39,8 @@
             <td width="100">
             </td> 
 
-            <td width="750" valign="bottom">
-                <h4><b align="right" href="#">{{ variable1 }}</b></h4> 
+            <td width="750" valign="bottom" >
+                <h4><b href="#"><font color=#045579>{{ variable1 }}</font></b></h4> 
             </td>
             
             <td width="90">
@@ -55,21 +55,23 @@
         <br>
       </section>
  
-      {% block content %}{% endblock %}
+      {% block content %}
+      {% endblock %}
       <br>
       
       <footer class = 'footer'>
-          <a>
-          <small>  
+          <small>
+          <font color = #FFFFFF>  
           Gerente de ASISTENCIA INTEGRAL: Antonio Castillo R.  
           <br>
           Derechos Reservados | GMI Desarrollos de Sistemas informáticos &copy | Gabriel Araya Garcia
           <br>
           gabrielaraya2011@gmail.com
           <br>
-          Toda la aplicacion fué desarrollada en Framework Django 2.1.7 basado en Python 3.8
+          Toda la aplicacion fué desarrollada en Framework Django 2.1.7 basado en Python 3.8 y base de datos Sqlite3
+          </font>
           </small>
-          </a>
+   
       </footer>
  
     </body>

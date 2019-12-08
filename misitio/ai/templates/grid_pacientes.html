@@ -53,22 +53,22 @@
 		    		<th>ID</th>
 			        <th>Nombre</th>
 			        <th>R.U.T.</th>
-			        <th>Dirección</th>
-			        <th>Acciones</th>
+			        <th align="center">Acciones</th>
 		    	</thead>
 		    </tr>
 		
 		    {% for paciente in pacientes %}
-			    <tr>
+			    <tr id="{{forloop.counter}}">
 			        <td>{{ paciente.id}}</td>
-			        <td  width="250">{{ paciente.nombre}}</td>
+			        <td  width="380">{{ paciente.nombre}}</td>
 			        <td  width="150">{{ paciente.rut }}</td>
-			        <td width="230">{{ paciente.direccion}}</td>
-			
 			        <td>
-					<a class="btn btn-primary" href="{% url 'ActualizaPac' paciente.id %}" role="button">Modifica</a>
-
+	
 					<a class="btn btn-danger" href="{% url 'EliminaPac' paciente.id %}" role="button">Elimina</a>
+					
+<a class="btn btn-primary" href="{% url 'Ficha_anticipos' paciente.id %}" role="button">Anticipo</a>
+
+					<a class="btn btn-primary" href="{% url 'ActualizaPac' paciente.id %}" role="button">Modifica</a>
 
 			        </td>	
 

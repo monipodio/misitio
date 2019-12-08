@@ -22,6 +22,7 @@
 			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->			
 
 			<table border = "1"  class="table table-striped">	
+
 			<tr>
 				<td>Tipo</td> 
 				<td>
@@ -58,7 +59,6 @@
 					<d>{{form.valor2|attr:'size:17'}}</d>
 				</td>
 			</tr>
-
 
 			<tr>
 				<td>Valor3</td>
@@ -109,11 +109,18 @@
 				</td>
 			</tr>
 
+			<d>
+			<p align="right"><u><a href="{% url 'grid_param' %}">Regresa /</a></u>
+			<u><a href="{% url 'principal' %}">Inicio</a></u>
+			</p>
+			</d>
+
 			</table>
 
 			<br>
 			<span id='span1'><span>
 			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+
 		</form>
 	</section>
 

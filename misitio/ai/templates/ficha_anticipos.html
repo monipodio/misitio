@@ -1,0 +1,109 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+		<form id="form_anti" method="POST" action="#" onsubmit="return ValidaFicha_anti()";>
+		{% load widget_tweaks %} 			
+ 		{% csrf_token %}
+		<table class="table table-striped" border = '1'>	
+		<tbody>		
+
+		    {% if error_new == "error1" %}
+    	    	<p class="error1">Error!!, los datos no han sido grabados</p>
+        	{% endif %}
+
+			<tr>
+				<td width=40>R.U.T. Paciente:</td>
+				<td>
+					<d>
+					{{rut_anticipos}}
+					</d>
+
+					<d>
+					{{nombre_paciente}}
+					</d>
+
+				</td>
+			</tr>
+
+			<tr>
+				<td>Fecha digitación:</td>
+				<td align="Left">
+					<d>
+					{{fecha_actual}}
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+				<!-- td de la fecha dd-mm-aaaa -->
+				<td>Periodo abono:</td>
+				<td align="Left">
+					<select	name="mes" id = "mes" tabindex="1">
+					{% for meses_var in meses %}
+						{% if meses_var == mes_hoy %}
+							<option value ="{{forloop.counter0}}" selected='selected'>	{{meses_var}}</option>
+						{% else %}
+							<option value ="{{forloop.counter0}}" >{{meses_var}}</option>
+						{% endif %}
+					{% endfor %}
+					</select>
+					<select	name="ano" id = "ano">
+					{% for ano_var in ano %}
+						{% if ano_var == ano_hoy %}
+							<option value ="{{ ano_var}}" selected='selected' tabindex="2">	{{ano_var}}</option>
+						{% else %}
+							<option value ="{{ano_var}}">{{ano_var}}</option>
+						{% endif %}
+					{% endfor %}
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Monto abono $:</td>
+				<td align="Left">
+					<d>
+					{{form_anti.valor|attr:'tabindex:3'|attr:'id:valor'|attr:'onblur:separadordemiles(this)'}}
+					</d>
+				</td>
+			</tr>
+
+			<tr>
+			<td>Tipo de abono</td>
+				<td>
+					<select	name="abon" tabindex="4" id="abon">
+					{% for abo in abon %}
+						{% if abo.codigo == var_abon %}
+							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
+						{% else %}	
+							<option value ="{{abo.codigo}}">{{abo.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+			<tr>
+
+			<td>Observaciones</td>
+				<td>
+				<d>
+				{{form_anti.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:5'|attr:'cols:60'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
+				</d>
+				</td>
+			</tr>
+
+			<d><p align="right">
+				<u>
+					<a href="{% url 'grid_pacientes' %}">Regresa</a>
+				</u>
+				</p>
+			</d>
+		</tbody>
+		</table>
+		<br>
+		<span id='span1'><span>
+		<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		</form>
+	</section>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="{% url 'liquimeses' %}">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- td de la fecha dd-mm-aaaa -->
+						<td width="200" align="Left">
+
+							<select	name="meses" id = "meses">
+							{% for meses_var in meses %}
+								{% if meses_var == mes_hoy %}
+									<option value ="{{meses_var}}" selected='selected'>	{{meses_var}}</option>
+								{% else %}
+									<option value ="{{meses_var}}">{{meses_var}}</	option>
+								{% endif %}
+							{% endfor %}
+							</select>
+	
+							<select	name="ano" id = "ano">
+							{% for ano_var in ano %}
+								{% if ano_var == ano_hoy %}
+									<option value ="{{ ano_var}}" selected='selected'>	{{ano_var}}</option>
+								{% else %}
+									<option value ="{{ano_var}}">{{ano_var}}</option>
+								{% endif %}
+							{% endfor %}
+							</select>
+						</td>
+
+           				<td width="485">
+				     	<input type="submit" value="Despliega segun fecha" class="btn btn-primary">
+            			</td>
+						
+						<!-- numero de registros -->
+           				<td width="45">
+              			<p align="bottom" class="text-right text-muted small">
+    		            {{cuenta}}
+	        		    </p>
+            			</td>
+
+						<!-- link regresa al principal -->
+					    <td width="120" align="right">
+						<label>
+							<u>
+							<a href="{% url 'principal' %}">Inicio</a>
+							</u>
+						</label>
+						</td>
+					</tr>
+    				</tbody>
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark">
+			        <th style="background-color: #10106D; color:White">
+						Nombre				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Mes-Año
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Mañana
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Tarde
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Noche
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Tot valor $
+			    	</th>
+		    	</thead>
+		    </tr>
+
+		    {% for resu in resupauta %}
+			    <tr>
+			        <td  width="250" style="font-size:12px">
+						<li>
+						<a href="{% url 'Detapautaview' resu.rut resu.mes resu.ano %}">{{ resu.nombre}}</a>
+						</li>
+			        </td>
+		
+			        <td  width="40" style="font-size:12px">
+						<a href="#">{{ resu.mes}}/{{resu.ano}}</a>
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						<a href="#">{{ resu.tot_t1}}</a>
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						<a href="#">{{ resu.tot_t2}}</a>
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						<a href="#">{{ resu.tot_t3}}</a>
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						<a href="#">{{ resu.tot_val|intcomma}}</a>
+			        </td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}
