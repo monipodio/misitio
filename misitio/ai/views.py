@@ -25,8 +25,8 @@ from datetime import datetime,timedelta,date
 from django.db import DatabaseError, transaction
 from django.db import connection
 import calendar
-import django_excel as excel
-
+from openpyxl import Workbook
+from openpyxl.styles import Alignment,Border,Font,PatternFill,Side
 
 def principal(request):
     variable1 = 'PAGINA PRINCIPAL'
@@ -879,6 +879,7 @@ def Eliminapac_nuevo(request,id):
 # INFORMES DE LIQUIDACION
 def info(request):
 	variable1 = 'Liquidación Mensual de Cuidadores/Asistentes'
+	logo_excel = "/static/img/EXCEL0D.ICO"
 	fechahoy = datetime.now() 
 	dia_hoy  = fechahoy.day
 	mes_hoy  = fechahoy.month
@@ -966,6 +967,8 @@ def info(request):
 		"mes_hoy":mes_hoy,
 		"ano_hoy":ano_hoy,
 		"cuenta":cuenta,
+		"logo_excel":logo_excel,
+		"pauta":pauta,
 		"mes_numerico":mes_numerico,}
 	return render(request,'grid_info.html',context)
 
@@ -1238,31 +1241,36 @@ def Ficha_anticipos(request,id):
 	return render(request,'ficha_anticipos.html',context)
 
 def acsv(request):
-    export = []
-    # Se agregan los encabezados de las columnas
-    export.append([
-        'rut',
-        'Paciente',
-        'rut_t1',])
-    # Se obtienen los datos de la tabla o model y se agregan al array
-    results = Pauta.objects.all()
-    for result in results:
-        # acceder a campos 
-        export.append([
-                result.rut,
-                result.paciente,
-                result.rut_t1,
-                ])
+	# Se obtienen los datos de la tabla o model y se agregan al array
+	query = Pauta.objects.all() 
 
-    # Obtenemos la fecha para agregarla al nombre del archivo
-    today    = datetime.now()
-    strToday = today.strftime("%Y%m%d")
+	wb = Workbook()
+	ws = wb.create_sheet()
+	ws.column_dimensions['C'].width = 36
+	ws.column_dimensions['D'].width = 11
+	r=2
+	ws.cell(row=r,column=2).value = "Rut"
+	ws.cell(row=r,column=3).value = "Paciente"
+	ws.cell(row=r,column=4).value = "Rut turno 1"
+	r=r+1  
+	for q in query:
+		ws.cell(row=r,column=2).value = q.rut 
+		ws.cell(row=r,column=3).value = q.paciente 
+		ws.cell(row=r,column=4).value = q.rut_t1 
+		r=r+1  
 
-    # se transforma el array a una hoja de calculo en memoria
-    sheet = excel.pe.Sheet(export)
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
+	wb.save(response)
+	return response
 
-    # se devuelve como "Response" el archivo para que se pueda "guardar"
-    # en el navegador, es decir como hacer un "Download"
-    return excel.make_response(sheet, "csv", file_name="pauta"+strToday+".csv")	
+
+	#response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	#response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
+	#wb.save(response)
+	#return response
+
+
+
 
 
