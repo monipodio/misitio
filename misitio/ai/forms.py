@@ -1,6 +1,6 @@
 from django import forms
 from misitio.ai.models import Cuidadores,Pacientes,Apoderados,Param,Pauta,Resupauta,Detapauta
-from misitio.ai.models import Anticipos
+from misitio.ai.models import Anticipos,Pauta_aux
 from datetime import datetime
 
 class ParamForm(forms.ModelForm):
@@ -57,6 +57,18 @@ class PautaForm(forms.ModelForm):
 
 		def __str__(self):
 			return self.paciente
+
+class Pauta_auxForm(forms.ModelForm):
+	class Meta:
+		model = Pauta_aux
+		widgets = {
+			'fe_ini': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
+		}
+		fields = "__all__"
+
+		def __str__(self):
+			return self.paciente
+
 
 class ResupautaForm(forms.ModelForm):
 	class Meta:

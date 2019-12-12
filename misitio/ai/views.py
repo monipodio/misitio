@@ -10,16 +10,19 @@ from misitio.ai.forms import PautaForm
 from misitio.ai.forms import ResupautaForm
 from misitio.ai.forms import DetapautaForm
 from misitio.ai.forms import AnticiposForm
+from misitio.ai.forms import Pauta_auxForm
 from misitio.ai.models import Cuidadores,Pacientes,Apoderados,Detapauta
 from misitio.ai.models import Param,Pauta,Resupauta
-from misitio.ai.models import Anticipos
+from misitio.ai.models import Anticipos,Pauta_aux
 from django.views.generic import TemplateView
 from django.db.models import Q
 from django.contrib import messages,auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+import os, sys
 from os import remove
+from os import scandir, getcwd
 #
 from datetime import datetime,timedelta,date
 from django.db import DatabaseError, transaction
@@ -900,7 +903,28 @@ def info(request):
 	cuidador = Cuidadores.objects.all().exclude(rut='0-0').order_by('nombre')
 	resupauta = Resupauta.objects.all() # resumen de pauta
 	Resupauta.objects.all().delete() # borra el contenido de la tabla
-	#	     
+	#
+	# limpia y puebla ai_pauta_aux	
+	pauta_aux = Pauta_aux.objects.all() # Guarda pautas segun rango de fecha
+	Pauta_aux.objects.all().delete() 	# borra el contenido de la tabla
+
+	pauta = Pauta.objects.filter(fecha__range=(fecha_ini, fecha_fin))
+	#Pauta.objects.filter(fecha__range=(fecha_ini, fecha_fin)).exclude(Q(rut_t1__exact='') & Q(rut_t1__exact='') & Q(rut_t3_exact='' ))
+
+
+	for pau in pauta:
+		if pau.valor_t1 != None or pau.valor_t2 != None or pau.valor_t3 != None:
+			cursor = connection.cursor() #es necesario: from django.db import connection
+			cursor.execute("insert into ai_pauta_aux (rut,paciente,fecha,rut_t1,turno1,tipo_turno1,rut_t2,turno2,tipo_turno2,rut_t3,turno3,tipo_turno3,valor_t1,valor_t2,valor_t3,reca_cui1,reca_cui2,reca_cui3)"
+			"values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s,%s,%s)",
+			[pau.rut,pau.paciente,pau.fecha,
+			pau.rut_t1,pau.turno1,pau.tipo_turno1,
+			pau.rut_t2,pau.turno2,pau.tipo_turno2,
+			pau.rut_t3,pau.turno3,pau.tipo_turno3,
+			pau.valor_t1,pau.valor_t2,pau.valor_t3,
+			pau.reca_cui1,pau.reca_cui2,pau.reca_cui3,
+			])
+
 	dias = []
 	k=1
 	for i in range(31):
@@ -975,6 +999,7 @@ def info(request):
 # Botón: DESPLIEGA SEGUN FECHA
 def liquimeses(request):
 	variable1 = 'Liquidación Mensual de Cuidadores/Asistentes'
+	logo_excel = "/static/img/EXCEL0D.ICO"
 	fechahoy = datetime.now() 
 	dia_hoy  = fechahoy.day
 	mes_hoy  = fechahoy.month
@@ -1000,7 +1025,16 @@ def liquimeses(request):
 	cuidador = Cuidadores.objects.all().exclude(rut='0-0').order_by('nombre')
 	resupauta = Resupauta.objects.all() # resumen de pauta
 	Resupauta.objects.all().delete() # borra el contenido de la tabla
-	#	     
+	#	 
+	# limpia y puebla ai_pauta_aux	
+	pauta_aux = Pauta_aux.objects.all() # Guarda pautas segun rango de fecha
+	Pauta_aux.objects.all().delete() 	# borra el contenido de la tabla
+	pauta = Pauta.objects.filter(fecha__range=(fecha_ini, fecha_fin))
+	for pau in pauta:
+		cursor = connection.cursor() #es necesario: from django.db import connection
+		cursor.execute("insert into ai_pauta_aux (rut,paciente,fecha)"
+		"values(%s,%s,%s)",[pau.rut,pau.paciente,pau.fecha])
+
 	dias = []
 	k=1
 	for i in range(31):
@@ -1060,6 +1094,7 @@ def liquimeses(request):
 		"mes_hoy":mes_x,
 		"ano_hoy":int(ano_x),
 		"cuenta":cuenta,
+		"logo_excel":logo_excel,
 		"mes_numerico":mes_numerico,}
 	return render(request,'grid_info.html',context)
 
@@ -1241,36 +1276,116 @@ def Ficha_anticipos(request,id):
 	return render(request,'ficha_anticipos.html',context)
 
 def acsv(request):
-	# Se obtienen los datos de la tabla o model y se agregan al array
-	query = Pauta.objects.all() 
+	# Se forma string para nombre de archivo excel
+	fechahoy = datetime.now()
+	segundo_x = str(fechahoy.second).zfill(2)
+	minuto_x = str(fechahoy.minute).zfill(2)
+	hora_x = str(fechahoy.hour).zfill(2)
+	dia_x = str(fechahoy.day).zfill(2)	   # dia en numero-caracter
+	mes_x = str(fechahoy.month).zfill(2)   # mes en numero-caracter
+	ano_x = str(fechahoy.year)
+	string_nombre = 'cui'+ano_x+mes_x+dia_x+hora_x+minuto_x+segundo_x
+	#
+	query = Pauta_aux.objects.all()
 
+	#
+	# borra todos los xlsx que comiencen con "cui"
+	dir = "C:/Users/usuario/Downloads/"  # descargas
+	lista_ficheros = os.listdir(dir)
+	for fichero in lista_ficheros:
+		if fichero.startswith("cui"):
+			os.remove(dir + fichero)
+	#		
 	wb = Workbook()
 	ws = wb.create_sheet()
-	ws.column_dimensions['C'].width = 36
-	ws.column_dimensions['D'].width = 11
-	r=2
+	ws.column_dimensions['B'].width = 36	# rut paciente
+	ws.column_dimensions['C'].width = 36	# nombre paciente
+	ws.column_dimensions['D'].width = 17	# fecha
+	ws.column_dimensions['E'].width = 11	# rut cuid.
+	ws.column_dimensions['F'].width = 23	# nombre cuidador
+	ws.column_dimensions['G'].width = 12	# tipo cuidador
+	ws.column_dimensions['H'].width = 11	# rut cuid.
+	ws.column_dimensions['I'].width = 23	# nombre cuidador
+	ws.column_dimensions['J'].width = 12	# tipo cuidador
+	ws.column_dimensions['K'].width = 11	# rut cuid.
+	ws.column_dimensions['L'].width = 23	# nombre cuidador
+	ws.column_dimensions['M'].width = 12	# tipo cuidador
+
+	r=2	# posicion de la primera fila
 	ws.cell(row=r,column=2).value = "Rut"
 	ws.cell(row=r,column=3).value = "Paciente"
-	ws.cell(row=r,column=4).value = "Rut turno 1"
+	ws.cell(row=r,column=4).value = "Fecha"
+
+	ws.cell(row=r,column=5).value = "Rut turno 1"
+	ws.cell(row=r,column=6).value = "Cuidador t1"
+	ws.cell(row=r,column=7).value = "Tipo Cuid t1"
+
+	ws.cell(row=r,column=8).value = "Rut turno 2"
+	ws.cell(row=r,column=9).value = "Cuidador t2"
+	ws.cell(row=r,column=10).value = "Tipo Cuid t2"
+
+	ws.cell(row=r,column=11).value = "Rut turno 3"
+	ws.cell(row=r,column=12).value = "Cuidador t3"
+	ws.cell(row=r,column=13).value = "Tipo Cuid t3"
+
+	ws.cell(row=r,column=14).value = "$ turno 1"
+	ws.cell(row=r,column=15).value = "$ turno 2"
+	ws.cell(row=r,column=16).value = "$ turno 3"
+
+	ws.cell(row=r,column=17).value = "recargo t1"
+	ws.cell(row=r,column=18).value = "recargo t2"
+	ws.cell(row=r,column=19).value = "recargo t3"
+
+	tot1=0
+	tot2=0
+	tot3=0
 	r=r+1  
 	for q in query:
 		ws.cell(row=r,column=2).value = q.rut 
 		ws.cell(row=r,column=3).value = q.paciente 
-		ws.cell(row=r,column=4).value = q.rut_t1 
-		r=r+1  
+		ws.cell(row=r,column=4).value = q.fecha 	  # fecha de la pauta	
 
+		ws.cell(row=r,column=5).value = q.rut_t1	  # rut cuidador
+		ws.cell(row=r,column=6).value = q.turno1 # nombre cuidador
+		ws.cell(row=r,column=7).value = q.tipo_turno1 # Contratado - Extra
+
+		ws.cell(row=r,column=8).value = q.rut_t2	  # rut cuidador
+		ws.cell(row=r,column=9).value = q.turno2 # nombre cuidador
+		ws.cell(row=r,column=10).value = q.tipo_turno2 # Contratado - Extra
+
+		ws.cell(row=r,column=11).value = q.rut_t3	  # rut cuidador
+		ws.cell(row=r,column=12).value = q.turno3 # nombre cuidador
+		ws.cell(row=r,column=13).value = q.tipo_turno3 # Contratado - Extra
+
+		ws.cell(row=r,column=14).value = q.valor_t1	  # rut cuidador
+		ws.cell(row=r,column=15).value = q.valor_t2 # nombre cuidador
+		ws.cell(row=r,column=16).value = q.valor_t3 # Contratado - Extra
+
+		if q.valor_t1 != None:
+			tot1 = tot1 + q.valor_t1
+		if q.valor_t2 != None:	
+			tot2 = tot2 + q.valor_t2
+		if q.valor_t3 != None:	
+			tot3 = tot3 + q.valor_t3
+
+		ws.cell(row=r,column=17).value = q.reca_cui1	  # rut cuidador
+		ws.cell(row=r,column=18).value = q.reca_cui2 # nombre cuidador
+		ws.cell(row=r,column=19).value = q.reca_cui3 # Contratado - Extra
+
+		r=r+1  # contador defilas  
+
+	# totales	
+	ws.cell(row=r,column=14).value = tot1 
+	ws.cell(row=r,column=15).value = tot2 
+	ws.cell(row=r,column=16).value = tot3 
+	
 	response = HttpResponse(content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
+	response['Content-Disposition'] = 'attachment; filename='+string_nombre+'.xlsx'
 	wb.save(response)
 	return response
 
 
-	#response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-	#response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
-	#wb.save(response)
-	#return response
-
-
+	
 
 
 

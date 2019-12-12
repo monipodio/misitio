@@ -147,6 +147,39 @@ class Pauta(models.Model):
         ordering = ['paciente']
         verbose_name = 'Pauta'
 
+
+class Pauta_aux(models.Model):
+    rut = models.CharField(max_length=10,blank=True)
+    paciente = models.CharField(max_length=80,verbose_name="Nombre Paciente",null=True)
+    fe_ini = models.DateTimeField(blank=True,verbose_name="Fecha de Inicio")
+    fecha  = models.DateTimeField(blank=True,verbose_name="Fecha Pauta")
+    rut_t1 = models.CharField(max_length=10,blank=True)
+    turno1 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    rut_t2 = models.CharField(max_length=10,blank=True)
+    turno2 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    rut_t3 = models.CharField(max_length=10,blank=True)
+    turno3 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
+    valor_t1 = models.IntegerField(blank=True)
+    valor_t2 = models.IntegerField(blank=True)
+    valor_t3 = models.IntegerField(blank=True)
+    notas = models.TextField(blank=True)
+    yace = models.CharField(max_length=1, blank=True,null=True) # Hosp, dimiclio, Ma Ayuda, cli,etc 
+    tipo_turno1= models.CharField(max_length=1, default=0,null=True) #
+    tipo_turno2 = models.CharField(max_length=1, default=0,null=True) #
+    tipo_turno3 = models.CharField(max_length=1, default=0,null=True) #
+    recargo = models.CharField(max_length=1, blank=True,default='0') # cobro apoderado
+    reca_cui1 = models.CharField(max_length=1,default=0) # cobro apoderado
+    reca_cui2 = models.CharField(max_length=1,default=0) # cobro apoderado
+    reca_cui3 = models.CharField(max_length=1,default=0) # cobro apoderado
+
+    def __str__(self):
+        return self.paciente.strip()
+    
+    class Meta:
+        ordering = ['paciente']
+        verbose_name = 'Pauta_aux'
+
+
 class Resupauta(models.Model):
     rut = models.CharField(max_length=10,blank=True)
     nombre = models.CharField(max_length=80,verbose_name="Nombre Cuidador",null=True)
