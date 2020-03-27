@@ -1,4 +1,6 @@
-
+/* Toda funcion que haga alusion a AJAX no hay que subirla a PythonAnywhere */
+/* pues dará un error 404 */
+/* ------------------ */
 function llenacaja(){
 	var fini = $('#datepicker').val();
 	var fini = fini.slice(6,10)+"-"+fini.slice(0, 2)+"-"+fini.slice(3,5);
@@ -76,7 +78,7 @@ function validarut() {
 				dv = "K";
 			}
 			if(dv==0-0) {
-				alert("El rut es incorrecto por formato digitado...!!!");
+				alert("El rut es incorrecto por formato digitado.!!");
 				return false;
 			}
 			if(dv == RUT[1].toUpperCase()){
@@ -87,14 +89,14 @@ function validarut() {
         		document.getElementById("rut").style.border = '2px solid red';
            		document.getElementById("rut").focus();		
            		document.getElementById("rut").value = '';			
-				alert("El rut es incorrecto...!!!");
+				alert("El rut es incorrecto.!!!");
 				return false;
 			}
 		}else{  
 		    document.getElementById("rut").style.border = '2px solid red';
            	document.getElementById("rut").focus();	  
            	document.getElementById("rut").value = ''; 
-			alert("RUT incorrecto por formato digitado...!!!");
+			alert("RUT incorrecto por formato digitado.!!!");
 			return false;
 		}
 	}	
@@ -137,7 +139,6 @@ function siexiste(rut) {
     });
 }
 
-
 /* valida rut del apoderado desde ficha PACIENTE */
 function validarut2() {
 	var rut = document.getElementById("rut_apod").value 
@@ -163,10 +164,10 @@ function validarut2() {
 			}
 				if(dv == RUT[1].toUpperCase()){
          			document.getElementById("rut_apod").style.border = '';
-           		document.getElementById("nombre").focus();
+           			document.getElementById("nombre").focus();
 				return true;
 			}else{         
-        			document.getElementById("rut_apod").style.border = '2px solid red';
+        		document.getElementById("rut_apod").style.border = '2px solid red';
            		document.getElementById("rut_apod").focus();		
            		document.getElementById("rut_apod").value = '';			
 				alert("Rut incorrecto por Digito Verificador!!");
@@ -183,8 +184,6 @@ function validarut2() {
 		}
 	}	
 }
-
-
 
 function habilitadeshabilita(campo) {
 	var estadoActual = document.getElementById(campo);
@@ -296,11 +295,8 @@ function ValidarForm() {
 	var tipo_turno1 = document.getElementById("tipo_turno1").value 
 	var tipo_turno2 = document.getElementById("tipo_turno2").value 
 	var tipo_turno3 = document.getElementById("tipo_turno3").value
-	var reca_apod = document.getElementById("reca_apod").value
+	var reca_cui = document.getElementById("reca_cui").value
 
-	var reca_cui1 = document.getElementById("reca_cui1").value
-	var reca_cui2 = document.getElementById("reca_cui2").value
-	var reca_cui3 = document.getElementById("reca_cui3").value
 
 	if (yace == '6'){
 		alert("No ha especificado la ESTADIA !!")
@@ -335,34 +331,12 @@ function ValidarForm() {
 		return false;
 	}
 
-	if(reca_apod === "0"){
-		alert("Defina el TIPO DE COBRO AL APODERADO");
-		document.getElementById('reca_apod').focus()
-		document.getElementById('reca_apod').style.border = '2px solid red';
-		return false;
-	}
 
-	/* recargo CUIDADOR turno de mañana */
-	if(reca_cui1 === "0" && rut_t1 != '0-0'){
-		alert("Defina si existe recargo al TURNO DEL CUIDADOR de mañana");
-		document.getElementById('reca_cui1').focus()
-		document.getElementById('reca_cui1').style.border = '2px solid red';
-		return false;
-	}
-
-	/* recargo CUIDADOR turno de tarde */
-	if(reca_cui2 === "0" && rut_t2 != '0-0'){
-		alert("Defina si existe recargo al TURNO DEL CUIDADOR de tarde");
-		document.getElementById('reca_cui2').focus()
-		document.getElementById('reca_cui2').style.border = '2px solid red';
-		return false;
-	}
-
-	/* recargo CUIDADOR turno de tarde */
-	if(reca_cui3 === "0" && rut_t3 != '0-0'){
-		alert("Defina si existe recargo al TURNO DEL CUIDADOR de noche");
-		document.getElementById('reca_cui3').focus()
-		document.getElementById('reca_cui3').style.border = '2px solid red';
+	/* recargo x dia FIN DE SEMANA - DIA FESTIVO - NORMAL */
+	if(reca_cui === "0"){
+		alert("Defina si esta fecha es: NORMAL - DOMINGO - FESTIVO ");
+		document.getElementById('reca_cui').focus()
+		document.getElementById('reca_cui').style.border = '2px solid red';
 		return false;
 	}
 
@@ -379,9 +353,11 @@ function ValidaFichapac() {
 	var f_apod = document.getElementById("f_apod").value 
 	var parentes = document.getElementById("parentes").value 
     var rut  = document.getElementById("rut").value
-    var abon = document.getElementById("abon").value 
     var clasi = document.getElementById("clasi").value 
 	var yace = document.getElementById("yace").value 
+	var correo_apod = document.getElementById("correo_apod").value 
+	var abono_ini = document.getElementById("valor_abono").value
+
 
 	if(rut === "0" || rut === "" || rut === 0-0){
 		alert("El RUT no debe estar en blanco o ser cero");
@@ -408,7 +384,6 @@ function ValidaFichapac() {
 		document.getElementById('fono_pcte').style.border = '2px solid red';
 		return false;
 	}
-
 
 	if(clasi === "0"){
 		alert("LA CLASIFICACION es obligatoria");
@@ -451,12 +426,6 @@ function ValidaFichapac() {
 		return false;
 	}
 
-	if(abon === "0"){
-		alert("TIPO DE ABONO es obligatorio");
-		document.getElementById('abon').focus()
-		document.getElementById('abon').style.border = '2px solid red';
-		return false;
-	}
 
 	if(parentes === ""){
 		alert("El PARENTEZCO es obligatorio");
@@ -464,35 +433,69 @@ function ValidaFichapac() {
 		document.getElementById('parentes').style.border = '2px solid red';
 		return false;
 	}
+
+	if(correo_apod === ""){
+		alert("El CORREO DEL APODERADO es obligatorio");
+		document.getElementById('correo_apod').focus()
+		document.getElementById('correo_apod').style.border = '2px solid red';
+		return false;
+	}
+
+	if(abono_ini === "" || abono_ini  === "0" || abono_ini=== 'none') {
+		document.getElementById('abono_inicial').style.border = '2px solid red'; 
+		alert("Una vez grabada esta ficha, deberá volver a la misma e ingresar el monto ABONO INICIAL");
+	} 
+
 }
 
 function ValidaFichacui() {
 	var tipo = document.getElementById("tipo").value 
-	var fe_ini = document.getElementById("fe_ini").value 
+	var fe_ini = document.getElementById("fe_ini").value  
+	var direccion = document.getElementById("direccion").value
 	var fono_cuid = document.getElementById("fono_cuid").value 
 	var apago1 = document.getElementById("apago1").value 
 	var apago2 = document.getElementById("apago2").value 
 	var apago3 = document.getElementById("apago3").value 
     var rut    = document.getElementById("rut").value
+    var nombre = document.getElementById("nombre").value
+    var fono_cuid = document.getElementById("fono_cuid").value
 
-	if(tipo === ""){
+	if(nombre === ""){
+		alert("El NOMBRE es obligatorio");
+		document.getElementById('nombre').focus()
+		document.getElementById('nombre').style.border = '2px solid red';
+		return false;
+	}
+
+	if(tipo === '0'){
 		alert("El TIPO DE CONTRATO es obligatorio");
 		document.getElementById('tipo').focus()
 		document.getElementById('tipo').style.border = '2px solid red';
 		return false;
 	}
-	if(fe_ini === ""){
+
+	if(direccion === ''){
+		alert("La DIRECCION es obligatoria");
+		document.getElementById('direccion').focus()
+		document.getElementById('direccion').style.border = '2px solid red';
+		return false;
+	}
+
+
+	if(fe_ini === ''){
 		alert("La FECHA DE INICIO es obligatoria");
 		document.getElementById('fe_ini').focus()
 		document.getElementById('fe_ini').style.border = '2px solid red';
 		return false;
 	}
-	if(fono_cuid === ""){
+
+	if(fono_cuid === ''){
 		alert("El FONO es obligatorio");
 		document.getElementById('fono_cuid').focus()
 		document.getElementById('fono_cuid').style.border = '2px solid red';
 		return false;
 	}
+
 	if(apago1 === "0" || apago1 === ""){
 		alert("TARIFA DE MAÑANA es obligatoria");
 		document.getElementById('apago1').focus()
@@ -513,28 +516,28 @@ function ValidaFichacui() {
 	}
 }
 
-/* valida anticipo de apoderado */
 function ValidaFicha_anti() {
-	var valor = document.getElementById("valor").value
-	var abon = document.getElementById("abon").value
+	var tipabon = document.getElementById("abon").value
+	var banco =   document.getElementById("banco").value
+	var fe_che =  document.getElementById("fecha_cheque").value
 
-	if(valor === ''){
-		alert("MONTO DEL ABONO es obligatorio");
-		document.getElementById('valor').focus()
-		document.getElementById('valor').style.border = '2px solid red';
-		return false;
-	}
-
-	if(abon === "0"){
+	if(tipabon === "0"){
 		alert("TIPO DE ABONO es obligatorio");
 		document.getElementById('abon').focus()
 		document.getElementById('abon').style.border = '2px solid red';
 		return false;
 	}
 
-	alert("Los datos han sido grabados correctamente !!");
-	return true;
+	if(tipabon == "2" && banco == "9"){
+		alert("Si el abono es CHEQUE, entonces complete los datos de este");
+		document.getElementById('abon').focus()
+		document.getElementById('cheque').style.border = '2px solid red';
+		document.getElementById('banco').style.border = '2px solid red';
+		document.getElementById('fecha_cheque').style.border = '2px solid red';
+		return false;
+	} 
 }
+
 
 function confirmaelimpac(nombre,id){
 	var opcion=confirm('¿Seguro de borrar a paciente: '+nombre+' ?');
@@ -559,4 +562,95 @@ function confirmaelimpac(nombre,id){
 	}
 }
 
+/* para mostrar contraseña durante la digitacion */
+function mostrarPassword(){
+		var cambio = document.getElementById("txtPassword");
+		if(cambio.type == "password"){
+			cambio.type = "text";
+			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+		}else{
+			cambio.type = "password";
+			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+		}
+	} 
+	
+	$(document).ready(function () {
+	//CheckBox mostrar contraseña
+	$('#ShowPassword').click(function () {
+		$('#Password').attr('type', $(this).is(':checked') ? 'text' : 'password');
+	});
+});
+
+
+function validarFormatoFecha() {
+	var fe_ini = document.getElementById("fe_ini").value
+    var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    if (fe_ini.match(RegExPattern)) {
+    	document.getElementById("fe_ini").style.border = '';
+        return true;
+    } else {
+		document.getElementById('fe_ini').style.border = '2px solid red';
+      	alert("Error!! formato de FECHA INICIO debe ser aaaa-mm-dd, los separadores son signos menos");
+      	return false;
+    }
+}
+
+function validarFormatoFecha2() {
+	var fe_nac = document.getElementById("fe_nac").value
+    var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    if (fe_nac.match(RegExPattern)) {
+    	document.getElementById("fe_nac").style.border = '';
+        return true;
+    } else {
+		document.getElementById('fe_nac').style.border = '2px solid red';
+      	alert("Error!! formato de FECHA NACIMIENTO debe ser aaaa-mm-dd, los separadores son signos menos");
+  		return false;    	
+    }
+}
+
+/* valida fecha cheque - ficha paciente */
+function validarFormatoFecha3() {
+	var fe_nac = document.getElementById("fecha_cheque").value
+    var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    if (fe_nac.match(RegExPattern)) {
+    	document.getElementById("fecha_cheque").style.border = '';
+        return true;
+    } else {
+		document.getElementById('fecha_cheque').style.border = '2px solid red';
+      	alert("Error!! formato de FECHA CHEQUE debe ser aaaa-mm-dd, los separadores son signos menos (solo en caso de cheques)");
+  		return false;    	
+    }
+}
+
+
+function validarchivo() {
+	/* var archivo = $('input[name="foto"]').val();  */
+	var archivo = document.getElementById("fotito").value
+	if(archivo == ""){
+		alert("!! No ha seleccionado archivo para subir.. !! ");
+		return false;
+	}else{
+		alert("El archivo próximo a subir es: "+archivo)
+		return true;
+	}
+}	
+
+/* forma de pago */
+function validabono() {
+	var pagacon = document.getElementById("abon").value
+	if(pagacon != "2") {
+		document.getElementById("cheque").value = ""
+		document.getElementById("bco").value = "9"
+		document.getElementById("fecha_cheque").value = ""
+
+		document.getElementById("cheque").readOnly = true;
+		document.getElementById("bco").readOnly = true;
+		document.getElementById("fecha_cheque").readOnly = true;
+
+	}else{
+		document.getElementById("cheque").readOnly = false;
+		document.getElementById("bco").readOnly = false;
+		document.getElementById("fecha_cheque").readOnly = false;
+	}
+}	
 

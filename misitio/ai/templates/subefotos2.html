@@ -1,0 +1,45 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+
+{% block content %}
+	<section>
+        <form method="POST" action="#" enctype="multipart/form-data">
+        {% csrf_token %}          
+        <div class="table-responsive">       
+        <article class=article>
+            <h4 width="750" halign="center">
+                Subiendo fotos de asistentes
+            </h4>
+            <br>
+            
+            <input type = "file" id="fotito" name="file" value="{{UploadFile.archivo}}">
+            
+            <br><br>
+                <td width="300">
+                </td>
+                <td width="90">
+                
+                <button type="submit" id="submit" class="btn btn-danger">Acepta</button>
+                </td>
+                <a href = "{% url 'MenuParam' %}" class="btn btn-primary">
+                Cancela y regresa</a>
+            <br>
+        </article>
+        </div>
+        <div class="table-responsive">
+		<article class=article>
+    		Una vez subidas todas las fotos que se requieran, se debe ingresar al módulo de Administración del sistema. Alli ingresar a la grid que muestra todos los cuidadores, seleccionar al cuidador y en el boton "media" se procede a ubicar el archivo-foto que en este caso es el rut del cuidador, por ejemplo: "7841349-2.jpg". Una vez hecho esto, salimos del administrador y revisamos los cuidadores en el sistema con sus fotos correctamente. 
+    	</article>
+        </div>
+    	<br>
+        </form>
+    </section>
+{% endblock %}  
+
+
+
+<form enctype="multipart/form-data" action="" method="post"> <!-- Do not forget to add: enctype="multipart/form-data" -->
+     {% csrf_token %}
+     {{ form }}
+     <input type="submit" value="Save">
+ </form>

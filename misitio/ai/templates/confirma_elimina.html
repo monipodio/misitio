@@ -22,22 +22,28 @@
             </td>
 
             <td width="90">
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <!-- regresa por metodo POST -->   
+            <button type="submit" class="btn btn-danger">Eliminar</button> 
             </td>
-            
+     
+
             <td>
-                
             {% if sw1 == 'pac' %}
-                <a href = "{% url 'grid_pacientes' %}" class="btn btn-primary">Cancela</a>
+              <!-- regresa por metodo GET -->  
+                <a href = "{% url 'grid_pacientes' %}" class="btn btn-primary">Cancela</a> 
             {% endif %}
 
             {% if sw1 == 'cui' %}
+                <!-- regresa por metodo GET -->  
                 <a href = "{% url 'grid_cuidadores' %}" class="btn btn-primary">Cancela</a>
             {% endif %}
 
+            {% if sw1 == 'apo' %}
+                <!-- regresa por metodo GET -->  
+                <a href = "{% url 'grid_apoderados' %}" class="btn btn-primary">Cancela</a>
+            {% endif %}
             </td>
-            
-    
+   
         </table>
         <br>
         </article>

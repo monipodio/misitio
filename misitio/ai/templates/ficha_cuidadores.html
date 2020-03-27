@@ -7,6 +7,7 @@
             <a href="{% url 'login_ini' %}">
         {% endif %}
 
+
 		<form id="form" name="form" method="POST" action="#" onsubmit="return ValidaFichacui();" enctype="multipart/form-data"> 
 			{% load widget_tweaks %} 			
  			{% csrf_token %}
@@ -17,13 +18,10 @@
         	{% endif %}
 		
 			<td>
-				<img  src="{{ fotito }}"/>
+				<img  src="{{ fotito }}" border:3px/>
+			<!--   {{form.media|attr:'onchange:cambiar()'|attr:'id:file-upload'}} -->
 			</td>	
 
-			<!--
-			<input type="file" name="media" id="id_media"></p>
-			-->
-			
 			<tr>
 				<td>R.U.T.:</td>
 				<td >
@@ -56,14 +54,16 @@
 			<d>
 				{{form.estado|attr:'type:checkbox'}} Pasivo (estado)
 				
+				<!--
 				{{form.elim_foto|attr:'type:checkbox'|attr:'value:0'}} Elimina foto
+				-->
 		
 			</d>
 
 			<tr>
 				<td>Nombre</td> 
 				<td>
-					<d>{{ form.nombre|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:2'}}</d>
+					<d>{{ form.nombre|attr:'id:nombre'|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:2'}}</d>
 				</td>
 			</tr>
 
@@ -132,7 +132,7 @@
 				<td>Fecha Inicio</td> 
 				<td>
 					<d>	
-					{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:3'}}
+					{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'required:True'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:3'|attr:'onblur: return validarFormatoFecha()'}}
 					</d>
 					<!--<input type="text" id="caja" value ="{{xx}}" hidden > -->
 				</td>
@@ -141,7 +141,7 @@
 			<tr>
 			<td>Fecha Nacimiento</td> 
 				<td>
-				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'requiered:True'|attr:'tabindex:4'}}
+				{{form.fe_nac|attr:'id:fe_nac'|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd'|attr:'requiered:True'|attr:'tabindex:4'|attr:'onblur:return validarFormatoFecha2()'}}
 				</d>
 				</td>
 			</tr>
@@ -149,7 +149,7 @@
 			<tr>
 				<td>Direccion</td>
 				<td>
-					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:5'}}</d>
+					<d>{{form.direccion|attr:'id:direccion'|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:5'}}</d>
 				</td>
 			</tr>
 
@@ -202,7 +202,7 @@
 			<tr>
 			<td>Valor a pago mañana</td>
 				<td>
-				{{form.apago1|attr:'id:apago1'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:9'}}
+				{{form.apago1|attr:'id:apago1'|attr:'size:17'|attr:'requiered:True'|attr:'tabindex:9'}}
 				</d>
 				</td>
 			</tr>

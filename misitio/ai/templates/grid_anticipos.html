@@ -1,0 +1,146 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="#">
+	
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+
+						<!-- nombre y rut del paciente -->
+           				<td width="700">
+    		            {{ rut_x }} {{nombre_x}} 
+            			</td>
+
+						<!-- total valor -->
+           				<td width="140">
+    		            $ {{ tot_valor|intcomma }} 
+            			</td>
+
+						<!-- numero de registros -->
+           				<td width="230">
+    		            registros: {{cuenta}}
+            			</td>
+
+
+						<!--ficha link regresa -->
+					    <td width="150" align="right">
+							<u>
+							<a href="{% url 'Ficha_anticipos' %}">Ficha Anticipos</a>
+							</u>
+						</td>
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark">
+			        <th style="background-color: #10106D; color:White;font-size:14px;">
+						Fecha				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;font-size:14px;">
+			        	Mes-Año
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;text-align: right;font-size:14px;">
+			        	Valor
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;text-align:right;font-size:14px;">
+			        	Tip.Pago
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;text-align:right;font-size:14px;">
+			        	Banco
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;text-align:right;font-size:14px;">
+			        	Normal / abono
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White;text-align: right;font-size:14px;">
+			        	Boleta
+			    	</th>
+
+
+		    	</thead>
+		    </tr>
+
+		    {% for resu in anticipo %}
+			    <tr>
+
+			        <td  width="165" style="font-size:16px">
+						{{ resu.fecha|date:"Y-m-d" }}
+			        </td>
+		
+			        <td  width="130" style="font-size:16px;">
+						{{ resu.mes}}/{{resu.ano}}
+			        </td>
+
+			        <td  width="150" style="font-size:16px" align="right">
+						{{ resu.valor|intcomma}}
+			        </td>
+					
+					<!-- cheque - efectivo - trans- etc.-->
+					<td width= "35" style = "font-size:16px;width:200px;" align="right">
+				    {% for descriabon in descriabon %}
+						{% if descriabon.codigo == resu.abon %}						
+							{{ descriabon.descrip }}
+						{% endif %}
+					{% endfor %}
+					</td>	
+
+					<!-- banco -->
+					<td width= "35" style = "font-size:16px;width:200px;" align="right">
+					{% for b in banco %}
+						{% if b.codigo == resu.banco %}
+							{% if b.descrip != 'NO ASIGNADO ---------' %}
+								{{ b.descrip }}
+							{% endif %}
+						{% endif %}
+					{% endfor %}	
+					</td>	
+
+					<!-- normal_abono es un diccionario definido en la vista -->
+					<td width= "35" style = "font-size:16px;width:200px;" align="right">
+					{% for descri, codigo in normal_abono.items %}
+						{% if codigo == resu.sw_abono %}
+							{{ descri }}
+						{% endif %}
+					{% endfor %}	
+					</td>	
+
+			        <td  width= "40" style="font-size:16px; width:200px;" align="right">
+			        	{% if resu.boleta != None %}
+							{{ resu.boleta}}
+						{% endif %}
+			        </td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

@@ -1,7 +1,11 @@
 from django import forms
 from misitio.ai.models import Cuidadores,Pacientes,Apoderados,Param,Pauta,Resupauta,Detapauta
-from misitio.ai.models import Anticipos,Pauta_aux
+from misitio.ai.models import Anticipos,Pauta_aux,Pacientes_aux,Diario_aux
 from datetime import datetime
+from django import forms
+
+from django.forms import ModelForm, ClearableFileInput
+from .models import UploadFile
 
 class ParamForm(forms.ModelForm):
 	class Meta:
@@ -35,6 +39,7 @@ class CuidadoresForm(forms.ModelForm):
 
 		def __str__(self):
 			return self.nombre
+
 
 class ApoderadosForm(forms.ModelForm):
 	class Meta:
@@ -104,3 +109,36 @@ class AnticiposForm(forms.ModelForm):
 
 		def __str__(self):
 			return self.rut
+
+class Pacientes_auxForm(forms.ModelForm):
+	class Meta:
+		model = Pacientes_aux
+		widgets = {
+			'fe_ini': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
+		   	'fe_nac': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
+		}
+
+		fields = "__all__" 
+		def __str__(self):
+			return self.nombre
+
+
+class Diario_auxForm(forms.ModelForm):
+	class Meta:
+		model = Diario_aux
+		widgets = {
+			'fecha': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
+		}
+		fields = "__all__"
+
+		def __str__(self):
+			return self.paciente
+
+class UploadFileForm(forms.Form):
+	class Meta:
+		model = UploadFile
+
+		fields = "__all__"
+
+		def __str__(self):
+			return self.archivo

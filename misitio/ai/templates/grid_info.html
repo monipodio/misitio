@@ -51,26 +51,32 @@
 				     	<input type="submit" value="Despliega segun fecha" class="btn btn-primary">
             			</td>
 
-						<!-- Envia a EXCEL -->
+						<!-- Envia a EXCEL (recauda de apoderados)-->
 						<td width="130" align="right">
-							<a title="Pautas según cuidadores que se muestran" href="{% url 'acsv' %}" width="30" height="30"><img src="{{ logo_excel }}" /></a>
+							<a title="Pautas según cuidadores que se muestran" href="{% url 'acsv' %}" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel }}" />Recauda</a>
 						</td>
 	
+						<!-- Envia a EXCEL (honorarios cuidadores)-->
+						<td width="150" align="right">
+							<a title="Pautas según cuidadores que se muestran" href="{% url 'cartolacui' %}" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel2 }}" />Cuidadores</a>
+						</td>
+
 						<!-- numero de registros -->
-           				<td width="145">
-              			<p align="bottom" class="text-right text-muted small">
-    		            {{cuenta}}
-	        		    </p>
+           				<td width="100" align="right">
+              			<a class="text-right text-muted small">
+    		            	registros {{cuenta}}
+	        		    </a>
             			</td>
 
-						<!-- link regresa al principal -->
+						<!-- link regresa al menu CONSULTAS -->
 					    <td width="120" align="right">
 						<label>
-							<u>
-							<a href="{% url 'principal' %}">Inicio</a>
-							</u>
+						<u>
+						<a href="{% url 'consultas' %}">Consultas</a>
+						</u>
 						</label>
 						</td>
+
 					</tr>
     				</tbody>
 
@@ -81,7 +87,7 @@
 		    <tr>
 		    	<thead class="thead-dark">
 			        <th style="background-color: #10106D; color:White">
-						Nombre				        
+						Nombre Cuidador				        
 			    	</th>
 
 			        <th style="background-color: #10106D; color:White">
@@ -115,23 +121,23 @@
 			        </td>
 		
 			        <td  width="40" style="font-size:12px">
-						<a href="#">{{ resu.mes}}/{{resu.ano}}</a>
+						{{ resu.mes}}/{{resu.ano}}
 			        </td>
 
 			        <td  width="40" style="font-size:12px">
-						<a href="#">{{ resu.tot_t1}}</a>
+						{{ resu.tot_t1}}
 			        </td>
 
 			        <td  width="40" style="font-size:12px">
-						<a href="#">{{ resu.tot_t2}}</a>
+						{{ resu.tot_t2}}
 			        </td>
 
 			        <td  width="40" style="font-size:12px">
-						<a href="#">{{ resu.tot_t3}}</a>
+						{{ resu.tot_t3}}
 			        </td>
 
 			        <td  width="40" style="font-size:12px">
-						<a href="#">{{ resu.tot_val|intcomma}}</a>
+						{{ resu.tot_val|intcomma}}
 			        </td>
 
 			    </tr>

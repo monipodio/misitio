@@ -9,7 +9,7 @@
 		<tbody>		
 
 		    {% if error_new == "error1" %}
-    	    	<p class="error1">Error!!, los datos no han sido grabados</p>
+    	    	<p class="error1">Paciente ya tiene una ABONO INICIAL. El registro NO ha sido grabado !!</p>
         	{% endif %}
 
 			<tr>
@@ -36,7 +36,7 @@
 			</tr>
 
 			<tr>
-				<!-- td de la fecha dd-mm-aaaa -->
+				<!-- td de la fecha MM-AAAA -->
 				<td>Periodo abono:</td>
 				<td align="Left">
 					<select	name="mes" id = "mes" tabindex="1">
@@ -48,42 +48,74 @@
 						{% endif %}
 					{% endfor %}
 					</select>
-					<select	name="ano" id = "ano">
+					<select	name="ano" id = "ano" tabindex="2">
 					{% for ano_var in ano %}
 						{% if ano_var == ano_hoy %}
-							<option value ="{{ ano_var}}" selected='selected' tabindex="2">	{{ano_var}}</option>
+							<option value ="{{ ano_var}}" selected='selected'>{{ano_var}}</option>
 						{% else %}
 							<option value ="{{ano_var}}">{{ano_var}}</option>
 						{% endif %}
 					{% endfor %}
 					</select>
+					Mes al que se imputa el pago, anticipo o abono
 				</td>
 			</tr>
 
 			<tr>
-				<td>Monto abono $:</td>
+				<td>Monto abonos $:</td>
 				<td align="Left">
 					<d>
-					{{form_anti.valor|attr:'tabindex:3'|attr:'id:valor'|attr:'onblur:separadordemiles(this)'}}
+					{{form_anti.valor|attr:'tabindex:3'|attr:'id:valor'|attr:'onblur:separadordemiles(this)'|attr:'required'}}
 					</d>
+					
+					<br>
+					Pago Normal
+					<input type="radio" name="sw_abono" value="0" required>	
+					Abono Inicial			
+					<input type="radio" name="sw_abono" value="1" required>				
 				</td>
 			</tr>
 
 			<tr>
 			<td>Tipo de abono</td>
-				<td>
-					<select	name="abon" tabindex="4" id="abon">
-					{% for abo in abon %}
-						{% if abo.codigo == var_abon %}
-							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
+			<td>
+				<select	name="abon" tabindex="4" id="abon" style="width:80px">
+				{% for abo in abon %}
+					{% if abo.codigo == var_abon %}
+						<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
 						{% else %}	
 							<option value ="{{abo.codigo}}">{{abo.descrip}}</option>
 						{% endif %}
 					{% endfor %}			
-					</select>
-				</td>			
+				</select>
+
+				Cheq.num.:
+				{{form_anti.cheque|attr:'size:9'|attr:'tabindex:27'|attr:'id:cheque'}}
+				Bco:
+					
+				<select	name="banco" tabindex="28" id="banco" style="width:150px">
+				{% for bco in banco %}
+					{% if bco.codigo == var_banco %}
+						<option value ="{{bco.codigo}}" selected = "selected">{{bco.descrip}}</option>
+					{% else %}	
+						<option value ="{{bco.codigo}}">{{bco.descrip}}</option>
+					{% endif %}
+				{% endfor %}			
+				</select>
+			
+				Fecha cheq.
+				<d>{{form_anti.fecha_cheque|attr:'id:fecha_cheque'|attr:'placeholder:aaaa-mm-dd'|attr:'size:10'|attr:'onblur: return validarFormatoFecha3()'}}</d>
+			</td>
 			</tr>
+
 			<tr>
+				<td>Boleta:</td>
+				<td align="Left">
+					<d>
+					{{form_anti.boleta|attr:'tabindex:5'|attr:'id:boleta'}}
+					</d>
+				</td>
+			</tr>
 
 			<td>Observaciones</td>
 				<td>
@@ -95,7 +127,8 @@
 
 			<d><p align="right">
 				<u>
-					<a href="{% url 'grid_pacientes' %}">Regresa</a>
+					<a href="{% url 'grid_anticipos' %}">Todos los anticipos </a>
+					<a href="{% url 'grid_pacientes' %}"> / Regresa</a>
 				</u>
 				</p>
 			</d>

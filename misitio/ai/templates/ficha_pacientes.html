@@ -1,7 +1,7 @@
 {% extends 'plantilla_base.html' %}
 {% block content %}
+{% load humanize %}
 	<section class='section2'>
-
 		{% if not user.is_authenticated %} 
             <a href="{% url 'login_ini' %}">
         {% endif %}
@@ -21,7 +21,6 @@
 			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->		
 			
 			<table  class="table table-dark" border = '0'>
-
 		    {% if error_new == "error1" %}
     	    	<p class="error1">R.U.T. de Paciente ya existe !!</p>
         	{% endif %}
@@ -38,7 +37,7 @@
 					</d>
 
 					<d>
-					{{form.estado|attr:'type:checkbox'|attr:'readonly:True'}} Pasivo
+					{{form.estado|attr:'type:checkbox'}} Pasivo
 					</d>	
 				</td>
 
@@ -47,8 +46,19 @@
 			<tr>
 				<td>Nombre paciente</td> 
 				<td>
-					<d>{{ form.nombre|attr:'size:60'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}
+					<d>{{ form.nombre|attr:'size:40'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}
 					</d>
+					
+					{% if nuevo_pac == 0 %}
+					<u><a href="{% url 'Ficha_anticipos' %}">Anticipos-Abonos /</a></u>
+					<u><a href="{% url 'repo1' %}" target="_blank">Contrato</a></u>
+					{% endif %}
+
+					<!--
+					{% if variable2 == 'modifica_rut' %}
+						<u><a href="#">Saldo</a></u>
+					{% endif %}
+					-->
 
 				</td>
 			</tr>
@@ -86,20 +96,36 @@
 				</td>
 			</tr>
 
+			<td id = "div13_id">Comuna Apoderado</td>
+				<td>
+					<select	name="comuna_apod" tabindex="6">
+					{% for c in comuna %}
+						{% if c.codigo == var_comunapod %}
+							<option value ="{{c.codigo}}" selected = "selected"> {{c.descrip}} </option>
+						{% else %}	
+							<option value ="{{c.codigo}}">{{c.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+					<a>(Necesario para el Contrato)</a>
+				</td>			
+			</tr>
+
+
 			<tr>
 				<td id="div2_id">Fono Apoderado</td>
 				<td>
 					<d id="div3_id">
-					{{form.f_apod|attr:'id:f_apod'|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:6'}} 
+					{{form.f_apod|attr:'id:f_apod'|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:7'}} 
 					</d>
 				</td>
 			</tr>
 	
 			<tr>
-				<td id="div7_id">Fono2 Apod.</td>
+				<td id="div7_id">Fono2 Apoderado</td>
 				<td>
 					<d id="div8_id">
-					{{form.fono2_apod|attr:'size:12'|attr:'tabindex:7'}} 
+					{{form.fono2_apod|attr:'size:12'|attr:'tabindex:8'}} 
 					</d>
 				</td>
 			</tr>
@@ -108,7 +134,7 @@
 				<td id="div9_id">Parentezco</td>
 				<td>
 					<d id="div10_id">
-					{{form.parentes|attr:'id:parentes'|attr:'size:40'|attr:'placeholder:El apoderado qué es del paciente ?'|attr:'onKeyup:mayuscula(this)'|attr:'tabindex:8'}} 
+					{{form.parentes|attr:'id:parentes'|attr:'size:40'|attr:'placeholder:El apoderado qué es del paciente ?'|attr:'onKeyup:mayuscula(this)'|attr:'tabindex:9'}} 
 					</d>
 				</td>
 			</tr>
@@ -117,16 +143,16 @@
 				<td id="div11_id">Correo Apod.</td>
 				<td>
 					<d id="div12_id">
-					{{form.correo_apod|attr:'size:40'|attr:'onblur:return validaemail("correo_apod")'|attr:'id:correo_apod'|attr:'tabindex:9'}} 
+					{{form.correo_apod|attr:'size:40'|attr:'onblur:return validaemail("correo_apod")'|attr:'id:correo_apod'|attr:'tabindex:10'}} 
 					</d>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Clasificacion - Lugar</td>
+				<td>Clasif. - Origen</td>
 				<td>
 				
-				<select	name="clasi" id = "clasi" tabindex="10">
+				<select	name="clasi" id = "clasi" tabindex="11">
 					{% for cla in clasi %}
 						{% if cla.codigo == var_clasi %}	
 							<option value ="{{cla.codigo}}" selected="selected">{{cla.descrip}}</option>
@@ -136,7 +162,7 @@
 					{% endfor %}
 				</select>
 
-				<select	name="yace" id = "yace" tabindex="11">
+				<select	name="yace" id = "yace" tabindex="12">
 					{% for yace in yace %}
 						{% if yace.codigo == var_yace %}	
 							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
@@ -149,10 +175,19 @@
 				</td>			
 			</tr>
 
+			<tr>	
+				<td >Localizacion fisica</td>
+				<td>
+					<d>
+					{{form.localizacion|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:60'|attr:'tabindex:13'}} 
+					</d>
+				</td>
+			</tr>
+
 			<tr>
 				<td>Cobranza</td>
 				<td>
-				<select	name="cob" id = "cob" tabindex="12">
+				<select	name="cob" id = "cob" tabindex="14">
 					{% for cobr in cob %}
 						{% if cobr.codigo == var_cob %}	
 							<option value ="{{cobr.codigo}}" selected="selected">{{cobr.descrip}}</option>
@@ -168,7 +203,7 @@
 				<td>Medico</td>
 				<td>
 					<d >
-					{{ form.medico|attr:'id:medico'|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:13'|attr:'onKeyup:mayuscula(this)'}} 
+					{{ form.medico|attr:'id:medico'|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:15'|attr:'onKeyup:mayuscula(this)'}} 
 					</d>
 				</td>
 			</tr>
@@ -176,7 +211,7 @@
 			<tr>
 				<td>Sexo Paciente</td>
 				<td>
-				<select	name="sexo" id="sexo" tabindex="14">
+				<select	name="sexo" id="sexo" tabindex="16">
 					{% for sex in sexo %}
 						{% if sex.codigo == var_sex %}	
 							<option value ="{{sex.codigo}}" selected="selected">{{sex.descrip}}</option>
@@ -191,16 +226,16 @@
 			<tr>
 				<td>Fecha Inicio </td> 
 				<td>
-					<d>	
-				{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:15'}}
-					</d>
+				<d>	
+				{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:17'|attr:'onblur:return validarFormatoFecha("fe_ini")'}}
+				</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Fecha Nacimiento</td> 
 				<td>
-				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:16'}}
+				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'id:fe_nac'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:18'|attr:'onblur:return validarFormatoFecha2("fe_nac")'}}
 				</d>
 				</td>
 			</tr>
@@ -208,30 +243,29 @@
 			<tr>
 				<td>Direccion</td>
 				<td>
-					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:17'}}</d>
+					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:19'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Fonos</td>
 				<td>
-					<d>{{form.fono_pcte|attr:'id:fono_pcte'|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:17'}}</d>
+					<d>{{form.fono_pcte|attr:'id:fono_pcte'|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:20'}}</d>
 					
-					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:18'}}</d>
+					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:21'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Correo</td>
 				<td>
-					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:18'}}</d>
+					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:22'}}</d>
 				</td>
 			</tr>
 
-
 			<td>Region</td>
 				<td>
-					<select name="region" tabindex="19">
+					<select name="region" tabindex="23">
 					{% for r in region %}
 						{% if r.codigo == var_region %}
 							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
@@ -245,7 +279,7 @@
 
 			<td>Comuna</td>
 				<td>
-					<select	name="comuna" tabindex="20">
+					<select	name="comuna" tabindex="24">
 					{% for c in comuna %}
 						{% if c.codigo == var_comuna %}
 							<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
@@ -258,9 +292,10 @@
 			</tr>
 
 			<tr>
-			<td>Tipo de abono</td>
+			<td>Abono Inicial</td>
 				<td>
-					<select	name="abon" tabindex="21" id="abon">
+					<!--
+					<select	name="abon" tabindex="25" id="abon" onchange="validabono()">
 					{% for abo in abon %}
 						{% if abo.codigo == var_abon %}
 							<option value ="{{abo.codigo}}" selected = "selected">{{abo.descrip}}</option>
@@ -269,29 +304,56 @@
 						{% endif %}
 					{% endfor %}			
 					</select>
+					
+					Abono Inicial $
+					-->
+					<input type="text" name="fname" value="{{valor_abono|intcomma}}" id="valor_abono" readonly><a>(no modificable)</a>
 				</td>			
 			</tr>
-			<tr>
 
+			<!--
+			<tr>
+				<td>Cheque número:</td>
+				<td>{{form.cheque|attr:'size:15'|attr:'tabindex:27'|attr:'id:cheque'}}
+				
+				Banco
+				<select	name="banco" tabindex="28" id="bco" style="width:170px">
+				{% for bco in banco %}
+					{% if bco.codigo == var_banco %}
+					<option value ="{{bco.codigo}}" selected = "selected">{{bco.descrip}}</option>
+					{% else %}	
+					<option value ="{{bco.codigo}}">{{bco.descrip}}</option>
+					{% endif %}
+				{% endfor %}			
+				</select>
+				Fecha cheque
+					<d>{{form.fecha_cheque|attr:'id:fecha_cheque'|attr:'placeholder:aaaa-mm-dd'|attr:'size:15'|attr:'onblur: return validarFormatoFecha3()'}}</d>
+				</td>
+			</tr>
+			-->
+
+			<tr>
 			<tr>
 			<td>Tarifa mañana $</td>
 				<td>
-					<d>{{form.valor_t1|attr:'id:valor_t1'|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:22'|attr:'id:valor_t1'}}</d>
+					<d>{{form.valor_t1|attr:'id:valor_t1'|attr:'requiered:True'|attr:'size:40'|attr:'tabindex:26'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Tarifa tarde $</td>
 				<td>
-					<d>{{form.valor_t2|attr:'id:valor_t2'|attr:'size:40'|attr:'tabindex:23'|attr:'id:valor_t2'}}</d>
+					<d>{{form.valor_t2|attr:'id:valor_t2'|attr:'size:40'|attr:'tabindex:27'|attr:'id:valor_t2'}}</d>
 				</td>
 			</tr>
 
 			<tr>
-			<td>Tarifa noche $</td>
+				<td>Tarifa noche $</td>
 				<td>
-					<d>{{form.valor_t3|attr:'id:valor_t3'|attr:'size:40'|attr:'tabindex:24'|attr:'id:valor_t3'}}</d>
+					<d>{{form.valor_t3|attr:'id:valor_t3'|attr:'size:40'|attr:'tabindex:28'|attr:'id:valor_t3'}}</d>
+
 				</td>
+								
 			</tr>
 
 			<tr>
@@ -318,7 +380,7 @@
 			<td>Observaciones</td>
 				<td>
 				<d>
-				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:25'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
+				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:30'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
 				</d>
 				</td>
 			</tr>
@@ -332,8 +394,9 @@
 			</table>
 
 			<Span id='span1'><span>
-				
+	
 			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+
 		</form>
 	</section>
 {% endblock %}

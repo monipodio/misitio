@@ -7,7 +7,7 @@ h2 a { color:#FF3333;
 }
 
 section {
-	background: #9FD5D1;
+	background: #E9F9F6;
 	width:900;
 	margin-left: auto;
 	margin-right: auto;
@@ -17,7 +17,6 @@ section {
   padding: 0 20px;
   border-radius: 15px;
 }
-
 
 .search {
   border-radius: 15px;
@@ -192,10 +191,7 @@ id_nombre {
     }   
 
 
-#div0_id, #div1_id, #div2_id,
-#div3_id, #div4_id, #div5_id,
-#div6_id, #div7_id, #div8_id,
-#div9_id, #div10_id, #div11_id,
+#div1_id,
 #div12_id { background: #62BF54;}
 
 .search-query {
@@ -213,11 +209,20 @@ th {
     border-radius: 10px;
 }
 
-body {
-  backgroung-color:#F6F66F;
-}
-
 .napod {
   background: #FFFFFF;
 }  
 
+
+input [type]="file" #div99_id {
+width: 0.1px;
+height: 0.1px;
+opacity: 0;
+overflow: hidden;
+position: absolute;
+z-index: -1;
+}
+
+input[type=file].hidden {
+  color: transparent;
+}

@@ -10,9 +10,11 @@ from .models import Cuidadores
 from .models import Pauta
 from .models import Resupauta
 from .models import Anticipos
+from .models import Saldos
+
 
 #titulo principal del panel Admin
-admin.site.site_header = 'Administracion sistema: Asistencia Integral'
+admin.site.site_header = 'Administracion del sistema: Asistencia Integral'
 
 class AdminPacientes(admin.ModelAdmin):
 	list_display = ["nombre","rut","fe_ini","n_apod"]
@@ -23,7 +25,6 @@ class AdminParametros(admin.ModelAdmin):
 	list_display = ["tipo","codigo","descrip","valor1","valor2",
 	"sw_1","sw_2","fecha","corr"]
 	search_fields = ['tipo', 'descrip']
-
 
 class AdminCuidadores(admin.ModelAdmin):
 	list_display = ["nombre","rut","direccion","fono_cuid","fono2_cuid","correo"]
@@ -41,8 +42,12 @@ class Resupauta(admin.ModelAdmin):
 
 class AdminAnticipos(admin.ModelAdmin):
 	list_display = ["rut","fecha","mes","ano","valor","abon"]
-	search_fields = ['rut']
+	search_fields = ['rut','fecha']
+	list_filter = ("rut",)
 
+class AdminSaldos(admin.ModelAdmin):
+	list_display = ["nombre","mes","ano","saldoant","saldo"]
+	search_fields = ['nombre']
 
 
 admin.site.register(Pacientes,AdminPacientes)
@@ -51,6 +56,5 @@ admin.site.register(Param,AdminParametros)
 admin.site.register(Cuidadores,AdminCuidadores)
 admin.site.register(Pauta,AdminPauta)
 admin.site.register(Anticipos,AdminAnticipos)
-
-
+admin.site.register(Saldos,AdminSaldos)
 

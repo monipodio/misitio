@@ -1,0 +1,171 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	
+	<section class='section3'>
+		
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="{% url 'info_mensual' %}">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- td de los meses y año -->
+						<td width="200" align="Left">
+
+							<select	name="meses" id = "meses">
+							{% for meses_var in meses %}
+								{% if meses_var == mes_hoy %}
+									<option value ="{{meses_var}}" selected='selected'>	{{meses_var}}</option>
+								{% else %}
+									<option value ="{{meses_var}}">{{meses_var}}</	option>
+								{% endif %}
+							{% endfor %}
+							</select>
+	
+							<select	name="ano" id = "ano">
+							{% for ano_var in ano %}
+								{% if ano_var == ano_hoy %}
+									<option value ="{{ ano_var}}" selected='selected'>	{{ano_var}}</option>
+								{% else %}
+									<option value ="{{ano_var}}">{{ano_var}}</option>
+								{% endif %}
+							{% endfor %}
+							</select>
+						</td>
+
+           				<td width="200">
+				     	<input type="submit" value="Despliega segun fecha" class="btn btn-primary">
+            			</td>
+
+						<!-- Envia a EXCEL (recauda de apoderados)-->
+						<td width="50" align="right">
+							<a title="Pautas según cuidadores que se muestran" href="{% url 'excelmensual' %}" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel }}" /></a>
+						</td>
+	
+						<!-- Monto por cobrar -->
+           				<td width="170" align="right">
+    		            	Por cobrar: {{xcobrar|intcomma}}
+            			</td>
+
+
+						<!-- numero de registros -->
+           				<td width="130" align="right">
+    		            	registros: {{cuenta}}
+            			</td>
+
+						<!-- link regresa al menu CONSULTAS -->
+					    <td width="100" align="right">
+						<label>
+						<u>
+						<a href="{% url 'consultas' %}">Regresa</a>
+						</u>
+						</label>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark" style="font-size:11px">
+			        <th style="background-color: #10106D; color:White">
+						corr				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Paciente
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Contacto
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turnos
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Serv.Mensual
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Saldo Ant.
+			    	</th>
+			        
+			        <th style="background-color: #10106D; color:White">
+			        	Abonos
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Saldo Actual
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Movil
+			    	</th>
+
+		    	</thead>
+		    </tr>
+
+		    {% for resu in mensual_aux %}
+			    <tr>
+			        <td  width="40" style="font-size:12px">
+						<a>{{ forloop.counter }}</a>
+			        </td>
+
+			        <td  size="80" style="font-size:12px">
+			        	<li>
+						<a href="{% url 'info_diario' resu.rut resu.mes resu.ano %}"> 
+						{{ resu.paciente }}
+						</a>
+						</li>	
+			        </td>
+
+			        <td  size="80" style="font-size:12px" align="right">
+						{{ resu.con }}
+			        </td>
+
+			        <td  size="30" style="font-size:12px" align="right">
+						{{ resu.turnos }}
+			        </td>
+
+			        <td  size="30" style="font-size:12px" align="right">
+						{{ resu.val_mes|intcomma }}
+			        </td>
+
+				    <td  size="30" style="font-size:12px" align="right">
+						{{ resu.saldoant|intcomma }}
+			        </td>
+
+				    <td  size="30" style="font-size:12px" align="right">
+						{{ resu.abonos|intcomma }}
+			        </td>
+
+				    <td size="30" style="font-size:12px" align="right">
+						{{ resu.saldo|intcomma }}
+			        </td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

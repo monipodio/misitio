@@ -1,8 +1,11 @@
 from django.urls import path
+from django.conf.urls import include, url
+from django.conf import settings
+
 from .import views
 from misitio.ai.views import EliminaCui,grid_cuidadores,NuevoCui
 from misitio.ai.views import EliminaPac,grid_pacientes,NuevoPac
-from misitio.ai.views import EliminaApod,grid_apoderados,NuevoApod
+from misitio.ai.views import EliminaApod,grid_apoderados,NuevoApod,grid_anticipos
 from misitio.ai.views import ActualizaCui
 from misitio.ai.views import ActualizaPac
 from misitio.ai.forms import CuidadoresForm
@@ -17,6 +20,14 @@ from misitio.ai.views import ActualizaApod
 from misitio.ai.views import ficha_apoderados
 from misitio.ai.views import Ficha_anticipos
 from misitio.ai.views import acsv
+from misitio.ai.views import cartolacui
+from misitio.ai.views import eliminapauvacias
+from misitio.ai.views import consultas
+from misitio.ai.views import info_mensual
+from misitio.ai.views import info_diario,subefotos
+from misitio.ai.views import exceldetalle,excelmensual,ponenombresaldos
+from misitio.ai.views import pdfdetalle
+
 from django.contrib.auth.decorators import login_required
 #from django.conf import settings
 
@@ -41,7 +52,6 @@ urlpatterns = [
 	path('EliminaPac/<int:id>',views.EliminaPac, name="EliminaPac"),
 	path('Eliminapac_nuevo/<int:id>',views.Eliminapac_nuevo, name="Eliminapac_nuevo"),
 	path('EliminaApod/<int:id>',views.EliminaApod, name="EliminaApod"),
-	path('EliminaParam/<int:id>',views.EliminaParam, name="EliminaParam"),
 	path('NuevoCui/',views.NuevoCui,name="NuevoCui"),
 	path('NuevoPac/',views.NuevoPac,name="NuevoPac"),
 	path('NuevoApod/',views.NuevoApod,name="NuevoApod"),
@@ -53,6 +63,19 @@ urlpatterns = [
 	path('liquimeses/',views.liquimeses,name="liquimeses"),
 	path('Detapautaview/<rut>/<resu_mes>/<resu_ano>/',views.Detapautaview,name="Detapautaview"),
 	path('NuevoParam/',views.NuevoParam,name="NuevoParam"),
-	path('Ficha_anticipos/<int:id>/',views.Ficha_anticipos,name="Ficha_anticipos"),
+	path('Ficha_anticipos/',views.Ficha_anticipos,name="Ficha_anticipos"),
 	path('acsv/',views.acsv,name="acsv"),
+	path('cartolacui/',views.cartolacui,name="cartolacui"),
+	path('repo1/',views.repo1,name="repo1"),
+	path('eliminapauvacias/',views.eliminapauvacias,name="eliminapauvacias"),
+	path('grid_anticipos/',views.grid_anticipos,name="grid_anticipos"),
+	path('consultas/',views.consultas,name="consultas"),
+	path('info_mensual/',views.info_mensual,name="info_mensual"),
+	path('info_diario/<rut>/<mes>/<ano>/',views.info_diario,name="info_diario"),
+	path('exceldetalle/',views.exceldetalle,name="exceldetalle"),
+	path('excelmensual/',views.excelmensual,name="excelmensual"),
+	path('ponenombresaldos/',views.ponenombresaldos,name="ponenombresaldos"),
+	path('subefotos/',views.subefotos,name="subefotos"),
+	path('pdfdetalle/',views.pdfdetalle,name="pdfdetalle"),
 ]
+

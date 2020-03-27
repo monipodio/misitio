@@ -1,0 +1,48 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+
+{% block content %}
+    <section>
+
+    <d>
+      <p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
+    </d>
+ 
+    {% if error_new == "error1" %}
+        <p class="error1">Se han eliminado {{x}} registros !!</p>
+    {% endif %}
+
+
+    <table border="0">
+    <tbody>    
+    <tr>
+        <td width="240"  valign="top">    
+        <div class="home-azul" >
+            <!-- <h3 class="hidden-xs">Accesos</h3> -->
+            <ul id="home-servicios" >
+                <li style="padding-bottom:5px;"><a href="{% url 'info' %}">Info</a></li>
+            
+            <li style="padding-bottom:5px;">
+                <a href="{% url 'info_mensual' %}" title = "Tomará unos segundos">Resumen de Prestaciones</a>
+            </li>
+
+            </ul>
+        </div>
+        </td>
+
+        <td width=350 >   
+        <div>
+       
+           <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" border:3px/>
+        </div>
+        </td>
+
+    </tr>    
+    </tbody>
+	</table>
+    <br>
+    <br>
+    <br>
+    </section>   
+{% endblock %}  
+

@@ -28,7 +28,7 @@
 						<td width="320" align="right">
 						<label>
 							<u>
-								<a href="{% url 'principal' %}">Inicio</a>
+							<a href="{% url 'principal' %}">Inicio</a>
 							</u>
 						</label>
 						</td>
@@ -52,14 +52,28 @@
 		    	{% for apoderado in apoderados %}
 			    <tr>
 			        <td>{{ apoderado.id}}</td>
-			        <td>{{ apoderado.nombre}}</td>
+
+			        <!-- <td>{{ apoderado.nombre}}</td> -->
+					<td>	
+					<li>
+					<a href="{% url 'ActualizaApod' apoderado.id %}"> 
+					{{ apoderado.nombre }}
+					</a>
+					</li>	
+			        </td>
+
 			        <td>{{ apoderado.rut }}</td>
 			        <td>{{ apoderado.direccion}}</td>
+			        
 			        <td>
+			        
+			        <!--	
 					<a class="btn btn-primary" href="{% url 'ActualizaApod' apoderado.id %}" role="button">Modifica</a>
+					-->
 
 					<a class="btn btn-danger" href="{% url 'EliminaApod' apoderado.id %}" role="button">Elimina</a>
 			        </td>	
+
 			    </tr>
 		    	{% endfor %}
 			</table>

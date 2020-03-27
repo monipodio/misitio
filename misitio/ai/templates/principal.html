@@ -14,17 +14,36 @@
             {% if not user.is_active %} 
                 <a href="{% url 'login_ini' %}">
             {% endif %}
+  
+            {% if perms.ai.menu_cuidadores %} 
             <a class="btn btn-primary" href="{% url 'grid_cuidadores' %}" role="button" style="margin: 5px">Cuidadores</a>
+            {% endif %}
+      
+      
+            {% if perms.ai.menu_pacientes %}            
             <a class="btn btn-primary" href="{% url 'grid_pacientes' %}" role="button" style="margin: 5px">Pacientes</a>
+            {% endif %}
 
-			<a class="btn btn-primary" href="{% url 'grid_apoderados' %}" role="button" style="margin: 5px">Apoderados</a>
-			
+            {% if perms.ai.menu_apoderados %}
+			<a class="btn btn-primary" href="{% url 'grid_apoderados' %}" role="button" style="margin: 5px">Apod. e Instituciones</a>
+            {% endif %}
+	
+            {% if perms.ai.menu_pauta %}		
             <a class="btn btn-primary" href="{% url 'grid_pauta' %}" role="button" style="margin: 5px">Pautas</a>
+            {% endif %}
 
+            {% if perms.ai.menu_parametros %}       
 			<a class="btn btn-primary" href="{% url 'MenuParam' %}" role="button" style="margin: 5px">Parametros</a>
+            {% endif %}
 
+            <!--
             <a class="btn btn-primary" href="{% url 'info' %}" role="button" style="margin: 5px">Info</a>
-
+            -->
+            
+            {% if perms.ai.menu_impresos %}
+             <a class="btn btn-primary" href="{% url 'consultas' %}" role="button" style="margin: 5px">Consultas e Impresos</a>
+            {%endif%}
+            
         	</div>
         </aside>
         </td>

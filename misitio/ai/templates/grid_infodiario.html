@@ -1,0 +1,194 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="#">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- Envia a PDF -->
+						<td width="60" align="right">
+							<a title="Detalle mensual de cuidados al paciente" target="_blank" href="{% url 'pdfdetalle' %}" width="30" height="40"  class="text-center text-muted small"><img src="{{ logo_pdf }}" /></a>
+						</td>
+
+						<!-- Envia a EXCEL (recauda de apoderados)-->
+						<td width="70" align="right">
+							<a title="Detalle mensual de cuidados al paciente" href="{% url 'exceldetalle' %}" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel }}" /></a>
+						</td>
+
+						<!-- total prestaciones -->
+           				<td width="200" align="right" class="text-right text-muted small">
+    		            	Total$: {{acum1_x|intcomma}}
+            			</td>
+
+						<!-- Saldo anterior -->
+           				<td width="220" align="right" class="text-right text-muted small">
+    		            	Saldo ant$ {{saldo_ant|intcomma}}
+            			</td>
+
+						<!-- monto pagado -->
+           				<td width="190" align="right" class="text-right text-muted small">
+    		            	Pagos$: {{pagos_x|intcomma}}
+            			</td>
+
+						<!-- total saldo deudor -->
+           				<td width="190" align="right" class="text-right text-muted small">
+    		            	Saldo : {{acum2_x|intcomma}}
+            			</td>
+
+	
+						<!-- total turnos -->
+           				<td width="110" align="right" class="text-right text-muted small">
+    		            	Tot.turnos: {{tot_turnos}}
+            			</td>
+
+						<!-- Regresa anterior CONSULTAS -->
+					    <td width="220" align="right">
+						<label>
+						<u>
+						<a href="{% url 'info_mensual' %}">Regresa Anterior</a>
+						</u>
+						</label>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark" style="font-size:11px">
+			        <th style="background-color: #10106D; color:White">
+						Dia				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Dia de semana
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno mañana
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno tarde
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno Noche
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor dia$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor Tarde$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor Noche$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Tot Valor$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Acumulado$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Pagos$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Saldo Acum.$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Boleta
+			    	</th>
+
+		    	</thead>
+		    </tr>
+
+		    {% for reg in diario_aux %}
+			    <tr>
+			        <td  width="25" style="font-size:12px">
+						{{ reg.ndia}}
+			        </td>
+		
+			        <td  width="40" style="font-size:12px">
+						{{ reg.cdia}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno1|default_if_none:'0'}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno2|default_if_none:'0'}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno3|default_if_none:'0'}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t1|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t2|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t3|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.val_tot|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.acum1|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.abonos|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.acum2|default_if_none:'0'|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.boleta|default_if_none:'0'}}
+					</td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

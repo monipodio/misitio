@@ -38,9 +38,11 @@
 						</td>	
 
 						<!-- BOTON NUEVO -->
+						<!--
 						<td width="110">
 						<a class="btn btn-primary" href="{% url 'NuevoParam' %}" role="button" title="Segun claves TIPO ya existentes">Nuevo</a>
 					    </td>
+						-->
 
 						<td width="210" align="right">
 						<label>
@@ -57,9 +59,9 @@
 		    <tr>
 		    	<thead class="thead-dark">
 		    		<th>Tipo</th>
-			        <th width="50">Codigo</th>
+			        <th width="10">Codigo</th>
 			        <th width="290">Descripcion</th>
-			        <th class = "th_acciones">Accion</th>
+			        <th class = "th_acciones">Valor1</th>
 		    	</thead>
 		    </tr>
 	
@@ -67,13 +69,16 @@
 			    <tr>
 			        <td>{{ param.tipo}}</td>
 			        <td>{{ param.codigo}}</td>
-			        <td   width="250">{{ param.descrip }}</td>
-			        <td align="center">
-					<a class="btn btn-primary" href="{% url 'FichaParam' param.id %}" role="button">Modifica</a>
-					
-					<!--
-					<a class="btn btn-danger" href="{% url 'EliminaParam' param.id %}" role="button">Elimina</a>
-					-->
+
+					<td>	
+					<li>
+					<a href="{% url 'FichaParam' param.id %}"> 
+					{{ param.descrip }}
+					</a>
+					</li>	
+			        </td>
+
+			        <td>{{ param.valor1|default_if_none:'0'}}</td>
 
 			        </td>	
 			    </tr>

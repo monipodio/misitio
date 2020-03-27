@@ -18,10 +18,22 @@
 					<td width="90">
 			     	<input type="submit" value="Busca" class="btn btn-primary">
 					</td>
+					
+					{% if perms.ai.nuevo_cuidadores %} 
 					<td  width="130">
 					<a class="btn btn-primary" href="{% url 'NuevoCui' %}" role="utton">Nuevo</a>
 					</td>
-					<td width="320" align="right">
+					{%endif%}
+
+
+					<!-- numero de registros -->
+           			<td width="150" align="right">
+              		<a class="text-right text-muted small">
+    		           	Tot cuidadores: {{cuenta}}
+	        		</a>
+            		</td>
+
+					<td width="180" align="right">
 					<label>
 						<u>
 							<a href="{% url 'principal' %}">Inicio</a>
@@ -40,8 +52,9 @@
 			   		<th>ID</th>
 			        <th>Nombre</th>
 			        <th>Estado</th>
+			        <th>R.U.T.</th>
 			        <th>Dirección</th>
-			        <th>Acciones</th>
+			        <th>Acción</th>
 			   	</thead>
 			   </tr>
 				
@@ -49,19 +62,36 @@
 			    <tr>
 			        <td>{{ cuidador.id}}</td>
 
-			        <td>{{ cuidador.nombre}}</td>
+
+			        <!-- <td>{{ cuidador.nombre}} -->
+					<td>	
+					<li>
+					<a href="{% url 'ActualizaCui' cuidador.id %}"> 
+					{{ cuidador.nombre }}
+					</a>
+					</li>	
+			        </td>
+
+
 					{% if cuidador.estado == 1 %}	
 			        	<td>Pasivo</td>
 			        {% else %}
 						<td>Activo</td>	
 			        {%endif%}
 
+					
+			        <td>{{ cuidador.rut}}</td>
+		        
+
 			        <td>{{ cuidador.direccion}}</td>
 
+			        
 			        <td>
-					<a class="btn btn-primary" href="{% url 'ActualizaCui' cuidador.id %}" role="button">Modifica</a>
-					<a class="btn btn-danger" href="{% url 'EliminaCui' cuidador.id %}"role="button">Elimina</a>
-			        </td>	
+						<!--
+						<a class="btn btn-primary" href="{% url 'ActualizaCui' 	cuidador.id %}" role="button">Modifica</a>
+						-->
+						<a class="btn btn-danger" href="{% url 'EliminaCui' 	cuidador.id %}"role="button">Elimina</a>
+			    	</td>	
 			
 			    </tr>
 			   	{% endfor %}

@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+
 ROOT_URLCONF = 'misitio.urls'
 
 TEMPLATES = [
@@ -126,4 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#MEDIA_URL = '/ai/static/img/'
+MEDIA_URL = '/ai/static/img/'
+
+#ESTA LINEA NO DEBE EN AMBIENTE DE DESARROLLO NI EN PRODUCCION
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+

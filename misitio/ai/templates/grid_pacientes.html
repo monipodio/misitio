@@ -35,7 +35,15 @@
 						<a class="btn btn-primary" href="{% url 'NuevoPac' %}" role="button">Nuevo</a>
 					    </td>
 
-					    <td width="320" align="right">
+						<!-- numero de registros -->
+           				<td width="150" align="right">
+              			<a class="text-right text-muted small">
+    		            	Tot pacientes: {{cuenta}}
+	        		    </a>
+            			</td>
+
+						<!-- vuelve a inicio -->
+					    <td width="130" align="right">
 						<label>
 							<u>
 								<a href="{% url 'principal' %}">Inicio</a>
@@ -52,25 +60,41 @@
 		    	<thead class="thead-dark">
 		    		<th>ID</th>
 			        <th>Nombre</th>
-			        <th>R.U.T.</th>
-			        <th align="center">Acciones</th>
+			        <th>Pasivo</th>
+			        <th align="center">Acción</th>
 		    	</thead>
 		    </tr>
 		
 		    {% for paciente in pacientes %}
 			    <tr id="{{forloop.counter}}">
 			        <td>{{ paciente.id}}</td>
-			        <td  width="380">{{ paciente.nombre}}</td>
-			        <td  width="150">{{ paciente.rut }}</td>
+
+			        <!-- <td  width="450">{{ paciente.nombre}}</td> -->
+					<td>	
+					<li>
+					<a href="{% url 'ActualizaPac' paciente.id %}"> 
+					{{ paciente.nombre }}
+					</a>
+					</li>	
+			        </td>
+					
+					<!-- checkbox-->
+					<td width="70">
+					{% if paciente.estado == falso_x %}	
+						<input type="checkbox" name="check1" disabled/>
+					{%else%}
+						<input type="checkbox" name="check1" checked disabled/>
+					{% endif %}
+					</td>	
+				
+
 			        <td>
-	
 					<a class="btn btn-danger" href="{% url 'EliminaPac' paciente.id %}" role="button">Elimina</a>
 					
-<a class="btn btn-primary" href="{% url 'Ficha_anticipos' paciente.id %}" role="button">Anticipo</a>
-
+					<!--
 					<a class="btn btn-primary" href="{% url 'ActualizaPac' paciente.id %}" role="button">Modifica</a>
-
-			        </td>	
+			        </td>
+			        -->	
 
 			    </tr>
 		    {% endfor %}

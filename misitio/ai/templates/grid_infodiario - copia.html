@@ -1,0 +1,170 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="{% url 'liquimeses' %}">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- Envia a EXCEL (recauda de apoderados)-->
+						<td width="130" align="right">
+							<a title="Pautas según cuidadores que se muestran" href="{% url 'acsv' %}" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel }}" />Recauda</a>
+						</td>
+	
+						<!-- numero de registros -->
+           				<td width="100" align="right">
+              			<a class="text-right text-muted small">
+    		            	registros {{cuenta}}
+	        		    </a>
+            			</td>
+
+						<!-- link regresa al menu CONSULTAS -->
+					    <td width="120" align="right">
+						<label>
+						<u>
+						<a href="{% url 'info_mensual' %}">Despliegue mensual</a>
+						</u>
+						</label>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark">
+			        <th style="background-color: #10106D; color:White">
+						Dia				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Dia de semana
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno mañana
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno tarde
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Turno Noche
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor dia$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor Tarde$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor Noche$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Tot Valor$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Acumulado$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Pagos$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Saldo Acum.$
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Boleta
+			    	</th>
+
+		    	</thead>
+		    </tr>
+
+		    {% for reg in diario_aux %}
+			    <tr>
+			        <td  width="25" style="font-size:12px">
+						{{ reg.ndia}}
+			        </td>
+		
+			        <td  width="40" style="font-size:12px">
+						{{ reg.cdia}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno1}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno2}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.turno3}}
+			        </td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t1|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t2|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.valor_t3|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.val_tot|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.acum1|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.abonos|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.acum2|intcomma}}
+					</td>
+
+			        <td  width="40" style="font-size:12px">
+						{{ reg.boleta}}
+					</td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

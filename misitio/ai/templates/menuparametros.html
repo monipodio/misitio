@@ -8,6 +8,14 @@
       <p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
     </d>
  
+    {% if error_new == "error1" %}
+        <p class="error1">Se han eliminado {{x}} registros !!</p>
+    {% endif %}
+
+    {% if error_new == "error2" %}
+        <p class="error1">Se ha puesto nombre a {{x}} registros !!</p>
+    {% endif %}
+
     <table border="0">
     <tbody>    
     <tr>
@@ -15,16 +23,28 @@
         <div class="home-azul" >
             <!-- <h3 class="hidden-xs">Accesos</h3> -->
             <ul id="home-servicios" >
-                <li style="padding-bottom:5px;"><a href="{% url 'grid_param' %}">Parametros generales</a></li>
-                <li style="padding-bottom:5px;"><a href="#">Comunas</a></li>
-                <li style="padding-bottom:5px;"><a href="#">Pruebas</a></li>
+                <li style="padding-bottom:5px;"><a href="{% url 'grid_param' %}">Parametros Generales</a>
+                </li>
+
+            <li style="padding-bottom:5px;" title="Elimina pautas de fecha futura y pasada que no tengan asignadas CUIDADOR"><a href="{% url 'eliminapauvacias' %}">Elimina Pautas Vacias</a></li>
+
+            <li style="padding-bottom:5px;"><a href="#">Pruebas</a></li>
+
+            <!--
+            <li style="padding-bottom:5px;" title="Pone de paciente a tabla SALDOS"><a href="{% url 'ponenombresaldos' %}">Pone nombre pctes. en SALDOS</a></li>
+            -->
+            
+            <li style="padding-bottom:5px;" title="Solo formato jpg"><a href="{% url 'subefotos' %}">Sube fotos (jpg) de Cuidadores</a></li>
+
+
+            <li style="padding-bottom:5px;" ><a href="#">Módulo Administrador</a></li>
+
             </ul>
         </div>
         </td>
 
         <td width=350 >   
         <div>
-       
            <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" border:3px/>
         </div>
         </td>

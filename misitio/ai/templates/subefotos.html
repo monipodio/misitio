@@ -1,0 +1,16 @@
+{% extends 'plantilla_base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+<form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+    <a href = "{% url 'MenuParam' %}" class="btn btn-primary">Cancela y regresa</a>
+ </form>
+ </section>
+{% endblock %}  
+
+
+
+

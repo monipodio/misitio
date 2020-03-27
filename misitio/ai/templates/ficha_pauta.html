@@ -16,6 +16,7 @@
 				<td class="napod">{{napod}}</td>
 			
 				<!-- si es DOMINGO o FESTIVO - cobro al apoderado-->
+				<!--
 				<td size="35">Tipo Cobro</td>
 				<td>
 				<select	name="reca_apod" id="reca_apod">
@@ -28,11 +29,24 @@
 					{% endfor %}
 				</select>
 				</td>
-				</tr>				
+				</tr>
+				-->				
 
 				<tr>
 				<td >Fecha pauta:</td>
-				<td>{{form.fecha|attr:'readonly:True'}}</td>
+				<td>{{form.fecha|attr:'readonly:True'}}
+
+				<!--NUEVO Recargo a salario CUIDADOR - turno de mañana-->
+				<select	name="reca_cui" id="reca_cui">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_reca %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>
 				</tr>
 
 				<tr>
@@ -69,6 +83,7 @@
 				</select>
 
 				<!-- Recargo a salario CUIDADOR - turno de mañana-->
+				<!--
 				<select	name="reca_cui1" id="reca_cui1">
 					{% for tipcob in aReca_apod %}
 						{% if tipcob == var_recacui1 %}	
@@ -78,6 +93,7 @@
 						{% endif %}	
 					{% endfor %}
 				</select>
+				-->
 
 				<td size="35">Tipo Turno1 </td>
 				<td>
@@ -107,6 +123,7 @@
 				</select>
 
 				<!-- recargo a salario CUIDADOR - turno tarde-->
+				<!--
 				<select	name="reca_cui2" id="reca_cui2">
 					{% for tipcob in aReca_apod %}
 						{% if tipcob == var_recacui2 %}	
@@ -116,7 +133,7 @@
 						{% endif %}	
 					{% endfor %}
 				</select>
-
+				-->
 
 				<td size="35">Tipo Turno2</td>
 				<td>
@@ -147,6 +164,7 @@
 				</select>
 
 				<!-- recargo a salario CUIDADOR - turno noche-->
+				<!--
 				<select	name="reca_cui3" id="reca_cui3">
 					{% for tipcob in aReca_apod %}
 						{% if tipcob == var_recacui3 %}	
@@ -156,6 +174,7 @@
 						{% endif %}	
 					{% endfor %}
 				</select>
+				-->
 
 				<td size="35">Tipo Turno3</td>
 				<td>
