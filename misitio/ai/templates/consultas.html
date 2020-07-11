@@ -12,22 +12,29 @@
         <p class="error1">Se han eliminado {{x}} registros !!</p>
     {% endif %}
 
-
     <table border="0">
     <tbody>    
     <tr>
-        <td width="240"  valign="top">    
-        <div class="home-azul" >
+        <td width="240"  valign="top">   
+        <aside class="col-xs-12 col-md-3">  
+        <div  class="btn-group-vertical">
             <!-- <h3 class="hidden-xs">Accesos</h3> -->
-            <ul id="home-servicios" >
-                <li style="padding-bottom:5px;"><a href="{% url 'info' %}">Info</a></li>
-            
-            <li style="padding-bottom:5px;">
-                <a href="{% url 'info_mensual' %}" title = "Tomará unos segundos">Resumen de Prestaciones</a>
-            </li>
+                   
+            <a class="btn btn-primary" href="{% url 'info' %}" role="button" style="margin: 5px">Info</a>
 
-            </ul>
+            <a class="btn btn-primary" href="{% url 'info_mensual' %}" role="button" style="margin: 5px">Resumen de Prestaciones</a>
+
+            <a class="btn btn-primary" href="{% url 'altacondeuda' %}" role="button" style="margin: 5px">Deudores</a>
+
+            <a class="btn btn-primary" href="{% url 'grid_cheques' %}" role="button" style="margin: 5px">Documentos de pago</a>
+            
+
+            {% if request.user.is_superuser %}
+            <a class="btn btn-primary" href="{% url 'grid_login' %}" role="button" style="margin: 5px" title="Fecha y hora de acceso">Acceso de Usuarios</a>
+            {% endif %}
+
         </div>
+        </aside>
         </td>
 
         <td width=350 >   

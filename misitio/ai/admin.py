@@ -11,6 +11,8 @@ from .models import Pauta
 from .models import Resupauta
 from .models import Anticipos
 from .models import Saldos
+from .models import Receta
+from .models import Pagos
 
 
 #titulo principal del panel Admin
@@ -41,13 +43,23 @@ class Resupauta(admin.ModelAdmin):
 	search_fields = ['nombre']
 
 class AdminAnticipos(admin.ModelAdmin):
-	list_display = ["rut","fecha","mes","ano","valor","abon"]
+	list_display = ["rut","fecha","mes","ano","valor","abon","fecha_cheque"]
 	search_fields = ['rut','fecha']
 	list_filter = ("rut",)
 
 class AdminSaldos(admin.ModelAdmin):
 	list_display = ["nombre","mes","ano","saldoant","saldo"]
-	search_fields = ['nombre']
+	search_fields = ['rut']
+
+
+class AdminPagos(admin.ModelAdmin):
+	list_display = ["rut","valor"]
+	search_fields = ['rut']
+
+class AdminReceta(admin.ModelAdmin):
+	list_display = ["rut","descrip","fecha_prescri","frecuencia"]
+	search_fields = ['rut']
+
 
 
 admin.site.register(Pacientes,AdminPacientes)
@@ -58,3 +70,5 @@ admin.site.register(Pauta,AdminPauta)
 admin.site.register(Anticipos,AdminAnticipos)
 admin.site.register(Saldos,AdminSaldos)
 
+admin.site.register(Pagos,AdminPagos)
+admin.site.register(Receta,AdminReceta)

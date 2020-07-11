@@ -7,26 +7,45 @@
             <a href="{% url 'login_ini' %}">
         {% endif %}
 
-
 		<form id="form" name="form" method="POST" action="#" onsubmit="return ValidaFichacui();" enctype="multipart/form-data"> 
 			{% load widget_tweaks %} 			
  			{% csrf_token %}
-			
-			<table class="table table-striped" border = '0'>
+			<table border="0">
+    		<tbody>	
+			<tr>
+				<td width="610" align="right">
+				<u>
+				<a onclick="return ayuda2();"> Ayuda</a>
+				</u>
+				</td>	
+
+				<td width="120" align="right">
+					<!--regresa a pantalla anteior -->
+					<u><a href="{% url 'grid_cuidadores' %}">Regresa</a></u>
+				</td>		
+				<!-- regresa al inicio -->
+				<td width="100" align="right">
+					<u><a href="{% url 'principal' %}">Inicio</a></u>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+
+			<table class="table table-striped" border = '0' style="font-size:14px; color:#098979">
 		    {% if error_new == "error1" %}
     	    	<p class="error1">R.U.T. ya existe !!</p>
         	{% endif %}
 		
 			<td>
 				<img  src="{{ fotito }}" border:3px/>
-			<!--   {{form.media|attr:'onchange:cambiar()'|attr:'id:file-upload'}} -->
+				<!-- {{form.media|attr:'onchange:cambiar()'|attr:'id:file-upload'}} -->
 			</td>	
 
-			<tr>
+			<tr style="font-size:13px; color:#098979">
 				<td>R.U.T.:</td>
 				<td >
 				{% if variable2 == 'modifica_rut' %}	
-					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut_cui()'|attr:'onchange:upperCase()'|attr:'tabindex:1'}}
+					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onchange:upperCase()'|attr:'tabindex:1'}}
 				{% else %}
 					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
 				{% endif %}
@@ -34,11 +53,12 @@
 
 				{% if variable2 == 'nomodifica_rut' %}
 				<d>
-				{{form.extran|attr:'type:checkbox'|attr:'disabled:True'|attr:'id:extran'}} extranjero
+				{{form.extran|attr:'type:checkbox'|attr:'disabled:True'|attr:'id:extran'|attr:'tabindex:2'}} extranjero
 				</d>
 				{% else %}
 				<d>
-				{{form.extran|attr:'type:checkbox'|attr:'id:extran'}} extranjero
+				{{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:3'}} extranjero
+				<div style="color:#F7021C" id="mensaje"></div>
 				</d>
 				{% endif %}
 
@@ -48,30 +68,44 @@
 					<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
 				</d>
 				-->
-	
 			</tr>
 
+
+			{% if nuevo_cui != 1 %}
 			<d>
-				{{form.estado|attr:'type:checkbox'}} Pasivo (estado)
-				
+			{{form.estado|attr:'type:checkbox'|attr:'tabindex:4'}} Pasivo (estado)
 				<!--
 				{{form.elim_foto|attr:'type:checkbox'|attr:'value:0'}} Elimina foto
 				-->
-		
 			</d>
+			{%endif%}
 
 			<tr>
 				<td>Nombre</td> 
 				<td>
-					<d>{{ form.nombre|attr:'id:nombre'|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:2'}}</d>
+					<d>{{ form.nombre|attr:'id:nombre'|attr:'requiered:True'|attr:'size:60'|attr:'placeholder:paterno materno nombres'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:5'}}
+					</d>
+
+					{% if nuevo_cui == 0 %}
+					<u><a href="#" onclick="alert('Documento no disponible aún..!!')">Contrato</a></u>
+					{% endif %}
+
 				</td>
 			</tr>
 
+			<tr>
+				<td>Fecha Inicio</td> 
+				<td>
+					<d>	
+					{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'required:True'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:6'|attr:'onblur: return validarFormatoFecha()'}}
+					</d>
+				</td>
+			</tr>
 		
 			<tr>
 				<td>Tipo Contrato</td>
 				<td>
-				<select	name="tipo" id="tipo">
+				<select	name="tipo" id="tipo" tabindex=7>
 					{% for tip in tipo %}
 						{% if tip.codigo == var_tip %}	
 							<option value ="{{tip.codigo}}" selected="selected">{{tip.descrip}} </option>
@@ -86,7 +120,7 @@
 			<tr>
 				<td>Clasificacion</td>
 				<td>
-				<select	name="clasi" id="clasi">
+				<select	name="clasi" id="clasi" tabindex=8>
 					{% for cla in clasi %}
 						{% if cla.codigo == var_clasi %}	
 							<option value ="{{cla.codigo}}" selected="selected">{{cla.descrip}} </option>
@@ -101,7 +135,7 @@
 			<tr>
 				<td>Sexo</td>
 				<td>
-				<select	name="sexo" id="sexo">
+				<select	name="sexo" id="sexo" tabindex=9>
 					{% for sex in sexo %}
 						{% if sex.codigo == var_sex %}	
 							<option value ="{{sex.codigo}}" selected="selected">{{sex.descrip}} </option>
@@ -116,7 +150,7 @@
 			<tr>
 				<td>Nivel educacional</td>
 				<td>
-				<select	name="instr" id="instr">
+				<select	name="instr" id="instr" tabindex=10>
 					{% for inst in instr %}
 						{% if inst.codigo == var_instr %}	
 							<option value ="{{inst.codigo}}" selected="selected">{{inst.descrip}} </option>
@@ -128,20 +162,11 @@
 				</td>			
 			</tr>
 
-			<tr>
-				<td>Fecha Inicio</td> 
-				<td>
-					<d>	
-					{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'required:True'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:3'|attr:'onblur: return validarFormatoFecha()'}}
-					</d>
-					<!--<input type="text" id="caja" value ="{{xx}}" hidden > -->
-				</td>
-			</tr>
 
 			<tr>
 			<td>Fecha Nacimiento</td> 
 				<td>
-				{{form.fe_nac|attr:'id:fe_nac'|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd'|attr:'requiered:True'|attr:'tabindex:4'|attr:'onblur:return validarFormatoFecha2()'}}
+				{{form.fe_nac|attr:'id:fe_nac'|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd'|attr:'requiered:True'|attr:'tabindex:12'|attr:'onblur:return validarFormatoFecha2()'}}
 				</d>
 				</td>
 			</tr>
@@ -149,30 +174,30 @@
 			<tr>
 				<td>Direccion</td>
 				<td>
-					<d>{{form.direccion|attr:'id:direccion'|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:5'}}</d>
+					<d>{{form.direccion|attr:'id:direccion'|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:13'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Fonos</td>
 				<td>
-					<d>{{form.fono_cuid|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_cuid'|attr:'tabindex:6'}}</d>
+					<d>{{form.fono_cuid|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_cuid'|attr:'tabindex:14'}}</d>
 					
-					<d>{{form.fono2_cuid|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:7'}}</d>
+					<d>{{form.fono2_cuid|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:15'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 			<td>Correo</td>
 				<td>
-					<d>{{form.correo|attr:'onblur:return validaemail()'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:8'}}</d>
+					<d>{{form.correo|attr:'onblur:return validaemail()'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:16'}}</d>
 				</td>
 			</tr>
 
 
 			<td>Region</td>
 				<td>
-					<select name="region">
+					<select name="region" tabindex=17>
 					{% for r in region %}
 						{% if r.codigo == var_region %}
 							<option value ="{{r.codigo}}" selected="selected">{{r.descrip}}</option>
@@ -186,7 +211,7 @@
 
 			<td>Comuna</td>
 				<td>
-					<select	name="comuna">
+					<select	name="comuna" tabindex=18>
 					{% for c in comuna %}
 						{% if c.codigo == var_comuna %}
 						<option value ="{{c.codigo}}" selected = "selected">{{c.descrip}}</option>
@@ -198,11 +223,10 @@
 				</td>			
 			</tr>
 
-
 			<tr>
 			<td>Valor a pago mañana</td>
 				<td>
-				{{form.apago1|attr:'id:apago1'|attr:'size:17'|attr:'requiered:True'|attr:'tabindex:9'}}
+				{{form.apago1|attr:'id:apago1'|attr:'size:17'|attr:'requiered:True'|attr:'tabindex:19'}}
 				</d>
 				</td>
 			</tr>
@@ -210,7 +234,7 @@
 			<tr>
 			<td>Valor a pago tarde</td>
 				<td>
-				{{form.apago2|attr:'id:apago2'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:9'}}
+				{{form.apago2|attr:'id:apago2'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:20'}}
 				</d>
 				</td>
 			</tr>
@@ -218,7 +242,7 @@
 			<tr>
 			<td>Valor a pago noche</td>
 				<td>
-				{{form.apago3|attr:'id:apago3'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:9'}}
+				{{form.apago3|attr:'id:apago3'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:21'}}
 				</d>
 				</td>
 			</tr>
@@ -231,23 +255,20 @@
 				<p><textarea name="comentario" rows="5" cols="50">Escribe aquí tu comentario: </textarea></p>
 				-->
 				
-				<d>{{form.notas|attr:'id:notas'|attr:'tabindex:10'|attr:'cols:60'|attr:'rows:3'|attr:'placeholder:Escribe aqui tu comentario'}}</d>
+				<d>{{form.notas|attr:'id:notas'|attr:'tabindex:22'|attr:'cols:60'|attr:'rows:3'|attr:'placeholder:Escribe aqui tu comentario'}}</d>
 				</td>
 			</tr>
-
-
-			<d>
-			<p align="right"><u><a href="{% url 'grid_cuidadores' %}">Regresa /</a></u>
-			<u><a href="{% url 'principal' %}">Inicio</a></u>
-			</p>
-			</d>
-
-
 			</table>
 
-			<Span id='span1'><span>
+			<Span id='span1'></span>
 				
-			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+
+			{% if perms.ai.btn_acep_fichacui %} 
+				<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+			{%else%}
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a grabar cambios a la ficha')">Aceptar</a>		
+			{%endif%}
+
 		</form>
 	</section>
 

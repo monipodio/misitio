@@ -3,7 +3,6 @@
 
 {% block content %}
     <section>
-
     <d>
       <p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
     </d>
@@ -19,28 +18,22 @@
     <table border="0">
     <tbody>    
     <tr>
-        <td width="240"  valign="top">    
-        <div class="home-azul" >
+        <td width="240"  valign="top">   
+        <aside class="col-xs-12 col-md-3"> 
+        <div class="btn-group-vertical" >
             <!-- <h3 class="hidden-xs">Accesos</h3> -->
-            <ul id="home-servicios" >
-                <li style="padding-bottom:5px;"><a href="{% url 'grid_param' %}">Parametros Generales</a>
-                </li>
+            
+            <a class="btn btn-primary" href="{% url 'grid_param' %}" role="button" style="margin: 5px">Parametros Generales</a>
 
-            <li style="padding-bottom:5px;" title="Elimina pautas de fecha futura y pasada que no tengan asignadas CUIDADOR"><a href="{% url 'eliminapauvacias' %}">Elimina Pautas Vacias</a></li>
+            <a class="btn btn-primary" href="{% url 'eliminapauvacias' %}" role="button" style="margin: 5px">Elimina Pautas Vacias</a>
 
-            <li style="padding-bottom:5px;"><a href="#">Pruebas</a></li>
-
+            <a class="btn btn-primary" href="{% url 'farmacos' %}" role="button" style="margin: 5px">Base de de datos farmacos</a>
             <!--
             <li style="padding-bottom:5px;" title="Pone de paciente a tabla SALDOS"><a href="{% url 'ponenombresaldos' %}">Pone nombre pctes. en SALDOS</a></li>
             -->
-            
-            <li style="padding-bottom:5px;" title="Solo formato jpg"><a href="{% url 'subefotos' %}">Sube fotos (jpg) de Cuidadores</a></li>
 
-
-            <li style="padding-bottom:5px;" ><a href="#">Módulo Administrador</a></li>
-
-            </ul>
         </div>
+        </aside>
         </td>
 
         <td width=350 >   
@@ -52,6 +45,7 @@
     </tr>    
     </tbody>
 	</table>
+    
     <br>
     <br>
     <br>

@@ -109,13 +109,15 @@
 					<d>{{form.notas|attr:'size:200'|attr:'id:notas'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}</d>
 				</td>
 			</tr>
-
-
 			</table>
 
 			<Span id='span1'><span>
-				
-			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+			{% if perms.ai.btn_acep_fichapod %} 				
+				<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+			{% else %}
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a grabar cambios a la ficha')">Aceptar</a>		
+			{% endif %}
+
 		</form>
 	</section>
 

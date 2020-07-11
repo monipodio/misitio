@@ -1,0 +1,157 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+
+	<section class='section2'>
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="{% url 'farmacos' %}">
+				{% csrf_token %}
+				<table border="0">
+    				{% if error1 == "hay_error" %}
+   	    				<p class="error1">Error. !! El mes seleccionado no tiene ese numero de dia !!</p>
+       				{% endif %}
+
+    				<tbody>
+					<tr>
+						<!-- CAJA DE BUSQUEDA --> 
+						<td width="230" style="font-size:13px;color:#098979" tabindex="1">
+						<label>Farmaco:</label>
+						<!-- caja glosa a buscar-->
+						<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna DESCRIPCION" placeholder="vacio todos">
+						</td>
+
+						<!--CHECK BOX -->
+						<td width="220" style="font-size:12px;color:#098979" tabindex="4">
+						<input type="checkbox" id="check1" name="check1" label for="chbox1" > busca en Acc.Farm.</label>
+						</td>	
+
+						<!-- BOTON BUSCAR glosa de DESCRIPCION -->
+						<td width="180" title="Solo pacientes dentro del rango de fechas" tabindex="2">
+				     	<input type="submit" value="Busca" class="btn btn-primary">
+						</td>
+
+
+						<!-- BOTON DESCARGA CSV -->
+					    <td width="80" align="center"  title="Toda la base  detaos a formato CSV">
+							<u>
+							<a href="{% url 'csvfarmacos' %}">csv</a>
+							</u>
+						</td>
+
+						<!-- numero de registros -->
+           				<td width="120" align="center" >
+              			<a class="text-right text-muted small" style="color:#098979">
+    		            	registros: {{cuenta}}
+	        		    </a>
+            			</td>
+
+						<!-- MENU ANTERIOR PARAMETROS -->
+					    <td width="130" align="right">
+							<u>
+							<a href="{% url 'MenuParam' %}">Anterior</a>
+							</u>
+						</td>
+
+						<!-- VUELVE MENU DE INICIO -->
+					    <td width="100" align="right">
+							<u>
+							<a href="{% url 'principal' %}">Inicio</a>
+							</u>
+						</td>
+
+					</tr>
+    				</tbody>
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="1">
+		    <tr>
+		    	<thead class="thead-dark">
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+				        Farmaco
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+			        	Acción Farmacológica
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+			        	Unidad
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+			        	Contiene
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+			        	Hiperlink
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White; font-size:12px">
+			        	Elimina
+			    	</th>
+
+
+		    	</thead>
+		    </tr>
+
+		    {% for farmaco in maefarm %}
+			    <tr>
+				
+					<td width="250" style="font-size:12px">	
+					<li>
+					{% if farmaco.link != None%}	
+						<a href="{{ farmaco.link }}" target="_blank">{{ farmaco.descrip }}</a>
+					{%else%}
+						<a> {{ farmaco.descrip }}</a>
+					{%endif%}
+					</li>
+			        </td>
+				
+					{% if farmaco.accionf != None%}	
+			        	<td width="200" style="font-size:12px">{{ farmaco.accionf}}</td>
+					{% else %}
+			        	<td width="200"> </td>
+					{% endif %}
+
+					{% if farmaco.unidad != None%}	
+			        	<td width="130" style="font-size:12px">{{ farmaco.unidad}}</td>
+					{% else %}
+			        	<td width="200"> </td>
+					{% endif %}
+		
+					{% if farmaco.conten != None%}	
+			        	<td width="100" style="font-size:12px">{{ farmaco.conten}}</td>
+					{% else %}
+			        	<td width="100"> </td>
+					{% endif %}
+
+			        <td width="80">
+					<a class="btn btn-danger" href="{% url 'addlinkfarmaco' farmaco.id %}" role="button" style="background-color: #4FB999; color:White;" title="Agrega hiperlink al farmaco">Add link</a>
+					</td>
+
+			        <td width="40">
+					
+					{% if perms.ai.btn_grid_eliminafar %}
+						<a class="btn btn-danger" href="{% url 'Eliminafarmaco' farmaco.id %}" role="button" title="Elimina sin pedir confirmación">Elim.</a>
+					{%else%}
+						<a style="font-size:14px;background-color: #DB3939; color:White;" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a eliminar registros')">Elimina</a>
+					{%endif%}
+
+					</td>
+
+			    </tr>
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

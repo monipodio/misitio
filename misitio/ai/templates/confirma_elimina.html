@@ -5,16 +5,15 @@
 	<section>
         <form method='POST'>
         {% csrf_token %}          
- 
-        <div class="table-responsive">       
+         <div class="table-responsive">       
         <article class=article>
 
-        <h4 width="750" halign="center">
-            Se eliminara el registro:
+        <h4 width="750" halign="center" style="color:#045579">
+            Se eliminará el registro:  {{form.id}} y todos sus datos relacionados presentes e historicos
         </h4>
         <br>
-        <h4> Descripcion: {{form.nombre}} </h4>
- 
+        <h4 style="color:#045579"> Descripción: <u>{{ descrip }}</u></h4>
+
         <br><br>
         <table border = "0">
 
@@ -42,6 +41,12 @@
                 <!-- regresa por metodo GET -->  
                 <a href = "{% url 'grid_apoderados' %}" class="btn btn-primary">Cancela</a>
             {% endif %}
+
+            {% if sw1 == 'rec' %}
+                <!-- regresa por metodo GET -->  
+                <a href = "{% url 'grid_receta' %}" class="btn btn-primary">Cancela</a>
+            {% endif %}
+
             </td>
    
         </table>
@@ -50,7 +55,7 @@
         </div>
  
         <div class="table-responsive">
-		<article class=article>
+		<article class=article style="color:#025D5D">
     		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
     		a la persona que tiene el cuidado y acompañamiento al paciente.
     		Aqui se gestiona la ficha con todos los antecedentes del asistente al paciente. Además se controlan los turnos, lugares de la prestación y los honorarios correspondientes. Se mantiene también los antecedentes del paciente y su respectivo apoderado. 

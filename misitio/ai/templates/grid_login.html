@@ -1,0 +1,90 @@
+{% extends 'plantilla_base.html' %}
+
+{% block content %}
+	<section class='section2'>
+
+		{% if user.username == None %} 
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>    
+			{% endif %}
+
+			<form  class = "" method='GET' action= "#">
+					{% csrf_token %}
+	
+				<table border="0" style="color:#045579">
+    				<tbody>	
+					<tr>
+						<!-- CAJA PARA BUSCAR -->
+						<td width="250" style="color:#045579;font-size:14px">
+						<label for="mySearch">Busca:</label>
+						<input type="text" size="12" name = "buscar" value='{{buscar}}' title="busca en columna Usuario" id="busca" placeholder="vacio todos" onfocus="limpia()">
+						</td>
+
+						<!-- BOTON BUSCAR -->
+						<td width="200">
+				     	<input type="submit" value="Busca" class="btn btn-primary">
+						</td>
+
+
+						<!-- INFORMACION SOBRE PERFILES -->
+						<td width="260" align="right" style="color:#045579;font-size:12px">
+						<label>
+							<u>
+								<a onclick="return ayuda_login()">Ayuda sobre perfiles de usuario</a>
+							</u>
+						</label>
+						</td>
+						
+
+						<!-- REGRESA AL INICIO -->
+						<td width="125" align="right" style="color:#045579;font-size:12px">
+						<label>
+							<u>
+								<a href="{% url 'principal' %}">Inicio</a>
+							</u>
+						</label>
+						</td>
+
+					</tr>
+				</tbody>
+				</table>
+				</form>
+		<table class="table table-striped w-auto" border="1">	
+		    <tr>
+		    	<thead class="thead-dark" style="color:#045579;background-color: #FFFFFF;font-size:14px">
+		    		<th>Usuario</th>
+			        <th width="80">Incorporación</th>
+			        <th width="210">Conexión reciente</th>
+			        <th width="210">Última Desconexión</th>
+			        <th width="220">IP última desconexion</th>
+
+		    	</thead>
+		    </tr>
+	
+		    {% for userlog in userlog %}
+			    <tr style="color:#045579">
+			        <td>{{ userlog.username}}</td>
+			        <td>{{ userlog.date_joined|date:"d-m-Y h:i a"}}</td>
+					<td>{{ userlog.last_login|date:"d-m-Y h:i a"}}</td>
+					<td>{{ userlog.log_out|date:"d-m-Y h:i a"}}</td>
+					{% if userlog.equipo_remoto != None %}
+						<td>{{ userlog.equipo_remoto}}</td>
+					{%else%}
+						<td></td>	
+					{%endif%}
+			        </td>	
+			    </tr>
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

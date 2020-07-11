@@ -22,7 +22,6 @@
 			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->			
 
 			<table border = "1"  class="table table-striped">	
-
 			<tr>
 				<td>Tipo</td> 
 				<td>
@@ -119,8 +118,12 @@
 
 			<br>
 			<span id='span1'><span>
-			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
 
+			{% if perms.ai.btn_acep_fichaparam %} 
+				<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+			{%else%}	
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a grabar cambios a la ficha')">Aceptar</a>		
+			{%endif%}
 		</form>
 	</section>
 

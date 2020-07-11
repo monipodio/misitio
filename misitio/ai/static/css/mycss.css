@@ -1,3 +1,4 @@
+/* ID (#)  y clases (.), (gato y punto respectivamente) */
 
 h2 a { color:#FF3333;
   	display: flex;
@@ -26,7 +27,6 @@ section {
   	display: flex;
   	justify-content: center;
   	align-items: center;
-
 }
 
 .title p {text-align: center;}
@@ -195,8 +195,8 @@ id_nombre {
 #div12_id { background: #62BF54;}
 
 .search-query {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    /*-webkit-border-radius: 5px; */
+    /* border-radius: 2px; */
 }
 
 th {
@@ -226,3 +226,24 @@ z-index: -1;
 input[type=file].hidden {
   color: transparent;
 }
+
+
+#table td:first-child {
+  width: 150px;
+}
+
+#table {
+    table-layout: fixed;
+    width: 250px;
+}
+
+.tablita .columna1 {
+  display: grid;
+  grid-template-columns: 130px 30px;
+ }
+
+.grid .columna1 {
+  display: grid;
+  grid-template-columns: 130px 30px;
+ }
+

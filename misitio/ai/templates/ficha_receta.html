@@ -1,0 +1,75 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		<form id="form" name="form" action="#" method="POST" onsubmit="return ValidaFichaReceta();"> 
+			{% load widget_tweaks %} 			             
+ 			{% csrf_token %}
+
+ 			<table border="0">
+    			<tbody>
+				<tr>
+					<!-- link regresa a PANTALLA ANTERIOR -->
+				    <td width="860" align="right">
+					<u>
+					<a href="{% url 'grid_receta' %}">Pantalla ant.</a>
+					</u>
+					</td>
+				</tr>
+    			</tbody>
+			</table>
+			
+			<table  class="table table-dark" border = '0'>
+				<tr>
+				<td width="10" style="color:#045579">Nombre Paciente:</td>
+				<td style="color:#098979">{{rut}} {{paciente}}</td>
+				</tr>
+				
+				<tr>
+				<td style="color:#045579">Fármaco:</td>
+				<td>{{form.descrip|attr:'size:60'|attr:'tabindex:1'|attr:'id:descrip'}}</td>
+				</tr>
+
+
+				<tr>
+				<td style="color:#045579">Fecha de Prescripción:</td>
+				<td>{{form.fecha_prescri|attr:'size:10'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:2'|attr:'id:fecha_prescri'|attr:'onblur:return validaFechaFarmaco()'}}</td>
+				</tr>
+
+				<td style="color:#045579">Vía administración:</td>
+					<td>
+					<select	name="via_sumi" id="via_sumi" tabindex="3"  style="width:150px">
+					{% for descrip in via_lista %}
+						<option value = "{{forloop.counter0}}">{{descrip}}</option>
+					{% endfor %}			
+					</select>
+					</td>			
+				</tr>
+
+
+				<tr>
+				<td style="color:#045579">Frecuencia:</td>
+				<td>{{form.frecuencia|attr:'placeholder: Ejemplo cada 12 hrs - noche'|attr:'size:35'|attr:'tabindex:4'|attr:'id:frecuencia'}}</td>
+				</tr>
+
+				<tr>
+				<td style="color:#045579">Observaciones</td>
+					<td>
+						<d>{{form.notas|attr:'id:notas'|attr:'cols:70'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'|attr:'tabindex:5'}}</d>
+					</td>
+				</tr>
+
+
+			</table>
+
+			<Span id='span1'><span>
+			<!-- GRABA NUEVO FARMACO (este es el que vale)-->
+			{% if perms.ai.btn_acep_fichafar %} 
+				<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
+			{%else%}
+				<a style="fontsize:14px;background-color: #045579;color:White" role="button" class="btn btnprimary" onclick="alert('Usted no está autorizado a grabar cambios a esta ficha')" >Aceptar</a> 
+			{%endif%}
+
+		</form>
+	</section>
+
+{% endblock %}

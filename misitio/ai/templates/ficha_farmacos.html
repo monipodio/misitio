@@ -1,0 +1,224 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		<form id="form" name="form" action="#" method="POST" onsubmit="return ValidarForm();"> 
+			{% load widget_tweaks %} 			
+ 			{% csrf_token %}
+ 			<table  class="table table-dark" border = '1'>
+				<tr>
+				<td width="20">Nombre Paciente:</td>
+				<td>{{form.paciente|attr:'size:40'|attr:'readonly:True'}}</td>
+				</tr>
+				
+				<tr>
+				<td width="20">Nombre Apoderado:</td>
+				<td class="napod">{{napod}}</td>
+			
+				<!-- si es DOMINGO o FESTIVO - cobro al apoderado-->
+				<!--
+				<td size="35">Tipo Cobro</td>
+				<td>
+				<select	name="reca_apod" id="reca_apod">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_recapod %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>
+				</tr>
+				-->				
+
+				<tr>
+				<td >Fecha pauta:</td>
+				<td>{{form.fecha|attr:'readonly:True'}}
+
+
+				<!--NUEVO Recargo a salario CUIDADOR - turno de mañana-->
+				<select	name="reca_cui" id="reca_cui">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_reca %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>
+				</tr>
+
+				<tr>
+				<td>R.U.T.:</td>
+				<td>{{form.rut|attr:'size:10'|attr:'readonly:True'}}</td>
+				</tr>
+	
+				<tr>
+				<td>Estadia</td>
+				<td>
+				<select	name="yace" id = "yace" tabindex="11">
+					{% for yace in yace %}
+						{% if yace.codigo == var_yace %}	
+							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
+						{% else %}
+							<option value ="{{yace.codigo}}">{{yace.descrip}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				</td>
+				</tr>
+
+				<tr>
+				<td>Turno de mañana</td>
+				<td>
+				<select	name="rut_t1" tabindex="20" id="rut_t1">
+					{% for r in turno1 %}
+						{% if r.rut == var_rutcui1 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+
+				<!-- Recargo a salario CUIDADOR - turno de mañana-->
+				<!--
+				<select	name="reca_cui1" id="reca_cui1">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_recacui1 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				-->
+
+				<td size="35">Tipo Turno1 </td>
+				<td>
+				<select	name="tipo_turno1" id="tipo_turno1">
+					{% for tip in tipo_turno %}
+						{% if tip == var_tip1 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tip}}</option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+				</tr>
+
+				<tr>
+				<td>Turno Tarde</td>
+				<td>
+				<select	name="rut_t2" tabindex="20" id="rut_t2">
+					{% for r in turno2 %}
+						{% if r.rut == var_rutcui2 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+
+				<!-- recargo a salario CUIDADOR - turno tarde-->
+				<!--
+				<select	name="reca_cui2" id="reca_cui2">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_recacui2 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				-->
+
+				<td size="35">Tipo Turno2</td>
+				<td>
+				<select	name="tipo_turno2" id="tipo_turno2">
+					{% for tip in tipo_turno %}
+						{% if tip == var_tip2 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tip}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tip}} </option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+				</td>
+				</tr>
+
+				<tr>
+				<td>Turno noche</td>
+				<td>
+				<select	name="rut_t3" tabindex="20" id="rut_t3">
+					{% for r in turno3 %}
+						{% if r.rut == var_rutcui3 %}
+							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
+						{% else %}	
+							<option value ="{{r.rut}}">{{r.nombre}}</option>
+						{% endif %}
+					{% endfor %}			
+				</select>
+
+				<!-- recargo a salario CUIDADOR - turno noche-->
+				<!--
+				<select	name="reca_cui3" id="reca_cui3">
+					{% for tipcob in aReca_apod %}
+						{% if tipcob == var_recacui3 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				-->
+
+				<td size="35">Tipo Turno3</td>
+				<td>
+				<select	name="tipo_turno3" id="tipo_turno3">
+					{% for tip in tipo_turno %}
+						{% if tip == var_tip3 %}	
+							<option value ="{{forloop.counter0}}" selected="selected">{{tip}} </option>
+						{% else %}
+							<option value ="{{forloop.counter0}}">{{tip}}</option>
+						{% endif %}	
+					{% endfor %}
+				</select>
+				</td>			
+
+				</td>
+				</tr>
+
+				<tr>
+				<td>Observaciones</td>
+					<td>
+						<d>{{form.notas|attr:'id:notas'|attr:'cols:40'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}</d>
+					</td>
+				</tr>
+
+
+				<d>
+				<p align="right">
+				<u><a href="{% url 'grid_pauta' %}">Regresa /</a></u>
+				<u><a href="{% url 'principal' %}">Inicio</a></u>
+				</p>
+				</d>
+
+			</table>
+
+			<Span id='span1'><span>
+
+			<!--BOTON GRABAR (vale callampa)-->
+			{% if perms.ai.btn_acep_fichafar %} 
+				<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
+			{% else %}	
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a grabar cambios a esta ficha')">Aceptar</a>		
+			{% endif %}
+
+		</form>
+	</section>
+
+{% endblock %}

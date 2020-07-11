@@ -1,0 +1,122 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	
+	<section class='section3'>
+		
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="{% url 'info_mensual' %}">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- total de registros -->
+           				<td width="200" align="left">
+    		            	Total registros: {{cuenta}}
+            			</td>
+
+						<!-- Monto solo vigentes -->
+           				<td width="250" align="left">
+    		            	Monto pac. vigentes $: {{xcobrar_exis|intcomma}}
+            			</td>
+
+						<!-- Monto solo altas -->
+           				<td width="250" align="left">
+    		            	Monto pac. altas $: {{xcobrar_alta|intcomma}}
+            			</td>
+
+
+					    <td width="200" align="right">
+						<p align="right">
+							<u><a href="{% url 'consultas' %}">Regresa /</a></u>
+							<u><a href="{% url 'principal' %}">Inicio</a></u>
+						</p>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead class="thead-dark" style="font-size:11px">
+			        <th style="background-color: #10106D; color:White">
+						corr				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Paciente
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Fono Apod
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Fecha alta
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Saldo deudor
+			    	</th>
+
+
+		    	</thead>
+		    </tr>
+
+		    {% for resu in mensual_aux %}
+			    <tr>
+			   		{%if resu.saldo > 0 %}
+			   		    <td  width="40" style="font-size:12px">
+						<a>{{ forloop.counter }}</a>
+			   		    </td>
+
+			   		    <td  size="80" style="font-size:12px">
+			   		    	<li>
+						<a href="#"> 
+						{{ resu.paciente }}
+						</a>
+						</li>	
+			   		    </td>
+					
+						<!-- fono apoderado -->
+			   		    <td  size="80" style="font-size:12px" align="right">
+						{{ resu.con }}
+			   		    </td>
+
+						{%if resu.fe_alta != None %}
+			   		    	<td  size="30" style="font-size:12px" align="right">
+			   		    		{{ resu.fe_alta }}
+			   		    	</td>
+			   		    {%else%}
+			   		    	<td  size="30" style="font-size:12px" align="right">
+			   		    	</td>
+						{%endif%}
+
+			   		    <td  size="30" style="font-size:12px" align="right">
+						{{ resu.saldo|intcomma }}
+			   		    </td>
+
+					{%endif%}
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}

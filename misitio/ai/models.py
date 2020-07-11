@@ -4,15 +4,12 @@ from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import Permission
-
 from datetime import datetime
-
 #my_store = FileSystemStorage(location='/misitio/ai/static/img')
 
 class Pacientes(models.Model):
-    rut = models.CharField(max_length=10)
+    rut = models.CharField(max_length=10,unique=True)
     nombre = models.CharField(max_length=80,verbose_name="Nombre Paciente")
-    #fe_ini = models.DateTimeField(blank=True, null=True,verbose_name="Fecha de Inicio")
     fe_ini = models.DateTimeField(default="",verbose_name="Fecha de Inicio",null=False)
     direccion = models.CharField(max_length=61)
     comuna = models.CharField(max_length=5,null=True)   
@@ -43,6 +40,9 @@ class Pacientes(models.Model):
     doc_cobro = models.CharField(max_length=1, blank=True,null=True)
     localizacion = models.CharField(max_length=81,null=True)
     abono_inicial = models.IntegerField(blank=True,null=True)
+    fe_alta = models.DateTimeField(blank=True, null=True)
+    ecivil = models.CharField(max_length=1, blank=True,null=True) # estado civil
+    previ = models.CharField(max_length=1, blank=True,null=True) # FONASA,CONVENIO,ISAPRE,PART.
 
     def __str__(self):
         return self.nombre.strip() 
@@ -126,7 +126,7 @@ class Pauta(models.Model):
     rut = models.CharField(max_length=10,blank=True)
     paciente = models.CharField(max_length=80,verbose_name="Nombre Paciente",null=True)
     fe_ini = models.DateTimeField(blank=True,verbose_name="Fecha de Inicio")
-    fecha  = models.DateTimeField(blank=True,verbose_name="Fecha Pauta")
+    fecha  = models.DateTimeField(blank=True,verbose_name="Fecha Pauta",null=True)
     rut_t1 = models.CharField(max_length=10,blank=True)
     turno1 = models.CharField(max_length=80,verbose_name="Nombre turno1",blank=True)
     rut_t2 = models.CharField(max_length=10,blank=True)
@@ -223,12 +223,12 @@ class Anticipos(models.Model):
     valor = models.IntegerField(blank=True)
     abon  = models.CharField(max_length=1, blank=True) # Efec,Cheq,Tarjeta,...
     notas = models.TextField(blank=True)
-    boleta = models.IntegerField(blank=True)
     sw_abono =  models.CharField(max_length=1, blank=True) # 1=abono ini,0=no es abono ini
-    boleta = models.IntegerField(blank=True)
+    boleta = models.IntegerField(blank=True,default=0,null=False)
     cheque = models.CharField(max_length=15,blank=True) # número de cheque
     banco  = models.CharField(max_length=2,blank=True) # banco
-    fecha_cheque = models.DateTimeField(blank=True, null=True)
+    fecha_cheque = models.DateTimeField(default="",blank=True,verbose_name="Fecha deposito")
+    #paciente = models.ForeignKey(Pacientes,on_delete = models.CASCADE, null=True)
 
     class Meta:
         ordering = ['fecha']
@@ -310,6 +310,7 @@ class Mensual_aux(models.Model):
     mes = models.IntegerField(blank=True,default=0)
     ano = models.IntegerField(blank=True,default=0)
     n_apod = models.CharField(max_length=60,blank=True)
+    fe_alta = models.CharField(max_length=10,blank=True)
 
     def __str__(self):
         return self.paciente.strip()
@@ -333,6 +334,7 @@ class Diario_aux(models.Model):
     notas = models.TextField(blank=True)
     boleta = models.CharField(max_length=12,blank=True)
     fecha =  models.DateTimeField(blank=True, null=True)
+    username = models.CharField(max_length=30,blank=True)
 
     def __str__(self):
         return self.paciente.strip()
@@ -353,6 +355,7 @@ class Saldos(models.Model):
     class Meta:
         ordering = ['nombre']
 
+
 class Otrospermisos(models.Model):
     rut = models.CharField(max_length=10,blank=True)
     class Meta:
@@ -362,7 +365,6 @@ class Otrospermisos(models.Model):
             ('menu_cuidadores','menu_cuidadores'),
             ('menu_pacientes','menu_pacientes'),
             ('menu_apoderados','menu_apoderados'),
-            ('nuevo_cuidadores','nuevo_cuidadores'),
             ('elimina_cuidadores','elimina_cuidadores'),
             ('fichacui_aceptar','fichacui_aceptar'),
             ('grid_pctesnuevo','grid_pctesnuevo'),
@@ -371,8 +373,21 @@ class Otrospermisos(models.Model):
             ('fichanticipos_aceptar','fichanticipos_aceptar'),
             ('gridapod_nuevo','gridapod_nuevo'),
             ('gridapod_elimina','gridapod_elimina'),
-            ('fichapod_aceptar','fichapod_aceptar'),   
+            ('fichapod_aceptar','fichapod_aceptar'),  
+            ('actualiza_cui','actualiza_cui'), 
+            ('actualiza_pac','actualiza_pac'), 
+            ('btn_acep_fichacui','btn_acep_fichacui'),
+            ('btn_elim_gridgcui','btn_elim_gridgcui'),
+            ('btn_acep_fichaant','btn_acep_fichaant'),
+            ('btn_elim_gridrecet','btn_elim_gridrecet'),
+            ('btn_acep_fichapac','btn_acep_fichapac'),    
+            ('btn_acep_fichapod','btn_acep_fichapod'),
+            ('btn_acep_fichapaut','btn_acep_fichapaut'),
+            ('btn_acep_fichaparam','btn_acep_fichaparam'),
+            ('btn_acep_fichafar','btn_acep_fichafar'),
+            ('btn_grid_eliminafar','btn_grid_eliminafar'),            
             )
+
 
 class UploadFile(models.Model):
     titulo = models.CharField(max_length=100)
@@ -384,5 +399,59 @@ class UploadFile(models.Model):
 
     class Meta:
         verbose_name = 'UploadFile'
+
+
+#class Clientes(models.Model):
+#    rut = models.CharField(max_length=10)
+#    nombre = models.CharField(max_length=30,verbose_name="Nombre Cliente")
+#
+#    def __str__(self):
+#        return self.nombre
+#
+#    class Meta:
+#        verbose_name = 'Cliente'
+
+class Pagos(models.Model):
+    rut = models.CharField(max_length=10)
+    valor = models.IntegerField(blank=True,default=0)
+
+    def __str__(self):
+        return self.rut
+
+    class Meta:
+        verbose_name = 'Pago'
+
+class Receta(models.Model):
+    rut = models.CharField(max_length=10,blank=True)
+    descrip = models.CharField(max_length=60,blank=True)
+    unidad = models.CharField(max_length=5,blank=True)
+    fecha_prescri =  models.DateTimeField(blank=True, null=True)
+    via_sumi = models.CharField(max_length=15,blank=True)
+    frecuencia = models.CharField(max_length=15,blank=True)
+    fecha_digita = models.DateTimeField(blank=True, null=True)
+    notas = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.descrip
+
+    class Meta:
+        ordering = ['descrip']
+
+
+class Maefarm(models.Model):
+    cod = models.CharField(max_length=7,blank=True)
+    descrip = models.CharField(max_length=60,blank=True)
+    accionf = models.CharField(max_length=25,blank=True)
+    unidad = models.CharField(max_length=5,blank=True)
+    unient = models.CharField(max_length=5,blank=True)
+    codbar =  models.CharField(max_length=15,blank=True)
+    conten = models.IntegerField(blank=True)
+    link = models.CharField(max_length=150,blank=True)
+
+    def __str__(self):
+        return self.descrip
+
+    class Meta:
+        ordering = ['descrip']
 
 

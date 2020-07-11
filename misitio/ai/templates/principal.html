@@ -19,7 +19,6 @@
             <a class="btn btn-primary" href="{% url 'grid_cuidadores' %}" role="button" style="margin: 5px">Cuidadores</a>
             {% endif %}
       
-      
             {% if perms.ai.menu_pacientes %}            
             <a class="btn btn-primary" href="{% url 'grid_pacientes' %}" role="button" style="margin: 5px">Pacientes</a>
             {% endif %}
@@ -51,9 +50,7 @@
         <td>
         <div>
            <br> 
-
-        <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" border:3px/>
-       
+            <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" border:3px/>
         </div>
 		<br>
         </td>
@@ -67,7 +64,7 @@
     </tr>
     </tbody>    
     </table>
-        <div class="table-responsive">
+        <div class="table-responsive" style="color:#025D5D">
 		<article class=article>
     		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
     		a la persona que tiene el cuidado y acompañamiento al paciente.

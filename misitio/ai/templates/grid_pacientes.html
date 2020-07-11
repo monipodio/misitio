@@ -24,16 +24,17 @@
     				<tbody>	
 					<tr>
 						<td>
-						<label for="mySearch">Patrón de busqueda:</label>
-						<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
+						<label for="mySearch" style="color:#045579">Patrón de busqueda:</label>
+						<input type="text" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 						</td>
 						<td width="90">
 				     	<input type="submit" value="Busca" class="btn btn-primary">
 						</td>
 
 						<td width="130">
-						<a class="btn btn-primary" href="{% url 'NuevoPac' %}" role="button">Nuevo</a>
+						<a class="btn btn-primary" href="{% url 'NuevoPac2' %}" role="button">Nuevo</a>
 					    </td>
+						
 
 						<!-- numero de registros -->
            				<td width="150" align="right">
@@ -44,11 +45,9 @@
 
 						<!-- vuelve a inicio -->
 					    <td width="130" align="right">
-						<label>
 							<u>
 								<a href="{% url 'principal' %}">Inicio</a>
 							</u>
-						</label>
 						</td>
 					</tr>
     				</tbody>	
@@ -57,24 +56,27 @@
 
 		<table class="table table-striped w-auto" border="1">					
 		    <tr>
-		    	<thead class="thead-dark">
+		    	<thead class="thead-dark" style="color:#045579;background-color: #FFFFFF;font-size:14px">
 		    		<th>ID</th>
 			        <th>Nombre</th>
 			        <th>Pasivo</th>
-			        <th align="center">Acción</th>
+			        <th style="align=center">Acción</th>
 		    	</thead>
 		    </tr>
 		
 		    {% for paciente in pacientes %}
-			    <tr id="{{forloop.counter}}">
+			    <tr id="{{forloop.counter}}" style="font-size:13px; color:#098979">
 			        <td>{{ paciente.id}}</td>
 
-			        <!-- <td  width="450">{{ paciente.nombre}}</td> -->
 					<td>	
 					<li>
-					<a href="{% url 'ActualizaPac' paciente.id %}"> 
-					{{ paciente.nombre }}
-					</a>
+					{% if perms.ai.actualiza_pac %}
+						<a href="{% url 'ActualizaPac' paciente.id %}">{{ paciente.nombre }}</a>
+					{% else %}
+						<a onclick="alert('Usted no está autorizado a ingresar a la ficha')" >
+						{{ paciente.nombre }}
+						</a>
+					{% endif %}
 					</li>	
 			        </td>
 					
@@ -86,11 +88,19 @@
 						<input type="checkbox" name="check1" checked disabled/>
 					{% endif %}
 					</td>	
-				
+
 
 			        <td>
-					<a class="btn btn-danger" href="{% url 'EliminaPac' paciente.id %}" role="button">Elimina</a>
-					
+					{% if perms.ai.grid_pcteselimina %} 
+						<a class="btn btn-danger" href="{% url 'EliminaPac' paciente.id %}" role="button">Elimina</a>
+					{% else %}
+
+						<a style="font-size:14px;background-color: #DB3939; color:White;" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a eliminar registro')">Elimina</a>
+
+					{% endif %}
+					</td>
+
+
 					<!--
 					<a class="btn btn-primary" href="{% url 'ActualizaPac' paciente.id %}" role="button">Modifica</a>
 			        </td>

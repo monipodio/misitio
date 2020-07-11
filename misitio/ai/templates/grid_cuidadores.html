@@ -5,50 +5,49 @@
 		{% if not user.is_authenticated %} 
         	<a href="{% url 'login_ini' %}">
         {% endif %}
-		
 			<form  method='GET' action="{% url 'grid_cuidadorBusca' %}"> 
 				{% csrf_token %}
 				<table border="0">
     			<tbody>	
 				<tr>
-					<td>
+					<!-- caja de busqueda -->
+					<td style="font-size:14px;color:#098979">
 					<label for="mySearch">Patrón de busqueda:</label>
-					<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
-					</td>
-					<td width="90">
-			     	<input type="submit" value="Busca" class="btn btn-primary">
+					<input type="text" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 					</td>
 					
-					{% if perms.ai.nuevo_cuidadores %} 
-					<td  width="130">
-					<a class="btn btn-primary" href="{% url 'NuevoCui' %}" role="utton">Nuevo</a>
+					<!-- BOTON BUSCA -->
+					<td width="90">
+			     	<input style="font-size:11px" type="submit" value="Busca" class="btn btn-primary">
 					</td>
-					{%endif%}
+					
+					<!-- NUEVO -->
+					<td  width="100">
+					<a  style="font-size:11px" class="btn btn-primary" href="{% url 'NuevoCui' %}" role="button">Nuevo</a>
+					</td>
 
-
-					<!-- numero de registros -->
-           			<td width="150" align="right">
+					<!-- TOTAL CUIDADORES -->
+           			<td width="180" align="right">
               		<a class="text-right text-muted small">
     		           	Tot cuidadores: {{cuenta}}
 	        		</a>
             		</td>
-
-					<td width="180" align="right">
-					<label>
+					
+					<!-- regresa al inicio -->
+					<td width="200" align="right">
 						<u>
 							<a href="{% url 'principal' %}">Inicio</a>
 						</u>
-					</label>
 					</td>
-					
 				</tr>
 				</tbody>
 				</table>
 			</form>
 			
-			<table class="table table-striped w-auto" border="1">	
+			<!-- <table class="table table-striped w-auto" border="1"> -->
+			<table class="table table-hover table-fixed" border="1">	
 			   <tr>
-			   	<thead class="thead-dark"> 
+			   	<thead class="thead-dark" style="background-color: #10106D; color:White; font-size:12px"> 
 			   		<th>ID</th>
 			        <th>Nombre</th>
 			        <th>Estado</th>
@@ -59,38 +58,53 @@
 			   </tr>
 				
 				{% for cuidador in cuidadores %}
-			    <tr>
-			        <td>{{ cuidador.id}}</td>
-
+			    <tr style="font-size:13px; color:#098979">
+			        <td>{{ cuidador.id }}</td>
 
 			        <!-- <td>{{ cuidador.nombre}} -->
-					<td>	
+					<td width="300" style="font-size:13px">	
 					<li>
-					<a href="{% url 'ActualizaCui' cuidador.id %}"> 
-					{{ cuidador.nombre }}
-					</a>
+					
+
+					{% if perms.ai.actualiza_cui %} 	 
+						<a href="{% url 'ActualizaCui' cuidador.id %}" id="nombre"> 
+						{{ cuidador.nombre }}
+						</a>
+						
+					{% else %}
+
+						<a onclick="alert('Usted no está autorizado a ingresar a la ficha')" >
+						{{ cuidador.nombre }}
+						</a>
+
+					{% endif %}
+					
+
 					</li>	
 			        </td>
 
-
 					{% if cuidador.estado == 1 %}	
-			        	<td>Pasivo</td>
+			        	<td style="color:#F7021C">Pasivo</td>
 			        {% else %}
-						<td>Activo</td>	
+						<td style="color:#098979">Activo</td>	
 			        {%endif%}
 
 					
-			        <td>{{ cuidador.rut}}</td>
-		        
+			        <td width="100">
+			        	{{ cuidador.rut}}
+			        </td>
 
-			        <td>{{ cuidador.direccion}}</td>
-
+			        <td width="300">
+			        	{{ cuidador.direccion}}
+			        </td>
 			        
+					<!-- elimina cuidador -->
 			        <td>
-						<!--
-						<a class="btn btn-primary" href="{% url 'ActualizaCui' 	cuidador.id %}" role="button">Modifica</a>
-						-->
-						<a class="btn btn-danger" href="{% url 'EliminaCui' 	cuidador.id %}"role="button">Elimina</a>
+			        {% if perms.ai.btn_elim_gridgcui %} 	
+						<a class="btn btn-danger" href="{% url 'EliminaCui' cuidador.id %}"role="button">Elimina</a> 
+					{% else %}
+						<a style="font-size:14px;background-color: #DB3939; color:White;" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a eliminar registro')">Elimina</a>		
+					{% endif %}
 			    	</td>	
 			
 			    </tr>

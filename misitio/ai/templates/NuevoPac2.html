@@ -1,0 +1,62 @@
+{% extends "plantilla_base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+
+<section class='section2'>
+    <form method="POST" action="#"> 
+        {% csrf_token %}
+        <table  border="0">
+            {% if resultado == True %}
+                <p style="color: #ff0000;"> {{variable2}} </p>  <!--PACIENTE YA EXISTE -->
+            {% endif %}
+          
+            <tr>
+                <!-- AYUDA -->
+                <td width="800" align="right">
+                <u>
+                    <a onclick="alert('Si el RUT existe, entonces dará la posibilidad de mostrar la ficha con los datos a la fecha de alta. Si no quieres verla, te devuelves. En caso contrario, es decir que el paciente sea nuevo, mostrará la ficha vacia, lista para llenar.')"> Ayuda /</a>
+                </u>
+                </td>
+
+                <!-- REGRESA A PANTALLA ANTERIOR -->
+                <td width="100" align="right">
+                <u>
+                    <a align="right" href="{% url 'grid_pacientes' %}">Regresa /</a>
+                </u>
+                </td>
+    
+                <!-- REGRESA AL INICIO -->
+                <td width="50" align="right">
+                <u>
+                    <a align="right" href="{% url 'principal' %}">Inicio</a>
+                </u>
+                </td>
+            </tr>
+        </table>        
+
+        
+        <div class="tablita">
+        <table border = '0' class="table table-striped">  
+            <tr>
+                <td>R.U.T.:</td>
+            
+                <td>
+                    <d> {{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}} </d>
+                </td>
+            </tr>    
+ 
+        </table>
+        </div>
+        {% if resultado == False %}        
+            <button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+        {% endif %}
+ 
+        {% if resultado == True %}
+        <td width="130">
+            <a class="btn btn-primary" href="{% url 'ActualizaPac' id_x %}" role="button">Revisar paciente</a>
+        </td>
+        {% endif %}                                    
+
+    </form>
+</section>
+{% endblock %}

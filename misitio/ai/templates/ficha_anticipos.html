@@ -2,32 +2,48 @@
 {% block content %}
 {% load humanize %}
 	<section class='section2'>
-		<form id="form_anti" method="POST" action="#" onsubmit="return ValidaFicha_anti()";>
+		<form id="form_anticipos" method="POST" action="#" onsubmit="return ValidaFicha_anti()";>
 		{% load widget_tweaks %} 			
  		{% csrf_token %}
-		<table class="table table-striped" border = '1'>	
-		<tbody>		
 
+		<d><p align="right">
+			<u>
+				<a href="{% url 'grid_anticipos' %}">Todos los anticipos </a>
+				<a href="{% url 'grid_pacientes' %}"> / Regresa</a>
+			</u>
+			</p>
+		</d>
+
+		<d><p align="right">
+		<u>
+		<a onclick="alert('ADVERTENCIA:\nTodo ABONO INICIAL del paciente será considerado por el tema a partir de la fecha de inicio <fecha de ingreso o reingreso>, por lo tanto,  ABONOS INICALES historicos hacia atrás que tenga el paciente no se verán reflejados el presente período.')"> Ayuda</a>
+		</u>
+		</d>
+
+		<div class="grid">
+		<table class="table table-striped" border = '0'>	
+		<tbody>		
 		    {% if error_new == "error1" %}
     	    	<p class="error1">Paciente ya tiene una ABONO INICIAL. El registro NO ha sido grabado !!</p>
         	{% endif %}
 
 			<tr>
-				<td width=40>R.U.T. Paciente:</td>
+				<td class="columna1">R.U.T. Paciente:</td>
 				<td>
-					<d>
+					<d  class="columna2">
 					{{rut_anticipos}}
 					</d>
 
-					<d>
+					<d  style="color: #ff0000;">
 					{{nombre_paciente}}
 					</d>
-
+		
 				</td>
+
 			</tr>
 
 			<tr>
-				<td>Fecha digitación:</td>
+				<td class="columna1">Fecha digitación:</td>
 				<td align="Left">
 					<d>
 					{{fecha_actual}}
@@ -37,7 +53,7 @@
 
 			<tr>
 				<!-- td de la fecha MM-AAAA -->
-				<td>Periodo abono:</td>
+				<td class="columna1">Periodo abono:</td>
 				<td align="Left">
 					<select	name="mes" id = "mes" tabindex="1">
 					{% for meses_var in meses %}
@@ -48,6 +64,7 @@
 						{% endif %}
 					{% endfor %}
 					</select>
+
 					<select	name="ano" id = "ano" tabindex="2">
 					{% for ano_var in ano %}
 						{% if ano_var == ano_hoy %}
@@ -62,7 +79,7 @@
 			</tr>
 
 			<tr>
-				<td>Monto abonos $:</td>
+				<td class="columna1">Monto abonos $:</td>
 				<td align="Left">
 					<d>
 					{{form_anti.valor|attr:'tabindex:3'|attr:'id:valor'|attr:'onblur:separadordemiles(this)'|attr:'required'}}
@@ -77,7 +94,7 @@
 			</tr>
 
 			<tr>
-			<td>Tipo de abono</td>
+			<td class="columna1">Tipo de abono</td>
 			<td>
 				<select	name="abon" tabindex="4" id="abon" style="width:80px">
 				{% for abo in abon %}
@@ -102,14 +119,20 @@
 					{% endif %}
 				{% endfor %}			
 				</select>
-			
-				Fecha cheq.
-				<d>{{form_anti.fecha_cheque|attr:'id:fecha_cheque'|attr:'placeholder:aaaa-mm-dd'|attr:'size:10'|attr:'onblur: return validarFormatoFecha3()'}}</d>
+
 			</td>
 			</tr>
 
 			<tr>
-				<td>Boleta:</td>
+				<td class="columna1">Fecha cheque:</td>
+				<td align="Left">
+				<d>{{form_anti.fecha_cheque|attr:'id:fecha_cheque'|attr:'placeholder:aaaa-mm-dd'|attr:'size:10'|attr:'onblur: return validarFormatoFecha3()'}}</d>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td class="columna1">Boleta:</td>
 				<td align="Left">
 					<d>
 					{{form_anti.boleta|attr:'tabindex:5'|attr:'id:boleta'}}
@@ -117,7 +140,7 @@
 				</td>
 			</tr>
 
-			<td>Observaciones</td>
+			<td class="columna1">Observaciones</td>
 				<td>
 				<d>
 				{{form_anti.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:5'|attr:'cols:60'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
@@ -125,18 +148,18 @@
 				</td>
 			</tr>
 
-			<d><p align="right">
-				<u>
-					<a href="{% url 'grid_anticipos' %}">Todos los anticipos </a>
-					<a href="{% url 'grid_pacientes' %}"> / Regresa</a>
-				</u>
-				</p>
-			</d>
 		</tbody>
 		</table>
+		</div>
 		<br>
 		<span id='span1'><span>
-		<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+
+		{% if perms.ai.btn_acep_fichaant %}
+			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		{% else %}
+			<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no está autorizado a grabar cambios en esta ficha')">Aceptar</a>		
+		{% endif %}
+
 		</form>
 	</section>
 {% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			{{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="#">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- Nombre y rut del paciente -->
+           				<td width="800" style="font-size:14px; color:#098979">
+    		            {{ rut_aux }} {{nombre}}	
+            			</td>
+
+						<!-- Envia a PDF -->
+						<td width="100" align="right">
+							<a title="Receta con casillas de 30 fechas para llenar" href="{% url 'imprimereceta' %}" width="30" height="40" class="text-center text-muted small" target="_blank"><img src="{{ logo_pdf}}" />Receta</a>
+						</td>
+	
+
+						<!-- numero de registros -->
+           				<td width="180" align="center" >
+              			<a class="text-right text-muted small" style="color:#098979">
+    		            	registros: {{cuenta}}
+	        		    </a>
+            			</td>
+
+
+						<!-- BOTON NUEVO -->
+						<td width="130" align="center">
+						<a class="btn btn-primary" href="{% url 'fichafarmaco' paciente.id %}" role="button" onMouseOver="return ayuda4('Agrega nuevo farmaco a la receta del paciente !!');" onMouseOut="return ayuda5();">Nuevo farmaco</a>
+					    </td>
+
+						<!-- link regresa al menu CONSULTAS -->
+					    <td width="200" align="right">
+						<u>
+						<a href="{% url 'ActualizaPac' paciente.id %}">Pantalla ant.</a>
+						</u>
+						</td>
+
+
+						<!-- link regresa al MENU PRINCIPAL -->
+					    <td width="90" align="right">
+						<u>
+						<a href="{% url 'principal'%}">Inicio</a>
+						</u>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="1">	
+		    <tr>
+		    	<!-- TITULOS CABECERA DE COLUMNAS -->
+		    	<thead  class="thead-dark" style="font-size:11px">
+			        <th style="background-color: #10106D; color:White">
+						Descripcion				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Fecha Prescr.
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Via Suministro
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Frecuencia
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Id
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Acción
+			    	</th>
+
+		    	</thead>
+		    </tr>
+
+			<!-- REGISTROS DE LA GRID -->
+		    {% for receta in receta %}
+			    <tr>
+			        <td  width="250" style="font-size:14px">
+						{{receta.descrip}}
+			        </td>
+
+			        <td  width="165" style="font-size:14px">
+						{{receta.fecha_prescri|date:"Y-m-d"}}
+			        </td>
+
+			        <td  width="40" style="font-size:14px">
+			        	{% for cod,descrip in via_lista.items %}
+			        		{% if receta.via_sumi == cod %}
+								{{ descrip }}
+							{% endif %}
+						{% endfor %}
+			        </td>
+
+			        <td  width="40" style="font-size:14px" align="left">
+						{{ receta.frecuencia}}
+			        </td>
+
+			        <td  width="20" style="font-size:14px" align="left">
+						{{ receta.id}}
+			        </td>
+
+					<!-- BOTON ELIMINA FARMACO -->
+			        <td width="50">
+			        {% if perms.ai.btn_elim_gridrecet %} 
+						<a class="btn btn-danger" style="font-size:12px" href="{% url 'eliminafarma' receta.id %}" role="button">Elimina</a>
+					{% else %}
+						<a style="font-size:14px;background-color: #DB3939; color:White;" role="button" class="btn btn-primary" onclick="alert('Usted no está autorizado a eliminar registros')">Elimina</a>
+					{% endif %}
+			    	</td>	
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}
+

@@ -1,0 +1,161 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+{% load humanize %}
+	<section class='section2'>
+
+		{% if not user.is_authenticated %}
+            <a href="{% url 'login_ini' %}">
+        {% endif %}
+
+			<!-- muestra mensajes de error creado en la VIEW.PY -->
+			{% if messages %}
+    		<ul class="messages">
+        	{% for message in messages %}
+        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        			  {{ message }}
+        		</li>
+        	{% endfor %}
+    		</ul>
+			{% endif %}
+
+			<form method='POST' action="#">
+				{% csrf_token %}
+				<table border="0">
+    				<tbody>
+					<tr>
+						<!-- td de la fecha dd-mm-aaaa -->
+						<td width="200" align="Left">
+
+							<select	name="meses" id = "meses">
+							{% for meses_var in meses %}
+								{% if meses_var == mes_hoy %}
+									<option value ="{{meses_var}}" selected='selected'>	{{meses_var}}</option>
+								{% else %}
+									<option value ="{{meses_var}}">{{meses_var}}</	option>
+								{% endif %}
+							{% endfor %}
+							</select>
+	
+							<select	name="ano" id = "ano">
+							{% for ano_var in ano %}
+								{% if ano_var == ano_hoy %}
+									<option value ="{{ ano_var}}" selected='selected'>{{ano_var}}</option>
+								{% else %}
+									<option value ="{{ano_var}}">{{ano_var}}</option>
+								{% endif %}
+							{% endfor %}
+							</select>
+						</td>
+
+           				<td width="270">
+				     	<input type="submit" value="Despliega segun fecha cheque" class="btn btn-primary">
+            			</td>
+
+						<!-- Envia a EXCEL (recauda de apoderados)-->
+						<td width="100" align="right">
+							<a title="Pautas según cuidadores que se muestran" href="#" width="30" height="40" class="text-center text-muted small"><img src="{{ logo_excel }}" />Listado</a>
+						</td>
+	
+						<!-- numero de registros -->
+           				<td width="150" align="right">
+              			<a class="text-right text-muted small">
+    		            	registros {{cuenta}}
+	        		    </a>
+            			</td>
+
+						<!-- link regresa al menu CONSULTAS -->
+					    <td width="120" align="right">
+						<u>
+						<a href="{% url 'consultas' %}">Pantalla ant.</a>
+						</u>
+						</td>
+
+					</tr>
+    				</tbody>
+
+				</table>
+			</form>
+
+			<table class="table table-hover table-fixed" border="0">
+		    <tr>
+		    	<thead  class="thead-dark" style="font-size:11px">
+			        <th style="background-color: #10106D; color:White">
+						Paciente				        
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Tipo doc.
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Numero
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Banco
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Fecha cheque
+			    	</th>
+
+			        <th style="background-color: #10106D; color:White">
+			        	Valor $
+			    	</th>
+		    	</thead>
+		    </tr>
+
+		    {% for cheque in cheques %}
+			    <tr>
+			        <td  width="250" style="font-size:12px">
+					{% for pcte in paciente %}
+						{% if pcte.rut == cheque.rut %}
+							{{pcte.nombre}}
+						{% endif %}
+					{% endfor %}	
+			        </td>
+
+
+					<!-- TIPO DE DOCUMENTO de pago-->							
+			        <td  width="15" style="font-size:12px">
+					{% for abon in abon %}
+						{% if abon.codigo == cheque.abon %}
+							{{abon.descrip}}
+						{% endif %}
+					{% endfor %}	
+			        </td>
+
+
+			        <td  width="40" style="font-size:12px">
+						{{ cheque.cheque}}
+			        </td>
+
+					<!--
+			        <td  width="40" style="font-size:12px">
+						{{ cheque.banco}}
+			        </td>
+					-->
+			        <td  width="40" style="font-size:12px">
+					{% for bco in banco %}
+						{% if bco.codigo == cheque.banco %}
+							{{bco.descrip}}
+						{% endif %}
+					{% endfor %}	
+			        </td>
+
+			        <td  width="160" style="font-size:12px">
+						{{ cheque.fecha_cheque|date:"Y-m-d"}}
+			        </td>
+
+
+			        <td  width="40" style="font-size:12px" align="right">
+						{{ cheque.valor|intcomma}}
+			        </td>
+
+			    </tr>
+
+		    {% endfor %}
+		</table>
+	</section>
+{% endblock %}
+

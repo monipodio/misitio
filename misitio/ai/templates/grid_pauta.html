@@ -26,20 +26,14 @@
 
     				<tbody>
 					<tr>
-						<td width="230">
+						<td width="230" style="color:#098979; font-size:15px">
 						<label>Paciente:</label>
 						<!-- caja glosa a buscar-->
-						<input type="text" class = "search-query" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
+						<input type="text" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 						</td>
 
-						<!-- boton BUSCAR glosa de nombre -->
-						<td width="180" title="Solo pacientes dentro del rango de fechas">
-				     	<input type="submit" value="Busca / Construye" class="btn btn-primary">
-						</td>
-						
-						
 						<!-- td de la fecha dd-mm-aaaa -->
-						<td width="290" align="Left">
+						<td width="290" align="Left" style="color:#098979; font-size:15px">
 							<label>
 								Fecha:
 							</label>
@@ -75,15 +69,19 @@
 							{% endfor %}
 							</select>
 						</td>
-						
 		
+
+						<!-- boton BUSCAR glosa de nombre -->
+						<td width="160" title="Solo pacientes dentro del rango de fechas" style="font-size:12px">
+				     	<input type="submit" value="Busca / Construye" class="btn btn-primary">
+						</td>
+
+
 						<!-- regresa al principal -->
-					    <td width="100" align="right">
-						<label>
+					    <td width="150" align="right">
 							<u>
 								<a href="{% url 'principal' %}">Inicio</a>
 							</u>
-						</label>
 						</td>
 
 					</tr>
@@ -95,19 +93,19 @@
 		    <tr>
 		    	<thead class="thead-dark">
 
-			        <th style="background-color: #10106D; color:White">
+			        <th style="background-color: #10106D; color:White; font-size:12px">
 				        Pacientes Activos
 			    	</th>
 
-			        <th style="background-color: #10106D; color:White">
+			        <th style="background-color: #10106D; color:White; font-size:12px">
 			        	Mañana
 			    	</th>
 
-			        <th style="background-color: #10106D; color:White">
+			        <th style="background-color: #10106D; color:White; font-size:12px">
 			        	Tarde
 			    	</th>
 
-			        <th style="background-color: #10106D; color:White">
+			        <th style="background-color: #10106D; color:White; font-size:12px">
 			        	Noche
 			    	</th>
 
@@ -118,28 +116,28 @@
 			    <tr>
 			        <td  width="250" style="font-size:12px">
 						<li>
-						<a href="{% url 'ActualizaPauta' pauta.id %}" title="Verifique que todos los datos del paciente esten completos en la ficha">{{ pauta.paciente}}</a>
+						<a href="{% url 'ActualizaPauta' pauta.id pauta.fecha %}" title="Verifique que todos los datos del paciente esten completos en la ficha">{{ pauta.paciente}}</a>
 						</li>
 			        </td>
 					
 					{% if pauta.turno1 != None %}
-			        	<td width="200">{{ pauta.turno1 }}</td>
+			        	<td width="200" style="font-size:12px">{{ pauta.turno1 }}</td>
 			        {%else%}
 			        	<td width="200"> </td>
 					{% endif %}
 					
 					{% if pauta.turno2 != None%}	
-			        	<td width="200">{{ pauta.turno2}}</td>
+			        	<td width="200" style="font-size:12px">{{ pauta.turno2}}</td>
 					{% else %}
 			        	<td width="200"> </td>
 					{% endif %}
 
-					{% if pauta.turno3 != None%}	
-			        	<td width="200">{{ pauta.turno3}}</td>
+					{% if pauta.turno2 != None%}	
+			        	<td width="200" style="font-size:12px">{{ pauta.turno3}}</td>
 					{% else %}
 			        	<td width="200"> </td>
 					{% endif %}
-
+		
 			        </td>
 
 			    </tr>

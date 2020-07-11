@@ -1,6 +1,8 @@
+/* Nota: ID (#)  y clases (.), (gato y punto respectivamente) */
 /* Toda funcion que haga alusion a AJAX no hay que subirla a PythonAnywhere */
 /* pues dará un error 404 */
 /* ------------------ */
+
 function llenacaja(){
 	var fini = $('#datepicker').val();
 	var fini = fini.slice(6,10)+"-"+fini.slice(0, 2)+"-"+fini.slice(3,5);
@@ -39,12 +41,13 @@ function validaemail(email) {
     }
 }
 
+
 function validarut_cui() {
+	var rut = document.getElementById("rut").value;
 	if(document.getElementById("extran").checked) { 	
 		return true;
 	} else {	
-		validarut(); 
-		/* siexiste() ---(AJAX) */
+		validarut();
  	}
 }
 
@@ -52,6 +55,19 @@ function validarut_cui() {
 function separadordemiles(input) {
 	var num = input.value.replace(/\./g,'');
 	/* alert(num); */
+}
+
+
+function validarut_999() {
+    /*
+	xx = validarut_()
+	if(xx == true){
+		siexiste(rut)
+		return true;
+	}else{
+		return false;
+	}
+	*/
 }
 
 /* valida rut del paciente desde FICHA_PACIENTES.HTML */
@@ -77,10 +93,14 @@ function validarut() {
 			}else if (dv == 10){
 				dv = "K";
 			}
+
 			if(dv==0-0) {
 				alert("El rut es incorrecto por formato digitado.!!");
+				document.getElementById("rut").style.border = '';
+				document.getElementById("rut").style.border = '2px solid red';
 				return false;
 			}
+
 			if(dv == RUT[1].toUpperCase()){
          		document.getElementById("rut").style.border = '';
            		document.getElementById("nombre").focus();
@@ -102,42 +122,13 @@ function validarut() {
 	}	
 }
 
-function siexiste2(rut) {
-    $("#rut").focusout(function () {
-    	var username = $(this).val();
-    	console.log( $(this).val() );
-    	$.ajax({
-    	    url: '/siexisterut/',
-    	    data: {'rut':rut},
-    	    dataType: 'json',
-    	 	success: function (data) {
-    	    	if (data.is_taken) {
-    	        	alert("rut ya existe.");
-    	    	}
-    	    }
-    	});
-    });
-}
-
-
-function siexiste(rut) {
-    $("#rut").change(function () {
-      var rut = $(this).val();
-      alert("Llega a la funcion SIEXISTE :"+rut);
-      $.ajax({
-        url: '/siexisterut/',
-        data: {
-          'rut': rut
-        },
-        dataType: 'json',
-        success: function (data) {
-          if (data.is_taken) {
-            alert("A user with this RUT already exists.");
-          }
-        }
-      });
-    });
-}
+/*
+$(document).ready(function(){
+   $("#rut").blur(function(evento){
+      alert("Ha entrado al puto JQuery");
+   });
+});
+*/
 
 /* valida rut del apoderado desde ficha PACIENTE */
 function validarut2() {
@@ -235,7 +226,7 @@ function confirmar_borrado(nombre) {
 
 function confirmar_borrado2(nombre,id) {
 	var nombre = document.getElementById("nombre").value; 
-   if(confirm('¿Estas seguro de borrar a :'+nombre+' ?')) {
+    if(confirm('¿Estas seguro de borrar a :'+nombre+' ?')) {
      	var request = $.ajax({
     	    type: "GET",
     	    url: "{% url 'EliminaPac' id %}",
@@ -258,33 +249,6 @@ function limpia() {
 	document.getElementById("busca").value = " ";
 }
 
-
-function Ocultar() {
-	if(document.getElementById('div1_id').style.display == 'none') {
- 		document.getElementById('div0_id').style.display = 'block'; 
- 		document.getElementById('div1_id').style.display = 'block'; 
- 		document.getElementById('div2_id').style.display = 'block';
- 		document.getElementById('div3_id').style.display = 'block'; 
-		document.getElementById('div7_id').style.display = 'block'; 
-		document.getElementById('div8_id').style.display = 'block'; 
-		document.getElementById('div9_id').style.display = 'block'; 
-		document.getElementById('div10_id').style.display = 'block'; 
-		document.getElementById('div11_id').style.display = 'block'; 
-		document.getElementById('div12_id').style.display = 'block'; 
-
- 	} else {
- 		document.getElementById('div0_id').style.display = 'none';
- 		document.getElementById('div1_id').style.display = 'none';
- 		document.getElementById('div2_id').style.display = 'none';
- 		document.getElementById('div3_id').style.display = 'none';
- 		document.getElementById('div7_id').style.display = 'none';
- 		document.getElementById('div8_id').style.display = 'none';
- 		document.getElementById('div9_id').style.display = 'none';
- 		document.getElementById('div10_id').style.display = 'none';
- 		document.getElementById('div11_id').style.display = 'none';
- 		document.getElementById('div12_id').style.display = 'none'; 		
- 	}
-}
 
 /* Valida FICHA de PAUTA*/ 
 function ValidarForm() {
@@ -341,7 +305,6 @@ function ValidarForm() {
 	}
 
 }
-
 
 function ValidaFichapac() {
 	var medico = document.getElementById("medico").value 
@@ -456,9 +419,9 @@ function ValidaFichacui() {
 	var apago1 = document.getElementById("apago1").value 
 	var apago2 = document.getElementById("apago2").value 
 	var apago3 = document.getElementById("apago3").value 
-    var rut    = document.getElementById("rut").value
     var nombre = document.getElementById("nombre").value
     var fono_cuid = document.getElementById("fono_cuid").value
+
 
 	if(nombre === ""){
 		alert("El NOMBRE es obligatorio");
@@ -582,6 +545,7 @@ function mostrarPassword(){
 });
 
 
+/* VALIDA FECHA DE INICIO */
 function validarFormatoFecha() {
 	var fe_ini = document.getElementById("fe_ini").value
     var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
@@ -589,12 +553,13 @@ function validarFormatoFecha() {
     	document.getElementById("fe_ini").style.border = '';
         return true;
     } else {
-		document.getElementById('fe_ini').style.border = '2px solid red';
+		/* document.getElementById('fe_ini').style.border = '2px solid red'; */
       	alert("Error!! formato de FECHA INICIO debe ser aaaa-mm-dd, los separadores son signos menos");
-      	return false;
+      	return true;
     }
 }
 
+/* VALIDA FECHA DE NACIMIENTO */
 function validarFormatoFecha2() {
 	var fe_nac = document.getElementById("fe_nac").value
     var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
@@ -603,9 +568,9 @@ function validarFormatoFecha2() {
         return true;
     } else {
 		document.getElementById('fe_nac').style.border = '2px solid red';
-      	alert("Error!! formato de FECHA NACIMIENTO debe ser aaaa-mm-dd, los separadores son signos menos");
-  		return false;    	
-    }
+      	alert("Error!! formato de FECHA de NACIMIENTO debe ser aaaa-mm-dd, los separadores son signos menos");
+      	return true;
+     }
 }
 
 /* valida fecha cheque - ficha paciente */
@@ -618,8 +583,24 @@ function validarFormatoFecha3() {
     } else {
 		document.getElementById('fecha_cheque').style.border = '2px solid red';
       	alert("Error!! formato de FECHA CHEQUE debe ser aaaa-mm-dd, los separadores son signos menos (solo en caso de cheques)");
-  		return false;    	
+		return true;
     }
+}
+
+/* VALIDA FECHA DE ALTA DEL PACIENTE */
+function validarFormatoFecha4(campo) {
+	if (campo == "fe_alta") {
+		var fe_alta = document.getElementById("fe_alta").value
+    	var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    	if (fe_alta.match(RegExPattern)|| fe_alta === "" ) {
+    		document.getElementById("fe_alta").style.border = '';
+    	    return true;
+    	} else {
+			document.getElementById('fe_alta').style.border = '2px solid red';
+    	  	alert("Error!! formato de FECHA ALTA debe ser aaaa-mm-dd, los separadores deben ser signos menos");
+  			return true;    	
+    	}
+    }	
 }
 
 
@@ -653,4 +634,305 @@ function validabono() {
 		document.getElementById("fecha_cheque").readOnly = false;
 	}
 }	
+
+
+function miniventana() {
+	/* alert("hola");  */
+	/* window.open(url,"ventana1","width=300,height=300,scrollbars=NO");  */
+	window.open("http://www.desarrolloweb.com" , "ventana1" , "width=120,height=300,scrollbars=NO") 
+}
+
+/* div que contiene una table (oculta-muesta toda la table)*/
+function oculta_muestra() {
+	if(document.getElementById('div1').style.display == 'none') {
+ 		document.getElementById('div1').style.display = 'block';
+
+ 	} else {
+ 		document.getElementById('div1').style.display = 'none';
+ 	}
+}
+
+
+function oculta() {
+ 	document.getElementById('div1').style.display = 'none';
+}
+
+
+function confirmar_borrado4(nombre,id) {
+	var nombre = document.getElementById("nombre").value; 
+    if(confirm('¿Estas seguro de borrar a :'+nombre+' ?')) {
+     	var request = $.ajax({
+    	    type: "GET",
+    	    url: "{% url 'EliminaPac' id %}",
+    	    data: {
+    	        "csrfmiddlewaretoken": "{{ csrf_token }}",
+    	        "id": id                    
+    	    },
+    		});
+   			request.done(function(response) {
+   		});
+ 	}
+}
+
+/* para probar */
+/*
+var rut = "145694841";
+// retorna true si es válido
+if($.validateRut(rut)) {
+	alert("El rut es válido!");
+}
+*/
+
+/*
+$(document).ready(function(){
+ 	$('#rut').blur(function(evento){
+	alert("..entró,..y ahora que? !!");
+  	});
+});
+*/
+
+
+/*
+$(document).ready(function(){
+	$("#rut").blur(function(evento){
+	var rut = $("#rut").val()	
+		$.ajax({
+			url:'{% url siexisterut99 %}',
+			type:'get',
+			data : {rut: rut},
+			timeout: 10000,	
+	
+			beforeSend: function(){
+				$("#resultado").html("Buscando rut="+rut); 
+			},
+
+         	success: function(data){
+            	alert("Entró al success");
+          	},
+  	
+		});
+
+    });
+});
+*/
+
+
+/* url: "{% url 'validate_username' %}", */
+$(document).ready(function(){
+	$("#id_username").blur(function () {
+		/* var username = $(this).val(); */
+		var username = $("#id_username").val();
+        $.ajax({
+			url: '{% url "validate_username" %}',
+			data: {
+				'username': username
+			},
+			dataType: 'json',
+      
+			/*
+			beforeSend: function(){
+				alert("A la conchesumadre que entró al beforeSend: "+username); 
+			},
+			*/
+      
+        	success: function (data) {
+            if (data.is_taken) {
+              alert("A user with this username already exists.");
+            }
+          }
+        });
+
+    });
+
+});
+
+
+
+
+/* Valida FICHA de RECETA de ingreso de un farmaco */ 
+function ValidaFichaReceta() {
+	var descrip = document.getElementById("descrip").value
+	var fecha_prescri = document.getElementById("fecha_prescri").value 
+	var via_sumi = document.getElementById("via_sumi").value 
+	var frecuencia = document.getElementById("frecuencia").value 
+
+	if (descrip == ''){
+		alert("No ha especificado el farmaco ó suministros a ingresar !!");
+		document.getElementById('descrip').focus()
+		document.getElementById('descrip').style.border = '2px solid red';		
+		return false;	
+	}
+
+	if(fecha_prescri === ""){
+		alert("La FECHA DE PRESCRIPCION es obligatoria");
+		document.getElementById('fecha_prescri').focus()
+		document.getElementById('fecha_prescri').style.border = '2px solid red';
+		return false;
+	}
+
+	if(via_sumi === ""){
+		alert("Debe seleccionar VIA SUMINISTRO es obligatoria");
+		document.getElementById('via_sumi').focus()
+		document.getElementById('via_sumi').style.border = '2px solid red';
+		return false;
+	}
+
+	if(frecuencia === ""){
+		alert("Debe ingresar la FRECUENCIA ");
+		document.getElementById('frecuencia').focus()
+		document.getElementById('frecuencia').style.border = '2px solid red';
+		return false;
+	}
+
+}
+
+
+/* VALIDA FECHA DE prescricion de farmacos de una RECETA */
+function validaFechaFarmaco() {
+	var fecha_prescri = document.getElementById("fecha_prescri").value
+    var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    if (fecha_prescri.match(RegExPattern)) {
+    	document.getElementById("fecha_prescri").style.border = '';
+        return true;
+    } else {
+		/* document.getElementById('fe_ini').style.border = '2px solid red'; */
+      	alert("Error!! formato de FECHA INICIO debe ser aaaa-mm-dd, los separadores son signos menos");
+		document.getElementById('fecha_prescri').style.border = '2px solid red';
+      	return false;
+    }
+}
+
+
+/* pacientes */
+function ayuda1() {
+	alert('Al hacer clic en PASIVO implicará que a ese paciente no podrán hacerle pautas pero aparecerá en los demás informes.\nPor otra parte, el paciente que se va de alta se le deberá obviamente colocar la fecha de ALTA y el sistema automaticamente al momento de grabar lo dejará como PASIVO y eliminará la fecha de INICIO.\nEn caso de reingreso del paciente, se deberá borrar la fecha de alta manualmente, sacar el ticket de PASIVO y poner la nueva fecha de INICIO.');
+}
+
+/* cuidadores */
+function ayuda2() {
+	alert('La forma de poner fotos a una FICHA DE CUIDADOR es de la iguiente manera:\n Al ingresar al sistema, debes seleccionar el link ADMIN desde la pantalla inicial de identificacion de usuario. Estando en el ADMIN, se debe seleccionar la tabla CUIDADORES. Clic en el nombre de la cuidadora, y hacia abajo buscamos el campo llamado MEDIA. Clic en SELECCIONAR ARCHIVO, entonces se debe elejir la foto cuyo nombre sea el rut del cuidador, por ejemplo: 21022645-1.jpg\nla cual has seleccionado y preparado previamente');
+}
+
+/* grid nuevo farmaco */
+function ayuda44() {
+	alert('Incorpora nuevo fármaco a la receta del paciente');
+}
+
+function ayuda_login() {
+	alert('Claves de perfiles a usar en el módulo ADMIN:\n'+
+	'grid_pcteselimina => Botón elimina paciente desde la grid\n'+
+	'btn_elim_gridcui => Botón elimina cuidador desde la grid\n'+
+	'btn_acep_fichapac => Botón graba desde ficha de paciente\n'+
+	'btn_acep_fichaant => Botón graba desde ficha anticipo\n'+
+	'btn_elim_gridrecet => Botón elimina desde grid receta\n'+
+	'btn_acep_fichapod => Botón aceptar desde ficha apoderado\n'+	
+	'btn_acep_fichapaut => Botón aceptar desde ficha pauta\n'+
+	'btn_acep_fichaparam => Botón aceptar desde ficha de parametros\n'+
+	'actualiza_pac => link sobre nombre de paciente en la grid\n'+
+	'actualiza_cui => link sobre nombre de cuidador en la grid\n'+
+	'btn_acep_fichafar => botón aceptar desde ficha farmaco\n'
+	)
+}
+
+
+function confirmaelimcui2(nombre,id){
+	var opcion=confirm('¿Seguro de borrar a paciente: '+nombre+' ?');
+	if (opcion == true) {
+      	var request = $.ajax({
+            type: 'GET',
+            url: "{% url 'Eliminapac_nuevo' %}",
+	 	    data: {"id": id },
+    	    /*    	
+	 	    data: {
+    	        "csrfmiddlewaretoken": "{{ csrf_token }}",
+    	        "id": id },
+			*/
+        });
+        alert("No funcó!! :"+request);
+        request.done(function(response) {
+            alert("Registro eliminado");
+        });	
+
+ 	}else{
+		return false;
+	}
+}
+
+
+/* NO BORRAR */
+function confirmaelimcui(){
+	var nombre = document.getElementById("nombre").value; 
+	$('#mensaje').html("No está autorizado para borrar !!");
+	/* en plantilla HTML: <div style="color:#F7021C" id="mensaje"></div> 
+	Y LA ACCION QUE DISPARA: onclick="confirmaelimcui();"
+	*/
+}
+
+
+$(document).ready(function(){
+	$('#rut').blur(function(evento){
+ 		var rut = $('input#rut').val();
+
+		var request = $.ajax({
+	    	url: "/siexiste_cui/",
+			method: 'GET',
+			data: {"rut":rut},
+			dataType: 'json',
+		});
+
+		request.done(function(data) {
+        	if (data.is_taken) {
+        		alert("El cuidador ya existe!!.");
+        	}		
+		})
+
+		request.fail( function(jqXHR, textStatus, errorThrown) {
+   		  if (jqXHR.status === 0) {
+		
+		    alert('Sin coenxión: Revise la Network.');
+		
+		  } else if (jqXHR.status == 404) {
+			/* xx = textSatus.toString()+' '+errorThrown.toString(); */
+		    alert('La página solicitada no existe [404]: '); 
+		
+		  } else if (jqXHR.status == 500) {
+		
+		    alert('Error interno del servidor [500].');
+		
+		  } else if (textStatus === 'parsererror') {
+		
+		    alert('Requested JSON parse failed.');
+		
+		  } else if (textStatus === 'timeout') {
+		
+		    alert('Error de expiración de tiempo.');
+		
+		  } else if (textStatus === 'abort') {
+		
+		    alert('Solicitud Ajax abortada.');
+		
+		  } else {
+		
+		    alert('Uncaught Error: ' + jqXHR.responseText);
+		
+		  }
+
+		})
+		
+  	});
+  	
+});
+
+
+/* Toma el focus del objeto */
+function ayuda4(mensajetexto){
+	/* lo despliega en el span de la PLANTILLA_BASE */
+	$('#mensaje').html(mensajetexto);
+}
+
+/* Abandona el focus del objeto */
+function ayuda5(){
+	/* lo despliega en el span de la PLANTILLA_BASE */
+	$('#mensaje').html("");
+}
 

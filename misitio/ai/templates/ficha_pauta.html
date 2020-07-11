@@ -4,39 +4,23 @@
 		<form id="form" name="form" action="#" method="POST" onsubmit="return ValidarForm();"> 
 			{% load widget_tweaks %} 			
  			{% csrf_token %}
-
-			<table  class="table table-dark" border = '1'>
+ 			<table  class="table table-dark" border = '1'>
 				<tr>
-				<td width="20">Nombre Paciente:</td>
-				<td>{{form.paciente|attr:'size:40'|attr:'readonly:True'}}</td>
+				<td width="20" style="color:#098979; font-size:14px">Nombre Paciente:</td>
+				<td style="color:#045579">{{form.paciente|attr:'size:40'|attr:'readonly:True'}}</td>
 				</tr>
 				
+				<!-- APODERADO -->
 				<tr>
-				<td width="20">Nombre Apoderado:</td>
-				<td class="napod">{{napod}}</td>
+				<td width="20" style="color:#098979; font-size:14px">Apoderado:</td>
+				<td class="napod" style="color:#045579">{{napod}}</td>
 			
-				<!-- si es DOMINGO o FESTIVO - cobro al apoderado-->
-				<!--
-				<td size="35">Tipo Cobro</td>
-				<td>
-				<select	name="reca_apod" id="reca_apod">
-					{% for tipcob in aReca_apod %}
-						{% if tipcob == var_recapod %}	
-							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
-						{% else %}
-							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
-						{% endif %}	
-					{% endfor %}
-				</select>
-				</td>
-				</tr>
-				-->				
-
+				<!-- FECHA PAUTA -->
 				<tr>
-				<td >Fecha pauta:</td>
-				<td>{{form.fecha|attr:'readonly:True'}}
+				<td style="color:#098979; font-size:14px">Fecha pauta:</td>
+				<td style="color:#045579">{{form.fecha|attr:'readonly:True'}}
 
-				<!--NUEVO Recargo a salario CUIDADOR - turno de mañana-->
+				<!--NORMAL - DOMINGO - FESTIVO -->
 				<select	name="reca_cui" id="reca_cui">
 					{% for tipcob in aReca_apod %}
 						{% if tipcob == var_reca %}	
@@ -49,15 +33,16 @@
 				</td>
 				</tr>
 
+				<!-- RUT -->
 				<tr>
-				<td>R.U.T.:</td>
-				<td>{{form.rut|attr:'size:10'|attr:'readonly:True'}}</td>
+				<td style="color:#098979; font-size:14px">R.U.T.:</td>
+				<td style="color:#045579">{{form.rut|attr:'size:10'|attr:'readonly:True'}}</td>
 				</tr>
 	
 				<tr>
-				<td>Estadia</td>
+				<td style="color:#098979; font-size:14px">Estadia</td>
 				<td>
-				<select	name="yace" id = "yace" tabindex="11">
+				<select	name="yace" id = "yace" tabindex="11" style="color:#045579">
 					{% for yace in yace %}
 						{% if yace.codigo == var_yace %}	
 							<option value ="{{yace.codigo}}" selected="selected">{{yace.descrip}}</option>
@@ -70,9 +55,9 @@
 				</tr>
 
 				<tr>
-				<td>Turno de mañana</td>
+				<td style="color:#098979; font-size:14px">Turno de mañana</td>
 				<td>
-				<select	name="rut_t1" tabindex="20" id="rut_t1">
+				<select	name="rut_t1" tabindex="20" id="rut_t1" style="color:#045579">
 					{% for r in turno1 %}
 						{% if r.rut == var_rutcui1 %}
 							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
@@ -95,9 +80,9 @@
 				</select>
 				-->
 
-				<td size="35">Tipo Turno1 </td>
+				<td size="35" style="color:#098979; font-size:14px">Tipo Turno1 </td>
 				<td>
-				<select	name="tipo_turno1" id="tipo_turno1">
+				<select	name="tipo_turno1" id="tipo_turno1" style="color:#045579">
 					{% for tip in tipo_turno %}
 						{% if tip == var_tip1 %}	
 							<option value ="{{forloop.counter0}}" selected="selected">{{tip}}</option>
@@ -110,9 +95,9 @@
 				</tr>
 
 				<tr>
-				<td>Turno Tarde</td>
+				<td style="color:#098979; font-size:14px">Turno Tarde</td>
 				<td>
-				<select	name="rut_t2" tabindex="20" id="rut_t2">
+				<select	name="rut_t2" tabindex="20" id="rut_t2" style="color:#045579">
 					{% for r in turno2 %}
 						{% if r.rut == var_rutcui2 %}
 							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
@@ -135,9 +120,9 @@
 				</select>
 				-->
 
-				<td size="35">Tipo Turno2</td>
+				<td size="35" style="color:#098979; font-size:14px">Tipo Turno2</td>
 				<td>
-				<select	name="tipo_turno2" id="tipo_turno2">
+				<select	name="tipo_turno2" id="tipo_turno2" style="color:#045579">
 					{% for tip in tipo_turno %}
 						{% if tip == var_tip2 %}	
 							<option value ="{{forloop.counter0}}" selected="selected">{{tip}} </option>
@@ -151,9 +136,9 @@
 				</tr>
 
 				<tr>
-				<td>Turno noche</td>
+				<td style="color:#098979; font-size:14px">Turno noche</td>
 				<td>
-				<select	name="rut_t3" tabindex="20" id="rut_t3">
+				<select	name="rut_t3" tabindex="20" id="rut_t3" style="color:#045579">
 					{% for r in turno3 %}
 						{% if r.rut == var_rutcui3 %}
 							<option value ="{{r.rut}}" selected = "selected">{{r.nombre}}</option>
@@ -163,22 +148,9 @@
 					{% endfor %}			
 				</select>
 
-				<!-- recargo a salario CUIDADOR - turno noche-->
-				<!--
-				<select	name="reca_cui3" id="reca_cui3">
-					{% for tipcob in aReca_apod %}
-						{% if tipcob == var_recacui3 %}	
-							<option value ="{{forloop.counter0}}" selected="selected">{{tipcob}} </option>
-						{% else %}
-							<option value ="{{forloop.counter0}}">{{tipcob}}</option>
-						{% endif %}	
-					{% endfor %}
-				</select>
-				-->
-
-				<td size="35">Tipo Turno3</td>
+				<td size="35" style="color:#098979; font-size:14px">Tipo Turno3</td>
 				<td>
-				<select	name="tipo_turno3" id="tipo_turno3">
+				<select	name="tipo_turno3" id="tipo_turno3" style="color:#045579">
 					{% for tip in tipo_turno %}
 						{% if tip == var_tip3 %}	
 							<option value ="{{forloop.counter0}}" selected="selected">{{tip}} </option>
@@ -193,9 +165,9 @@
 				</tr>
 
 				<tr>
-				<td>Observaciones</td>
-					<td>
-						<d>{{form.notas|attr:'id:notas'|attr:'cols:40'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}</d>
+				<td style="color:#098979; font-size:14px">Observaciones</td>
+					<td style="color:#045579">
+						<d>{{form.notas|attr:'id:notas'|attr:'cols:52'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}</d>
 					</td>
 				</tr>
 
@@ -213,8 +185,13 @@
 <!--				
 <button type="submit" id="submit" name="submit" class="btn btn-primary">Aceptar</button>
 -->
+			
+			{% if perms.ai.btn_acep_fichapaut %} 
+				<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
+			{%else%}
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no esta autorizado a grabar cambios a la ficha')">Aceptar</a>		
+			{%endif%}
 
-<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
 
 		</form>
 	</section>

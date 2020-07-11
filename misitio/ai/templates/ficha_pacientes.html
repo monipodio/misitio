@@ -6,8 +6,126 @@
             <a href="{% url 'login_ini' %}">
         {% endif %}
 
+			<form method='POST' action="#">
+			{% csrf_token %}
+
+ 			<table border="0">
+				<tr> <!-- AYUDA -->
+				{% if variable2 == '' %}
+				<td width="800" align="right">
+				<u>
+					<a onclick="return ayuda1();"> Ayuda /</a>
+				</u>
+				</td>
+				{%else%}
+					<td width="800" align="right">
+					<u></u>
+					</td>
+				{%endif%}
+
+
+				<!-- REGRESA A PANTALLA ANTERIOR -->
+				<td width="100" align="right">
+				<u>
+					<a align="right" href="{% url 'grid_pacientes' %}">Regresa /</a>
+				</u>
+				</td>
+
+				<!-- REGRESA AL INICIO -->
+				<td width="50" align="right">
+				<u>
+					<a align="right" href="{% url 'principal' %}">Inicio</a>
+				</u>
+				</td>
+				</tr>
+			</table>
+
+			{% if nuevo_pac != 1 %}
+			<!-- boton oculta - muestra TABLE -->
+			<tr>
+			<td>	
+			<p href="#" onclick="oculta_muestra()" class="btn btn-primary" title ="Clic, despliega / esconde">Seleccione Listado para este paciente</p>
+			</td>
+			</tr>
+ 			<div id="div1" style="display: none"> <!-- comienza con la tabla oculta -->
+			<table border="0" class="table table-striped">
+			<!-- IMPRESOS -->
+				<tr> 
+				<td>	
+				<a href="{% url 'repo1' %}" onclick="oculta()" target="_blank"> *Contrato de Prestacion de Servicios</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="{% url 'ingresopaciente' %}" onclick="oculta()" target="_blank">* Informe Ingreso paciente</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="{% url 'axo3' %}" onclick="oculta()" target="_blank">* Anexo 3: Notificación de Eventos adversos (EA)</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="{% url 'gestionremota' %}" onclick="oculta()" target="_blank">* Gestión Remota de pacientes CIMAS + D (FUNCIONAL)</a>
+				</td>
+				</tr>
+
+
+				<tr>
+				<td>
+				<a href="{% url 'gestionremota2' %}" onclick="oculta()" target="_blank">* Gestion Remota de Pacientes CIMAS + D (COGNITIVA)</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="#" onclick="oculta()" target="_blank">Gestion Remota de Pacientes CIMAS + D (ADS-Ch)</a>
+				</td>
+				</tr>
+
+
+				<tr>
+				<td>
+				<a href="{% url 'testdelta' %}" onclick="oculta()" target="_blank">*Test Delta</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="{% url 'regdiario' %}" onclick="oculta()" target="_blank">*Registro diario</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="{% url 'antecedente' %}" onclick="oculta()" target="_blank">*Anexo 1: Registro Visita Enfermeria</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="#" onclick="oculta()" target="_blank">Control MENSUAL de entrada-salida de cuidador</a>
+				</td>
+				</tr>
+
+				<tr>
+				<td>
+				<a href="#" onclick="oculta()" target="_blank">Escala de la medida de la lesión PERINEAL</a>
+				</td>
+				</tr>
+
+			</table>
+			</div>
+
+			</form>
+			{% endif %}
+			<!--FIN IMPRESOS -->
+
 		<form id="form" name="form" method="POST" action="#" onsubmit="return ValidaFichapac();"> 
-			
 			{% load widget_tweaks %} 			
  			{% csrf_token %}
 			<!-- muestra mensajes de error creado en la VIEWS.PY -->
@@ -19,26 +137,37 @@
     			</ul>    
 			{% endif %}
 			<!-- FIN muestra mensajes de error creado en la VIEWS.PY -->		
-			
-			<table  class="table table-dark" border = '0'>
+
+		<div class="grid">
+			<table border = '0' class="table table-striped" style="font-size:14px; color:#098979">  
 		    {% if error_new == "error1" %}
     	    	<p class="error1">R.U.T. de Paciente ya existe !!</p>
         	{% endif %}
-
 			<tr>
-				<td>R.U.T.:</td>
+				<td class="columna1" id="first-child">R.U.T.:</td>
 				<td>
+
+					<!--
 					<d>
 					{% if variable2 == 'modifica_rut' %}	
-					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}}
+						{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}}
 					{% else %}
-					{{form.rut|attr:'id:rut'|attr:'size:10'|attr:'readonly:True'}} 
+						{{form.rut|attr:'id:rut'|attr:'size:10'|attr:'readonly:True'}} 
 					{% endif %}
 					</d>
+					-->
 
 					<d>
-					{{form.estado|attr:'type:checkbox'}} Pasivo
+						{{form.rut|attr:'id:rut'|attr:'size:10'|attr:'readonly:True'}} 
 					</d>	
+
+					{% if nuevo_pac != 1 %}						
+					<d>{{form.estado|attr:'type:checkbox'}} Pasivo</d>	
+					<d>	
+					{{form.fe_alta|attr:'id:fe_alta'|attr:'size:17'|attr:'type:text'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:17'|attr:'onblur:return validarFormatoFecha4("fe_alta")'}} alta
+					</d>
+					{%endif%}					
+
 				</td>
 
 			</tr>
@@ -50,8 +179,8 @@
 					</d>
 					
 					{% if nuevo_pac == 0 %}
-					<u><a href="{% url 'Ficha_anticipos' %}">Anticipos-Abonos /</a></u>
-					<u><a href="{% url 'repo1' %}" target="_blank">Contrato</a></u>
+					<u><a href="{% url 'Ficha_anticipos' %}">Anticipos-Abonos</a></u>
+					<u><a href="{% url 'grid_receta' %}"> / Receta</a></u>
 					{% endif %}
 
 					<!--
@@ -110,7 +239,6 @@
 					<a>(Necesario para el Contrato)</a>
 				</td>			
 			</tr>
-
 
 			<tr>
 				<td id="div2_id">Fono Apoderado</td>
@@ -223,6 +351,44 @@
 				</td>			
 			</tr>
 
+			<td>Estado civil paciente</td>
+				<td>
+					<select	name="ecivil" id = "ecivil" tabindex="6">
+					{%if var_previ == None %}
+						<option value ="0">SELECCIONE ESTADO CIVIL</option>
+					{%endif%}
+					{% for ec in ecivil %}
+						{% if ec.codigo == var_ecivil %}
+							<option value ="{{ec.codigo}}" selected = "selected"> {{ec.descrip}} </option>
+						{% else %}	
+							<option value ="{{ec.codigo}}">{{ec.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+
+			<td>Prevision del paciente</td>
+				<td>
+					<select	name="previ" id = "previ" tabindex="6">
+
+					{%if var_previ == None %}
+						<option value ="0">SELECCIONE PREVISION</option>
+					{%endif%}
+
+					{% for previ in previ %}
+						{% if previ.codigo == var_previ %}
+							<option value ="{{previ.codigo}}" selected = "selected"> {{previ.descrip}} </option>
+						{% else %}	
+							<option value ="{{previ.codigo}}">{{previ.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+
+					</select>
+				</td>			
+			</tr>
+
+
 			<tr>
 				<td>Fecha Inicio </td> 
 				<td>
@@ -237,6 +403,7 @@
 				<td>
 				{{form.fe_nac|attr:'size:17'|attr:'type:text'|attr:'id:fe_nac'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:18'|attr:'onblur:return validarFormatoFecha2("fe_nac")'}}
 				</d>
+				<a>(Necesaria para los Informes)</a>
 				</td>
 			</tr>
 
@@ -257,7 +424,7 @@
 			</tr>
 
 			<tr>
-			<td>Correo</td>
+			<td>Correo Pac.</td>
 				<td>
 					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:22'}}</d>
 				</td>
@@ -307,7 +474,8 @@
 					
 					Abono Inicial $
 					-->
-					<input type="text" name="fname" value="{{valor_abono|intcomma}}" id="valor_abono" readonly><a>(no modificable)</a>
+				<input type="text" name="fname" value="{{valor_abono|intcomma}}" id="valor_abono" readonly>
+				(no modificable, se ingresa en ANTICIPOS)
 				</td>			
 			</tr>
 
@@ -380,22 +548,20 @@
 			<td>Observaciones</td>
 				<td>
 				<d>
-				{{form.notas|attr:'width:300'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:30'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
+				{{form.notas|attr:'width:250'|attr:'size:60'|attr:'id:notas'|attr:'tabindex:30'|attr:'cols:80'|attr:'rows:3'|attr:'placeholder:Escribe tu comentario aqui'}}
 				</d>
 				</td>
 			</tr>
 
-			<d>
-			<p align="right"><u><a href="{% url 'grid_pacientes' %}">Regresa /</a></u>
-			<u><a href="{% url 'principal' %}">Inicio</a></u>
-			</p>
-			</d>
-
 			</table>
-
+			</div>
 			<Span id='span1'><span>
-	
-			<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+		
+			{% if perms.ai.btn_acep_fichapac %} 
+				<button type="submit" id="submit" name = "submit" class="btn btn-primary">Aceptar</button>
+			{% else %}
+				<a style="font-size:14px" role="button" class="btn btn-primary" onclick="alert('Usted no está autorizado a grabar cambios a esta ficha')">Aceptar</a>		
+			{% endif %}
 
 		</form>
 	</section>

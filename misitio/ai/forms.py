@@ -1,6 +1,6 @@
 from django import forms
 from misitio.ai.models import Cuidadores,Pacientes,Apoderados,Param,Pauta,Resupauta,Detapauta
-from misitio.ai.models import Anticipos,Pauta_aux,Pacientes_aux,Diario_aux
+from misitio.ai.models import Anticipos,Pauta_aux,Pacientes_aux,Diario_aux,Receta,Maefarm
 from datetime import datetime
 from django import forms
 
@@ -18,10 +18,6 @@ class ParamForm(forms.ModelForm):
 class PacientesForm(forms.ModelForm):
 	class Meta:
 		model = Pacientes
-		widgets = {
-			'fe_ini': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
-		   	'fe_nac': forms.TextInput(attrs={'input_formats': ["%d-%m-%Y H:i"]}),
-		}
 
 		fields = "__all__" 
 		def __str__(self):
@@ -110,6 +106,7 @@ class AnticiposForm(forms.ModelForm):
 		def __str__(self):
 			return self.rut
 
+
 class Pacientes_auxForm(forms.ModelForm):
 	class Meta:
 		model = Pacientes_aux
@@ -142,3 +139,22 @@ class UploadFileForm(forms.Form):
 
 		def __str__(self):
 			return self.archivo
+
+class RecetaForm(forms.ModelForm):
+	class Meta:
+		model = Receta
+
+		fields = "__all__"
+
+		def __str__(self):
+			return self.rut
+
+
+class MaefarmForm(forms.ModelForm):
+	class Meta:
+		model = Maefarm
+
+		fields = "__all__"
+
+		def __str__(self):
+			return self.descrip

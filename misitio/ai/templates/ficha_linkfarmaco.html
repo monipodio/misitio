@@ -1,0 +1,41 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		<form id="form" name="form" action="#" method="POST"> 
+			{% load widget_tweaks %} 			             
+ 			{% csrf_token %}
+
+ 			<table border="0">
+    			<tbody>
+				<tr>
+					<!-- link regresa a PANTALLA ANTERIOR -->
+				    <td width="860" align="right">
+					<u>
+					<a href="{% url 'farmacos' %}">Pantalla ant.</a>
+					</u>
+					</td>
+
+				</tr>
+    			</tbody>
+			</table>
+			
+			<table class="table table-dark" border = '1'>
+				<tr>
+				<td width="200" style="color:#045579">Nombre del Farmaco:</td> 
+				<td><d>{{ form.descrip|attr:'readonly:true'|attr:'size:80'}}</d></td>
+				</tr>
+				
+				<tr>
+				<td style="color:#045579">Link:</td> 
+				<td><d>{{form.link|attr:'size:80'}}</d></td>
+				</tr>
+
+
+			</table>
+
+			<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
+
+		</form>
+	</section>
+
+{% endblock %}
