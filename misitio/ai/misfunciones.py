@@ -78,7 +78,7 @@ def fecha_palabra(fe_x):
 	mes_x = fe_x[5:7]
 	mes_x = meses[int(mes_x) - 1]	# mes en palabras
 	ano_x = fe_x[0:4]
-	fecha_pala = mes_x+" "+dia_x+" de "+ano_x
+	fecha_pala = dia_x+" de "+mes_x+" de "+ano_x
 	return fecha_pala
 
 def nturnos(rut_x,fe_i,fe_f):

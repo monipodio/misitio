@@ -1,0 +1,33 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+<!-- <section> -->
+ <table border="0">
+    <tbody>
+    <tr  bgcolor="#95DE93">
+      <td width="150" align="left" style="color:#045579">
+      <u>
+      <a href="{% url 'ActualizaPac' paciente_id %}">Pantalla Anterior</a></
+      </u>
+      </td>
+
+      <td align="center" width="400" >
+      {{ paciente }}
+      </td>
+
+      <td align="center" width="250">
+      Lat: {{ lat }} Lng: {{ lng }} 
+      </td>
+   
+	  <td align="center" width="400">
+      Dir: {{ localizacion }}
+      </td>
+
+    </tr>
+    </tbody>
+
+  </table>  
+
+<body>
+<div id="map"></div>
+</body>
+{% endblock %}

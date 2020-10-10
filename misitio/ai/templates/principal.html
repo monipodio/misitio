@@ -1,16 +1,16 @@
-{% extends 'plantilla_base.html' %}
+{% extends 'plantilla_base_flex.html' %}
 {% load static %}
 
 {% block content %}
-	<section>
+	<section class='section'>
     <table border="0">
     <tbody>   
     {% csrf_token %}     
-    <tr>   
-        <td width="260" valign="top">     
+    <tr> 
+        <td width="260" valign="top"> 
 		<br>
         <aside class="col-xs-12 col-md-3"> 
-        	<div class="btn-group-vertical">
+        	<div class="btn-group-vertical"> 
             {% if not user.is_active %} 
                 <a href="{% url 'login_ini' %}">
             {% endif %}
@@ -35,6 +35,7 @@
 			<a class="btn btn-primary" href="{% url 'MenuParam' %}" role="button" style="margin: 5px">Parametros</a>
             {% endif %}
 
+
             <!--
             <a class="btn btn-primary" href="{% url 'info' %}" role="button" style="margin: 5px">Info</a>
             -->
@@ -42,6 +43,8 @@
             {% if perms.ai.menu_impresos %}
              <a class="btn btn-primary" href="{% url 'consultas' %}" role="button" style="margin: 5px">Consultas e Impresos</a>
             {%endif%}
+
+            <a class="btn btn-primary" href="{% url 'acercade' %}" role="button" style="margin: 5px" title="Identificación de autoria y desarrollador">Acerca de...</a>
             
         	</div>
         </aside>
@@ -62,16 +65,22 @@
         </td>    
 
     </tr>
+
     </tbody>    
     </table>
-        <div class="table-responsive" style="color:#025D5D">
+
+
+    <div class="table-responsive" style="color:#025D5D">
 		<article class=article>
     		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
     		a la persona que tiene el cuidado y acompañamiento al paciente.
     		Aqui se gestiona la ficha con todos los antecedentes del asistente al paciente. Además se controlan los turnos, lugares de la prestación y los honorarios correspondientes. Se mantiene también los antecedentes del paciente y su respectivo apoderado. 
     	</article>
-        </div>
-    	<br>
+    </div>
+
+
+    <br>
+    
     </section>
 {% endblock %}  
 

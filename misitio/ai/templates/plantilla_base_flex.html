@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE <html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="description", content="">
+
+    <meta name="viewport" content="with=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0,">
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
+
+   <link src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtRJUcKnpQI-9jvaSDHAmXgfrsLxM6RyA&callback=initMap&libraries=&v=weeklydefer">
+
+
+    <link src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"/>
+
+    <!-- para pantalla login --> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+    <link src="https://code.jquery.com/jquery-3.3.1.js">
+    
+    <script src="{% static 'js/myjs2.js' %}"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+    
+    <!--pra prueba -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>    
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>   <!-- NUEVO -->
+    
+    <link rel="stylesheet" href="{% static 'css/mycss.css' %}">
+  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <link src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <title id = "title">AI-Asistencia Integral</title>
+</head>
+
+    <body>
+    <div class='section_flex'>  
+    	 {% csrf_token %}
+    
+            <!-- TITULO DE LA VENTANA -->
+            <div class ="titulo_aux">
+            <h4>
+              {{ variable1 }}
+            </h4> 
+            </div>
+    
+    
+            <!-- NOMBRE DEL USUARIO -->
+            <div class="nombre_usuario">
+               {{ user.username }}
+            </div>
+    </div>
+    
+
+      {% block content %}
+      {% endblock %}
+
+       </section> 
+      <br>
+
+      <footer class = 'footer'>
+        <div class='texto_footer'>
+          <small>
+          ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
+          </small>
+        </div>  
+      </footer>
+    </body>
+</html>

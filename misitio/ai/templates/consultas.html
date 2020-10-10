@@ -20,7 +20,7 @@
         <div  class="btn-group-vertical">
             <!-- <h3 class="hidden-xs">Accesos</h3> -->
                    
-            <a class="btn btn-primary" href="{% url 'info' %}" role="button" style="margin: 5px">Info</a>
+            <a class="btn btn-primary" href="{% url 'info' %}" role="button" style="margin: 5px">Liquidacion mensual Cuidadores</a>
 
             <a class="btn btn-primary" href="{% url 'info_mensual' %}" role="button" style="margin: 5px">Resumen de Prestaciones</a>
 
@@ -32,6 +32,9 @@
             {% if request.user.is_superuser %}
             <a class="btn btn-primary" href="{% url 'grid_login' %}" role="button" style="margin: 5px" title="Fecha y hora de acceso">Acceso de Usuarios</a>
             {% endif %}
+
+            <a class="btn btn-primary" href="{% url 'acercade' %}" role="button" style="margin: 5px" title="Identificación de autoria y desarrollador">Acerca de</a>
+
 
         </div>
         </aside>

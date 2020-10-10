@@ -23,7 +23,6 @@
 					</td>
 				{%endif%}
 
-
 				<!-- REGRESA A PANTALLA ANTERIOR -->
 				<td width="100" align="right">
 				<u>
@@ -47,7 +46,7 @@
 			<p href="#" onclick="oculta_muestra()" class="btn btn-primary" title ="Clic, despliega / esconde">Seleccione Listado para este paciente</p>
 			</td>
 			</tr>
- 			<div id="div1" style="display: none"> <!-- comienza con la tabla oculta -->
+ 			<div id="div1" style="display: none"> <!--comienza con tabla oculta, funcion JS oculta_muestra()-->
 			<table border="0" class="table table-striped">
 			<!-- IMPRESOS -->
 				<tr> 
@@ -175,7 +174,7 @@
 			<tr>
 				<td>Nombre paciente</td> 
 				<td>
-					<d>{{ form.nombre|attr:'size:40'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'requiered:True'|attr:'tabindex:2'}}
+					<d>{{ form.nombre|attr:'size:40'|attr:'onkeyup:mayuscula(this)'|attr:'placeholder:paterno materno nombres'|attr:'id:nombre'|attr:'required:True'|attr:'tabindex:2'}}
 					</d>
 					
 					{% if nuevo_pac == 0 %}
@@ -197,14 +196,14 @@
 				<td>
 					<d id="div4_id">
 					{% if variable2 == 'modifica_rut' %}	
-						{{ form.rut_apod|attr:'size:10'|attr:'id:rut_apod'|attr:'onblur:return validarut2()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'title:dato obligatorio'|attr:'tabindex:3'}}
+						{{ form.rut_apod|attr:'size:10'|attr:'id:rut_apod'|attr:'onblur:return validarut2()'|attr:'onchange:upperCase()'|attr:'placeholder:9999999-9'|attr:'required:True'|attr:'title:dato obligatorio'|attr:'tabindex:3'}}
 					{% else %}
 						{{form.rut_apod|attr:'size:10'|attr:'readonly:True'}} 
 					{% endif %}
 					</d>
 
 					<d id="div5_id">
-						{{form.n_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'placeholder:paterno materno nombres'|attr:'title:dato obligatorio'|attr:'tabindex:4'}} 
+						{{form.n_apod|attr:'required:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'placeholder:paterno materno nombres'|attr:'title:dato obligatorio'|attr:'tabindex:4'}} 
 					</d>	
 					<d>
 						<!--
@@ -220,7 +219,7 @@
 				<td id="div0_id">Direcc. Apoderado</td>
 				<td>
 					<d id="div1_id">
-					{{form.dir_apod|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'tabindex:5'}} 
+					{{form.dir_apod|attr:'required:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:40'|attr:'tabindex:5'}} 
 					</d>	
 				</td>
 			</tr>
@@ -244,7 +243,7 @@
 				<td id="div2_id">Fono Apoderado</td>
 				<td>
 					<d id="div3_id">
-					{{form.f_apod|attr:'id:f_apod'|attr:'requiered:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:7'}} 
+					{{form.f_apod|attr:'id:f_apod'|attr:'required:True'|attr:'size:12'|attr:'title:dato obligatorio'|attr:'tabindex:7'}} 
 					</d>
 				</td>
 			</tr>
@@ -307,9 +306,21 @@
 				<td >Localizacion fisica</td>
 				<td>
 					<d>
-					{{form.localizacion|attr:'requiered:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:60'|attr:'tabindex:13'}} 
+					{{form.localizacion|attr:'required:True'|attr:'onKeyup:mayuscula(this)'|attr:'size:60'|attr:'tabindex:13'}} 
+
+					{% if nuevo_pac == 0 %}
+						<u><a href = "{% url 'georeferencia' %}">Google Maps</a></u>
+					{% endif %}
 					</d>
+
+					{% if nuevo_pac == 0 %}
+						{% if perms.ai.btn_coordenadas %} 
+							<u><a href="{% url 'coordenadas' %}"> / Coordenadas</a></u>
+						{% endif %}
+					{% endif %}
+					
 				</td>
+
 			</tr>
 
 			<tr>
@@ -331,7 +342,7 @@
 				<td>Medico</td>
 				<td>
 					<d >
-					{{ form.medico|attr:'id:medico'|attr:'requiered:true'|attr:'size:40'|attr:'tabindex:15'|attr:'onKeyup:mayuscula(this)'}} 
+					{{ form.medico|attr:'id:medico'|attr:'required:true'|attr:'size:40'|attr:'tabindex:15'|attr:'onKeyup:mayuscula(this)'}} 
 					</d>
 				</td>
 			</tr>
@@ -393,7 +404,7 @@
 				<td>Fecha Inicio </td> 
 				<td>
 				<d>	
-				{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:17'|attr:'onblur:return validarFormatoFecha("fe_ini")'}}
+				{{form.fe_ini|attr:'id:fe_ini'|attr:'size:17'|attr:'type:text'|attr:'required:True'|attr:'placeholder:aaaa-mm-dd hh:mm:ss'|attr:'tabindex:17'|attr:'onblur:return validarFormatoFecha("fe_ini")'}}
 				</d>
 				</td>
 			</tr>
@@ -410,14 +421,14 @@
 			<tr>
 				<td>Direccion</td>
 				<td>
-					<d>{{form.direccion|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:19'}}</d>
+					<d>{{form.direccion|attr:'size:60'|attr:'required:True'|attr:'tabindex:19'}}</d>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Fonos</td>
 				<td>
-					<d>{{form.fono_pcte|attr:'id:fono_pcte'|attr:'size:12'|attr:'requiered:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:20'}}</d>
+					<d>{{form.fono_pcte|attr:'id:fono_pcte'|attr:'size:12'|attr:'required:True'|attr:'onblur:return valida_fono()'|attr:'id:fono_pcte'|attr:'tabindex:20'}}</d>
 					
 					<d>{{form.fono2_pcte|attr:'size:12'|attr:'placeholder:Opcional'|attr:'tabindex:21'}}</d>
 				</td>
@@ -426,7 +437,7 @@
 			<tr>
 			<td>Correo Pac.</td>
 				<td>
-					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:22'}}</d>
+					<d>{{form.correo|attr:'onblur:return validaemail("correo")'|attr:'required:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:22'}}</d>
 				</td>
 			</tr>
 

@@ -1,28 +1,30 @@
 {% extends "plantilla_base.html" %}
 {% block content %}
-<section class='section2'>
-<body>
+
+<section class='section'> 
+
 <div class="login-form">
     <form action="{% url 'login_ini' %}" method="post">{% csrf_token %}
         <h3 class="text-center" style="color:#080FE5";>IDENTIFICACION</h3>   
+
         <div class="form-group">
-          <div class="input-group">
-            
-            <span class="input-group-addon">
+            <div class="input-group">
+                <span class="input-group-addon">
                 <i class="fa fa-user"></i>
-            </span>
+                </span>
 
                 <input type="text" class="form-control" name="username" placeholder="Usuario" required="required">       
             </div>
         </div>
-    <div class="form-group">
+
+        <div class="form-group">
             <div class="input-group">
                 
                 <span class="input-group-addon">
                     <i class="fa fa-lock"></i>
                 </span>
 
-                <input type="password" class="form-control" name="password" placeholder="Password" required="required">       
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required" value="">       
             </div>
         </div>        
         
@@ -35,22 +37,32 @@
         </div>
         
         {% if error_log == "error" %}
-        <p class="error1">usuario o password incorrecta !!</p>
+            <p class="error1">usuario o password incorrecta !!</p>
         {% endif %}
 
         <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox">Recuerdame</label>
-
+            <!--
+            <label class="pull-left checkbox-inline"><input type="checkbox"> Recuerdame</label>
+            -->
             <!--
             <a  href="#" class="pull-right">Olvido la Password?</a>
             -->
-            <a href="http://www.google.com">Google</a>
-
         </div>
-      <div class="or-seperator"><i></i></div>
+
+        <div>
+            <!-- produccion -->
+            <!--
+            <a href="http://monipodio.pythonanywhere.com/admin/login/?next=/admin/" target="_blank">Admin</a> 
+            -->
+
+            <!-- desarrollo -->
+            <a href="http://127.0.0.1:8000/admin/login/?next=/admin/" target="_blank">Admin</a>
+        </div>
+
+        <div class="or-seperator"><i></i></div>
     </form>
     <p class="text-center text-muted small">No tienes una cuenta? <a href="#">Sign up here!</a></p>
 </div>
-</body>
-</section>
+
+</section> 
 {% endblock %}

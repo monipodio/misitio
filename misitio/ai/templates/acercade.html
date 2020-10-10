@@ -1,0 +1,45 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+<section class='section'>
+	<table border="0">
+	<tbody>
+    <tr>  <!-- fila -->
+    
+        <td width="260" valign="top">	<!-- columna -->
+        	<div>
+	           <br> 
+    		</div>
+		</td>	
+
+	    <td>  <!-- columna -->
+	        <div>
+	           <br> 
+	            <img  class="center-block" src="{{ logo_corp }}" width="300" height="200" 	border:3px/>
+	        </div>
+			<br>
+	    </td>
+
+
+    	<td width="270" valign="top">  <!-- columna -->
+    		<d>
+    		<p align="right"><u><a href="{% url 'principal' %}">inicio</a></u></p>
+    		</d>
+    	</td>    
+
+    </tbody>	
+	</table>
+
+	</tr>	<!-- fin fila -->
+
+ 	<div style="background: #E9F9F6; color:blue; font-size:12px" height="200">
+   		<br>
+        Derechos Reservados | GMI Desarrollos de Sistemas informáticos &copy 
+    	<br>
+        Desarrollado por Gabriel Araya García - gabrielaraya2011@gmail.com
+        <br>
+        Toda la aplicación fué desarrollada en Framework Django 2.1.7 basado en Python 3.8 y base de datos Sqlite3
+    </div>
+    <br>
+
+</section>
+{% endblock %}

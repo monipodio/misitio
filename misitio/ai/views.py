@@ -1,5 +1,5 @@
-#### Create your views here. ####
-from django.shortcuts import render,redirect
+#### views pincipal ####
+from django.shortcuts import render,redirect,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from misitio.ai.forms import CuidadoresForm
@@ -85,6 +85,8 @@ import csv,io
 # para prueba
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
+import folium
+import os.path as path
 
 
 @login_required(login_url='log_out')
@@ -93,11 +95,12 @@ def principal(request):
     logo = "/static/img/Logo_AsistenciaIntegral.jpg"
     #logo = "/staticfiles/img/Logo_AsistenciaIntegral.jpg" # for PythonAnyWhere
     context ={"variable1":variable1,"logo_corp":logo, }
-    return render(request,'principal.html',context)
+    return render(request,'principal_flex.html',context)
 
 def login_ini2(request):
     return HttpResponse("!! Sistema momentaneamente en etapa de pruebas y avance de desarrollo!!")
 
+## EL ORIGINAL 
 def login_ini(request):
 	variable1 = 'Pantalla de Acceso al Sistema'
 	error_log = 'ok'
@@ -123,6 +126,34 @@ def login_ini(request):
 			"error_log":error_log,
 	}
 	return render(request,'login_ini.html',context)
+
+
+# para pruebas #####
+def login_ini_parapruebas(request):
+	variable1 = 'Pantalla de Acceso al Sistema (para pruebas)'
+	error_log = 'ok'
+	username = request.POST.get('username')
+	password = request.POST.get('password') # valor del template
+	user = auth.authenticate(username=username, password=password)
+	if request.method == "POST":
+		if user is not None and user.is_active:
+			# Correct password, and the user is marked "active"
+			auth.login(request, user)
+			request.session['username_x'] = username # variable gobal
+			request.session['id_x'] = user.id 	# variable gobal
+			#return HttpResponse(str(user.id))
+			return HttpResponseRedirect("principal")
+
+		error_log = "error"
+		
+	context ={"variable1":variable1,"error_log":error_log,}
+	return render(request,"login_ini.html",context)
+	context ={
+			'user':user,
+			"variable1":variable1,
+			"error_log":error_log,
+	}
+	return render(request,'login_ini3.html',context)
 
 
 def log_out(request):
@@ -241,6 +272,7 @@ def ficha_cuidadores(request,id):
 	variable1 = 'Ficha del Cuidador'
 	variable2 = 'modifica_rut'
 	obj = Cuidadores.objects.get(id=id)
+	request.session['id_x'] = id 		# define variable gobal
 	context = {
 	   	"rut":obj.rut,
 	   	"nombre":obj.nombre,
@@ -334,6 +366,7 @@ def NuevoCui(request):
 	tipo    =  Param.objects.filter(tipo='CONTR').order_by('codigo') # Contratado - honorarios
 	clasi   =  Param.objects.filter(tipo='CLASI').order_by('codigo') #
 	instr	=  Param.objects.filter(tipo='INSTR').order_by('codigo')
+	ecivil	=  Param.objects.filter(tipo='ECIVI')
 	context = {
 		'form':form,
 		'variable1':variable1,
@@ -344,6 +377,7 @@ def NuevoCui(request):
 		'tipo':tipo,
 		'clasi':clasi,
 		'instr':instr,
+		'ecivil':ecivil,
 		'nuevo_cui':nuevo_cui,
 		'error_new':error_new,
 		}
@@ -496,6 +530,7 @@ def ActualizaCui(request,id):
 	nuevo_cui = 0
 	variable2 = 'nomodifica_rut'
 	cuidador  =  Cuidadores.objects.get(id=id)
+	request.session['id_x'] = id 	# define variable gobal
 	form = CuidadoresForm(request.POST or None, request.FILES or None,instance=cuidador)
 	#form = CuidadoresForm(request.POST, request.FILES or None)
 	region    =  Param.objects.filter(tipo='REGI').order_by('descrip')
@@ -504,28 +539,55 @@ def ActualizaCui(request,id):
 	tipo      =  Param.objects.filter(tipo='CONTR').order_by('codigo') #tipo contrato
 	clasi     =	 Param.objects.filter(tipo='CLASI').order_by('codigo') #Superior-interm.-stand
 	instr	  =  Param.objects.filter(tipo='INSTR').order_by('codigo') # nivel educ.
+	ecivil	  =  Param.objects.filter(tipo='ECIVI')
+	#
 	var_region = cuidador.region # entrega valor del registro Cuidadores
 	var_comuna = cuidador.comuna # entrega valor del registro Cuidadores
 	var_sex    = cuidador.sexo   # entrega valor del registro Cuidadores
 	var_tip    = cuidador.tipo   # entrega valor del registro Cuidadores
 	var_clasi  = cuidador.clasi  # entrega valor del registro Cuidadores
 	var_instr  = cuidador.instr  # nivel educacional
+	var_ecivil = cuidador.ecivil # estadocivil
 
+
+	#arch_media = "/staticfiles/img/"+cuidador.rut+".jpg" # producción
+	arch_media = "/static/img/"+cuidador.rut+".jpg" 
 	if  request.method == "POST":
 		elim_foto_x = request.POST.get('elim_foto')
-		if elim_foto_x == '0':  # elimina
-			remove("/static/img/"+cuidador.rut+".jpg")
+		if elim_foto_x == 'on':  # elimina
+			# verifica que el archivo exista
+
+			#os.path.isfile(, requiere la ruta completa
+			if os.path.isfile(os.getcwd()+"\\misitio\\ai\\static\\img\\"+cuidador.rut+".jpg"):
+				#os.remove(), requiere la ruta completa # produccion
+				#os.remove(os.getcwd()+"/misitio/staticfiles/img/"+cuidador.rut+".jpg") # produccion
+
+				#os.remove(), requiere la ruta completa
+				os.remove(os.getcwd()+"\\misitio\\ai\\static\\img\\"+cuidador.rut+".jpg")  
 
 		if form.is_valid():
-			cuidador.media = ""
+			#cuidador.media = ""
 			form.save()
-			return redirect('grid_cuidadores')
+
+		return redirect('grid_cuidadores')
 
 	form = CuidadoresForm(instance=cuidador)
 	var_sex = cuidador.sexo # entrega valor del campo
 	var_region = cuidador.region # entrega valor del campo
 	var_comuna = cuidador.comuna # entrega valor del campo
-	fotito = "/static/img/"+cuidador.rut+".jpg"
+	var_ecivil = cuidador.ecivil
+
+
+	# el isfile(), requiere la ruta completa
+	#if os.path.isfile(os.getcwd()+"/misitio/staticfiles/img/"+cuidador.rut+".jpg"):   # produccion
+	
+	# el isfile(), requiere la ruta completa
+	if os.path.isfile(os.getcwd()+"\\misitio\\ai\\static\\img\\"+cuidador.rut+".jpg"):
+		#fotito = "/static/img/"+cuidador.rut+".jpg"
+		fotito = arch_media
+	else:
+		fotito = ""
+
 	context = {
 		"variable1":variable1,
 		"variable2":variable2,
@@ -536,6 +598,7 @@ def ActualizaCui(request,id):
 		"clasi":clasi,
 		"tipo":tipo,
 		"instr":instr,
+		"ecivil":ecivil,
 		"fotito":fotito,
 		"id_x":id,
 		"var_sex":var_sex,
@@ -544,6 +607,7 @@ def ActualizaCui(request,id):
 		"var_tip":var_tip,
 		"var_clasi":var_clasi,
 		"var_instr":var_instr,
+		"var_ecivil":var_ecivil,
 		"nuevo_cui":nuevo_cui,
 		}
 	return render(request,'ficha_cuidadores.html',context)
@@ -627,7 +691,7 @@ def ActualizaPac(request,id):
 	# Limpia y pone el registro del paciente en esta tabla auxiliar para los ANTICIPOS u otros
 	username_y = request.session.get('username_x') # variable gurdada en view plantilla_base
 
-	request.session['rut_x'] = paciente.rut # variable gobal
+	request.session['rut_x'] = paciente.rut # inicializa variable gobal
 
 	paciente_aux  =  Pacientes_aux.objects.all()
 	Pacientes_aux.objects.all().delete() # borra el contenido de la tabla
@@ -1535,15 +1599,23 @@ def Ficha_anticipos(request):
 def acsv(request):
 	nom_arch = nombrearch() # Se forma string para nombre de archivo excel
 	string_nombre = 'pac'+nom_arch
-	#
 	query = Pauta_aux.objects.all().order_by('rut') # viene filtrada x rango de fecha
 
 	reg_x = 0
-	for fech_x in query:
-		fechapautas = fech_x.fecha
-		reg_x = reg_x + 1
-		if reg_x == 3:
-			break
+	if query:
+		for fech_x in query:
+			reg_x = reg_x + 1
+	else:
+		# estas dos instrucciones van juntas siempre
+		messages.error(request, "No existen movimientos que mostrar !!")
+		return redirect("info")
+
+	#reg_x = 0
+	#for fech_x in query:
+	#	fechapautas = fech_x.fecha
+	#	reg_x = reg_x + 1
+	#	if reg_x == 3:
+	#		break
 
 	mes_x = fechapautas.strftime('%m')		
 	ano_x = fechapautas.strftime('%Y')		
@@ -3324,6 +3396,73 @@ def NuevoPac2(request):
 	return render(request, 'NuevoPac2.html',context)
 
 
+def NuevoCui3(request):
+	variable1 = 'Agregando nueva ficha de cuidador'
+	variable2 = "modifica_rut"
+	resultado = False
+	error_new = "ok"
+	fechahoy = datetime.now()		
+	mes_numerico = fechahoy.month   
+	ano_hoy  = fechahoy.year		
+	nuevo_cui = 1	# nuevo
+	id_x = 1	# para que no grite
+	region  =  Param.objects.filter(tipo='REGI').order_by('descrip')
+	comuna  =  Param.objects.filter(tipo='COMU').order_by('descrip')
+	sexo    =  Param.objects.filter(tipo='SEXO').order_by('codigo')
+	cob     =  Param.objects.filter(tipo='COBR').order_by('codigo')
+	clasi   =  Param.objects.filter(tipo='PROC').order_by('codigo')
+	abon    =  Param.objects.filter(tipo='ABON').order_by('codigo')
+	yace	=  Param.objects.filter(tipo='YACE').order_by('-valor1')
+	tipo    =  Param.objects.filter(tipo='CONTR').order_by('codigo') # Contratado - honorarios
+	instr	=  Param.objects.filter(tipo='INSTR').order_by('codigo')
+	ecivil	=  Param.objects.filter(tipo='ECIVI')	
+	previ	=  Param.objects.filter(tipo='PREVI')	
+	form 	=  CuidadoresForm(request.POST or None)
+
+	if request.method == "POST":
+		variable2 = "nomodifica_rut"
+		cuidador = Cuidadores    # modelo
+		rut_x = request.POST.get('rut')		# valor del template
+		extran = request.POST.get('extran') # valor del template
+		resultado = cuidador.objects.filter(rut=rut_x).exists() # devuelte un true o false
+		registro = cuidador.objects.filter(rut=rut_x) # devuelve el registro del paciente
+		for dato in registro:
+			id_x = dato.id
+			nom_x = dato.nombre
+
+		cuidador.extran = 0 
+
+		context = {
+			'form':form,
+			'variable1':variable1,
+			'variable2':variable2,
+			'region':region,
+			'comuna':comuna,
+			'sexo':sexo,
+			'tipo':tipo,
+			'clasi':clasi,
+			'instr':instr,
+			'nuevo_cui':nuevo_cui,
+			'error_new':error_new,
+			'extran':extran,
+			}
+
+		if resultado==False:	# si existe o no
+			return render(request,'ficha_cuidadores.html',context) # si no existe, muestra plantilla en blanco
+		else:
+			variable2 = nom_x+", ya existe !!"	
+			#return render(request,'ficha_cuidadores.html',context)
+
+	context = {
+		'form':form,
+		'variable1':variable1,
+		'variable2':variable2,
+		'resultado':resultado,
+		'id_x':id_x,				
+		}
+	return render(request, 'NuevoCui3.html',context)
+
+
 def grid_cheques(request):
 	variable1 = 'Listado de cheques'
 	logo_excel = "/static/img/EXCEL0D.ICO"
@@ -3493,8 +3632,6 @@ def axo3(request):
 		]
 
 	t2 = Table(data, rowHeights=35, repeatCols=1)
-	#t2 = Table(data, rowHeights=35, colWidths=[150,300])
-
 
 	t2.setStyle(TableStyle([
 		("ALIGN", (0, 0), (-1, -1), "LEFT"),
@@ -3884,7 +4021,7 @@ def regdiario(request):
 	w, h = t.wrap(100, 100)   
 	#return HttpResponse("w="+str(w)+" h="+str(h))
 	t.drawOn(c, 30, 180, 0)   
-	# ############### fin segunda grid DE PRIMERA HOJA###############	
+	# ############### fin segunda grid DE PRIMERA HOJA ###############	
 	y = 160
 	c.setFont('Helvetica-Bold', 10)
 	c.drawString(30,y, "Receta")
@@ -4776,9 +4913,7 @@ def csvfarmacos(request):
 	return response
 
 
-
-### DE AQUI PARA ADELANTE SOLO MODULOS DE PRUEBA #####
-
+### PARA PRUEBA #####
 def validate_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -4786,12 +4921,375 @@ def validate_username(request):
     }
     return JsonResponse(data)
 
-
+### PARA PRUEBA #####
 def siexiste_cui(request):
-	#rut_x = request.GET.get('rut') # valor del template
-	#existe = cuidador.objects.filter(rut=rut_x).exists()
-	cuidador = Cuidadores.objects.all().exclude(rut='0-0').order_by('nombre') 
-	data = {
-		'is_taken': User.objects.filter(nombre__iexact=cuidador).exists()
+ 	return HttpResponse ('hello world!')
+	#rut_x = request.GET.get('rut', None)
+	#return HttpResponse("llegó con el rut: "+str(rut_x))
+	#resultado = cuidador.objects.filter(rut=rut_x).exists()
+	#data ={'resultado':resultado}
+	#return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@login_required(login_url='login_ini')
+def contrato(request):
+	fechahoy = datetime.now()
+	ancho, alto = letter	# alto=792,ancho=612 - posicion normal	
+	nom_arch = "contrat_cui"+nombrearch()+".pdf"  # gestion remota
+	#
+	# desarrollo
+	logo_corp = os.getcwd()+"\\misitio\\ai\\static\\img\\Logo_AsistenciaIntegral.jpg"
+	c = canvas.Canvas(os.getcwd() +"\\pdfs\\"+ nom_arch, pagesize=letter)
+	#
+	#produccion
+	#logo_corp = os.getcwd()+"/misitio/staticfiles/img/Logo_AsistenciaIntegral.jpg"
+	#c = canvas.Canvas(os.getcwd() +"/misitio/pdfs/"+ nom_arch, pagesize=letter)
+	#
+	c.setPageSize((ancho, alto))
+	#
+	id_x = request.session.get('id_x')   # recupera valor desde variable global
+	cuidador = Cuidadores.objects.get(id=id_x)
+
+	fe_ini_y = cuidador.fe_ini
+	if cuidador.fe_ini == None:
+		return HttpResponse("Fecha de inicio en la empresa está en blanco, completela !!")
+
+	fe_ini_y = cuidador.vence_contrato
+	if cuidador.vence_contrato == None:
+		return HttpResponse("Fecha de VENCIMIENTO DEL CONTRATO está en blanco, completela !!")
+
+	fe_nac_y = cuidador.fe_nac
+	if cuidador.fe_nac == None:
+		return HttpResponse("Fecha de nacimiento está en blanco, completela !!")
+
+	ecivil_y = cuidador.ecivil
+	if cuidador.ecivil == None:
+		ecivil_y = "2"
+
+	nacionalidad_x = cuidador.nacionalidad	
+	if cuidador.nacionalidad == None or cuidador.nacionalidad == '':
+		nacionalidad_x = "CHILENA"
+
+	afp_y = cuidador.afp
+	if cuidador.afp == None or cuidador.afp == '':
+		return HttpResponse("Institución previsional está en blanco, complétela !!")
+
+	salud_y = cuidador.salud
+	if cuidador.salud == None or cuidador.salud == '':
+		return HttpResponse("Institución de salud está en blanco, complétela !!")
+
+	ecivil_x  = Param.objects.get(tipo='ECIVI',codigo=ecivil_y)
+	region_x  = Param.objects.get(tipo='REGI',codigo=cuidador.region)
+	comuna_x  = Param.objects.get(tipo='COMU',codigo=cuidador.comuna)
+
+	# produccion
+	#path_x = os.getcwd() +"/misitio/pdfs/"
+
+	# Desarrollo
+	path_x = os.getcwd() +'\\pdfs\\'
+
+	arch_y = os.listdir(path_x)
+	for arch_pdf in arch_y:
+		remove(path_x+arch_pdf)
+	#	
+	# ######### COMIENZA EL REPORTE #####################################		
+    ## comienza primera pagina #########
+	c.drawImage(logo_corp, 10, 710,190,80) # (IMAGEN, X,Y, ANCHO, ALTO)
+	c.setFont('Helvetica-Bold',11)
+	c.setLineWidth(.5)
+	fila = 700
+	tit = "CONTRATO DE TRABAJO"
+	c.drawString(230,fila+24,tit)
+	# subrrayado
+	c.line(230, fila+16, 368, fila+16) 
+	#
+	c.setFont('Helvetica',11)
+	#
+	# fecha actual 
+	c.drawString(480,fila+50,"Emisión: "+str(fecha_actual())) # fecha_actual() en misfunciones.py
+	#
+	#
+	# COMIENZA DEFINICION DE LISTADO
+	fila = 675
+	#fila = fila - 15
+	c.drawString(50,fila,"En Santiago, a "+fecha_palabra(fe_ini_y)+", entre ASISTENCIA INTEGRAL LIMITADA, representada por")
+	fila = fila - 15
+	c.drawString(50,fila,"ANTONIO J. ANTONIO CASTILLO ROJAS, RUT: 13.477.178-K, en adelante 'el empleador', domiciliado")
+	fila = fila - 15
+	c.drawString(50,fila,"en CALLE EL OLIVILLO 6036, comuna de PEÑALOLEN, cuidad de SANTIAGO, y don(ña):")
+	fila = fila - 15
+	c.drawString(50,fila,cuidador.nombre+", en adelante 'el trabajador', CI: "+cuidador.rut)	
+	fila = fila - 15
+	c.drawString(50,fila,"de nacionalidad "+nacionalidad_x)	
+	fila = fila - 15
+	c.drawString(50,fila,"estado civil: "+str(ecivil_x)+", nacido el "+fecha_palabra(fe_nac_y)+", con domicilio en:")	
+	fila = fila - 15
+	c.drawString(50,fila,cuidador.direccion+", comuna de "+str(comuna_x)+", región "+str(region_x)+", se")	
+	fila = fila - 15
+	c.drawString(50,fila,"ha convenido el siguiente contrato de trabajo: ")	
+	fila = fila - 30
+	c.drawString(50,fila,"PRIMERO: La empresa ASISTENCIA INTEGRAL LIMITADA, contrata a")	
+
+	c.setFont('Helvetica-Bold',11)
+	fila = fila - 15
+	c.drawString(75,fila,cuidador.nombre)	
+	c.setFont('Helvetica',11)
+
+	fila = fila - 15
+	c.drawString(75,fila,"quien acepta y se compromete a relizar el trabajo de asistente de enfermos y/o Cuidador(a) de")	
+	fila = fila - 15
+	c.drawString(75,fila,"de enfermos, o cualquier otra labor a fin que le encomiende el empleador o sus superiores.")	
+	fila = fila - 30
+	c.drawString(50,fila,"SEGUNDO: El trabajador(a) deberá prestar sus servicios de manera DOMICILIARIA donde la empresa")	
+	fila = fila - 15
+	c.drawString(75,fila,"mantenga contrato, dentro de la ciudad de Santiago.")	
+	fila = fila - 30
+	c.drawString(50,fila,"TERCERO: La jornada de trabajo sera la siguiente:")	
+	fila = fila - 15
+	c.drawString(75,fila,"De lunes a domingo, entre 8:00 y 20:00 horas con descansos para la alimentación de una hora")	
+	fila = fila - 15
+	c.drawString(75,fila,"de colación entre las 13:00 y las 15:00 horas, asimismo la jornada podrá ser ditribuida conforme")	
+	fila = fila - 15
+	c.drawString(75,fila,"a los requerimientos de cada paciente asignado no superando el maximo de 45 horas semanales.")	
+	fila = fila - 30
+	c.drawString(50,fila,"CUARTO: La remuneración del trabajador será la suma mensual de $301.000.- sueldo base")	
+	fila = fila - 15
+	c.drawString(75,fila,"(trrescientos mil pesos), mas el 25% de gratificación legal, con tope de 4,75 ingresos minimos")	
+	fila = fila - 15
+	c.drawString(75,fila,"anuales, los que serán cancelados por turnos realizados, y que serán liquidados y pagados por ")	
+	fila = fila - 15
+	c.drawString(75,fila,"períodos vencidos, en las oficinas del empleador, el dia 5 del mes siguiente asl trabajado.")	
+
+	fila = fila - 15
+	c.setFont('Helvetica-Bold', 11)
+	c.drawString(75,fila,"Otras asignaciones:")	# titulo de la table
+	c.setFont('Helvetica', 11)
+	fila = fila - 15
+	#
+	# COMIENZA TABLE #######################
+	data = [
+		["Alimentación","$15.000"],
+		["Asignación de movilización","$25.000"],
+		["Asignación domiciliaria","$30.000"],
+	]
+	#
+	t = Table(data, rowHeights=20, colWidths=[150,200])  # 20=Alto de fila
+	#
+	t.setStyle(TableStyle([
+		("ALIGN", (0, 0), (-1, -1), "LEFT"),
+		("ALIGN", (-2, 1), (-2, -1), "LEFT"),
+		("GRID", (0, 0), (-1, -1), 0.25, colors.black),
+		("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+		("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+	]))
+#
+	w, h = t.wrap(100, 100)   # obligatorio
+	t.drawOn(c, 75, 220, 0)	# posicion de la table: abcisa=75,ordenada = 240 
+	fila = 205
+	c.drawString(70,fila,"-El bono de asignación domiciliaria se otorgará siempre y cuando el o la asistente se encuentre")
+	fila = fila - 15
+	c.drawString(75,fila,"prestando servicios fuera de los lugares considerados como Establecimientos de Salud.")
+	fila = fila - 15
+	c.drawString(70,fila,"-Los turnos anexos tendrán un valor por jornada de $16.000, los cuales serán de tipo voluntario")
+	fila = fila - 15
+	c.drawString(75,fila,"e incluidos en su totalidad en la liquidación mensual del trabajador.")
+	fila = fila - 30
+	c.drawString(50,fila,"QUINTO: Son obligaciones escenciales del trabajador, cuya infracción las partes entienden como causa")	
+	fila = fila - 15
+	c.drawString(75,fila,"justificada de terminación del presente contrato, las siguientes:")	
+
+	fila = fila - 30
+	c.drawString(75,fila,"a) Cuidar y mantener en perfecto estado de conservación, las maquinas, utiles y otros bienes de ")	
+	fila = fila - 15
+	c.drawString(75,fila,"de la emnpresa")	
+
+	fila = fila - 30
+	c.drawString(75,fila,"b) Cumplir las instruciones y órdenes que le imparta cualquiera de sus superiores")	
+
+	c.showPage() #salto de pagina ######### salto de pagina ######### salto de pagina #########
+	fila = 710
+	c.drawString(75,fila,"c) En casos de insistencia al trabjo, por enfermedad, el trabajador deberá justificarla con el")	
+	fila = fila - 15
+	c.drawString(75,fila,"correspondiente certificado médico, otorgado por un facultativo, dentro del plazo de 48")	
+	fila = fila - 15
+	c.drawString(75,fila,"horas siguientes, desde el día aquel que dejó de asistir al trabajo.")	
+
+	fila = fila - 30
+	c.drawString(75,fila,"d) Todo lo señalado en el reglamento interno que se adjunta.")	
+
+	fila = fila - 30
+	c.drawString(50,fila,"SEXTO: Se prohíbe al trabajador, efectuar negocios o actividades dentro del giro de la empresa,")	
+	fila = fila - 15
+	c.drawString(75,fila,"que es aquel en que opera el empleador.")	
+
+	fila = fila - 15
+	c.drawString(75,fila,"Así mismo se le prohíben los siguientes actos:")	
+
+	fila = fila - 15
+	c.drawString(60,fila,"1.-Ejecutar durante la jornada de trabajo, actividades ajenas a las actividades de la empresa.")	
+	
+	fila = fila - 15
+	c.drawString(60,fila,"2.-Dañar la imagen de la empresa u opiniones que trasgredan la ley.")	
+
+	fila = fila - 15
+	c.drawString(60,fila,"3.-Usar en beneficio propio las instalaciones y/o muebles, útiles de la empresa, o")	
+	fila = fila - 15
+	c.drawString(75,fila,"cualquier acto que dañe el patrimonio de esta.")
+
+	fila = fila - 15
+	c.drawString(60,fila,"4.-Efectuar tareas para las que fue contratado en forma negligente que impliquen")	
+	fila = fila - 15
+	c.drawString(75,fila,"daños patrimoniales o mermas en los ingresos de la empresa.")
+
+	fila = fila - 15
+	c.drawString(60,fila,"5.-Realizar negociaciones con los pacientes asignados o los familiares de estos.")
+
+	fila = fila - 30
+	c.drawString(50,fila,"SEPTIMO: : Este contrato tendrá vigencia hasta el "+fecha_palabra(cuidador.vence_contrato)+". Las partes pueden")	
+	fila = fila - 15
+	c.drawString(75,fila,"ponerle término en común acuerdo.")
+
+	fila = fila - 30
+	c.drawString(50,fila,"OCTAVO:Se deja constancia que el trabajador ingresó al servicio del empleador el 19 de")
+	fila = fila - 15
+	c.drawString(75,fila,"septiembre de 2019.")
+
+	fila = fila - 30
+	c.drawString(50,fila,"NOVENO: Se deja constancia que el trabajador cotizará en el régimen previsional chileno,")
+	fila = fila - 15
+	c.drawString(75,fila,"comprometiéndose el empleador a efectuar las retenciones y entregarlas a las")
+	fila = fila - 15
+	c.drawString(75,fila,"instituciones correspondientes.")
+	fila = fila - 30
+	c.setFont('Helvetica-Bold', 11)
+	c.drawString(75,fila,"Institución de previsión: "+afp_y+"   Salud: "+salud_y)
+	c.setFont('Helvetica', 11)
+	fila = fila - 30
+	c.drawString(50,fila,"DECIMO: Para todos los efectos derivados de este contrato, las partes fijan su domicilio en la")
+	fila = fila - 15
+	c.drawString(75,fila,"ciudad de Santiago y se someten a la jurisprudencia de sus tribunales.")
+
+	fila = fila - 30
+	c.drawString(50,fila,"DECIMO PRIMERO: El presente contrato se emite en dos ejemplares. Cada ejemplar está compuesto")
+	fila = fila - 15
+	c.drawString(75,fila,"por dos hojas. Previa lectura, en señal de aceptación, se ratifica y firman las partes, Se deja")
+	fila = fila - 15
+	c.drawString(75,fila,"Cosntancia que el trabajador recibe un ejemplar íntegro de este contrato.")
+
+	fila = fila - 60
+	c.line(75, fila, 255, fila)
+	c.line(330, fila, 485, fila)
+	fila = fila - 15 
+	c.drawString(75,fila,"ASISTENCIA INTEGRAL LTDA.")
+	c.drawString(330,fila,cuidador.nombre)
+	fila = fila - 15
+	c.drawString(75,fila,"Antonio J. Castillo Rojas.")
+	c.drawString(330,fila,"Trabajador(a)")
+	fila = fila - 15
+	c.drawString(75,fila,"Representante Legal")
+	## ########  FIN DEL REPORTE #######################################
+	c.showPage() #salto de pagina
+	c.save()  #Archivamos y cerramos el canvas
+	#Lanzamos el pdf creado
+	os.system(nom_arch)
+	#produccion
+	#return FileResponse(open(os.getcwd() +"/misitio/pdfs/"+ nom_arch, 'rb'), content_type='application/pdf')
+	#desarrollo
+	return FileResponse(open(os.getcwd() +'\\pdfs\\'+ nom_arch,'rb'), content_type='application/pdf')
+
+
+@login_required(login_url='login_ini')
+def coordenadas(request):
+	variable1 = 'Agregando coordenadas a la dirección de pernoctación del paciente'
+	variable2 = ''
+	rut_aux = request.session.get('rut_x') # rescata variable global  
+	paciente  =  Pacientes.objects.get(rut=rut_aux)
+	# DOS LINEAS OBLIGATORIAS
+	form = PacientesForm(request.POST or None, request.FILES or None,instance=paciente)
+	coordenadas = request.POST.get('coordenadas') # valor del template
+	paciente_id = paciente.id
+	if  request.method == "POST":
+		#if form.is_valid():
+		#return HttpResponse(str(request.method))
+		cursor = connection.cursor() # es necesario: from django.db import connection	
+		cursor.execute(
+		"update ai_pacientes set coordenadas = %s where rut = %s",[coordenadas,rut_aux])
+		return redirect('ActualizaPac',paciente_id) # ficha paciente
+	context = {
+		"variable1":variable1,
+		"form":form,
+		"variable2":variable2,
+		'paciente_id':paciente_id,		
+		}
+	return render(request,'ficha_coordenadas.html',context)
+
+
+@login_required(login_url='login_ini')
+def georeferencia2(request):
+	variable1 = 'Geo-referencia'
+	rut_aux = request.session.get('rut_x') # rescata variable global  
+	paciente  =  Pacientes.objects.get(rut=rut_aux) # busca
+	paciente_id = paciente.id
+	coordenadas = paciente.coordenadas
+	localizacion = paciente.localizacion
+
+	if coordenadas == None:
+		return HttpResponse("Ficha no posee coordenadas de georeferenciación")
+		return redirect('ActualizaPac',paciente_id) # ficha paciente
+
+	lat = coordenadas[0:10]
+	lng = coordenadas[12:22]
+
+	context = {
+		'variable1':variable1,
+		'paciente_id':paciente_id,
+		'variable3':paciente.nombre,
+		'lat':lat,
+		'lng':lng,
+		'localizacion':localizacion,
+	}	
+	#return render(request,'georeferencia.html',context)
+	return render(request,'ejemplo_georeferencia.html',context)
+
+@login_required(login_url='login_ini')
+def georeferencia(request):
+	variable1 = 'Geo-referencia'
+	variable3 = 'Lugar fisico donde pernocta el paciente'
+	rut_aux = request.session.get('rut_x') # rescata variable global  
+	paciente  =  Pacientes.objects.get(rut=rut_aux) # busca
+	paciente_id = paciente.id
+	coordenadas = paciente.coordenadas
+	localizacion = paciente.localizacion
+
+	if coordenadas == None:
+		return HttpResponse("Ficha no posee coordenadas de georeferenciación")
+		return redirect('ActualizaPac',paciente_id) # ficha paciente
+
+	lat = coordenadas[0:10]
+	lng = coordenadas[12:22]
+
+	context = {
+		'variable1':variable1,
+		'paciente_id':paciente_id,
+		'variable3':variable3,
+		'paciente':paciente,
+		'lat':lat,
+		'lng':lng,
+		'localizacion':localizacion,
 	}
-	return JsonResponse(data)
+
+	#m = folium.Map(location=[-33.485815, -70.592673], zomm_start =12)
+	#m.save('aamap.html')
+	return render(request,'ejemplo_georeferencia.html',context)
+
+@login_required(login_url='login_ini')
+def acercade(request):
+    #logo = "/staticfiles/img/Logo_AsistenciaIntegral.jpg" # for PythonAnyWhere
+	logo = "/static/img/Logo_AsistenciaIntegral.jpg"
+	variable1 = 'Acerca de '
+	context = {
+		"variable1":variable1,
+		"variable1":variable1,"logo_corp":logo,
+		}
+	return render(request,'acercade.html',context)
+

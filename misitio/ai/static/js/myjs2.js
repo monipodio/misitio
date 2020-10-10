@@ -9,8 +9,7 @@ function llenacaja(){
    	document.getElementById("datepicker").value=fini;
 	}
 
-
-function llenacaja2(){
+ function llenacaja2(){
 	var fenac = $('#datepicker2').val();
 	var fenac = fenac.slice(6,10)+"-"+fenac.slice(0, 2)+"-"+fenac.slice(3, 5);
    	document.getElementById("datepicker2").value=fenac;
@@ -421,6 +420,7 @@ function ValidaFichacui() {
 	var apago3 = document.getElementById("apago3").value 
     var nombre = document.getElementById("nombre").value
     var fono_cuid = document.getElementById("fono_cuid").value
+    var afp = document.getElementById("afp").value
 
 
 	if(nombre === ""){
@@ -443,7 +443,6 @@ function ValidaFichacui() {
 		document.getElementById('direccion').style.border = '2px solid red';
 		return false;
 	}
-
 
 	if(fe_ini === ''){
 		alert("La FECHA DE INICIO es obligatoria");
@@ -471,10 +470,18 @@ function ValidaFichacui() {
 		document.getElementById('apago2').style.border = '2px solid red';
 		return false;
 	}
+
 	if(apago3 === "0" || apago3 === ""){
 		alert("TARIFA DE NOCHE es obligatoria");
 		document.getElementById('apago3').focus()
 		document.getElementById('apago3').style.border = '2px solid red';
+		return false;
+	}
+
+	if(afp === ""){
+		alert("Previsión es obligatorio");
+		document.getElementById('afp').focus()
+		document.getElementById('afp').style.border = '2px solid red';
 		return false;
 	}
 }
@@ -558,6 +565,23 @@ function validarFormatoFecha() {
       	return true;
     }
 }
+
+/* VALIDA FECHA DE 	VENCIMIENTO CONTRATO */
+function valifechavencimiento_contrato() {
+	var vence_contrato = document.getElementById("vence_contrato").value
+    var RegExPattern = /^\d{1,4}\-\d{1,2}\-\d{1,2}$/;
+    if (vence_contrato.match(RegExPattern)) {
+    	document.getElementById("vence_contrato").style.border = '';
+        return true;
+    } else {
+		/* document.getElementById('fe_ini').style.border = '2px solid red'; */
+      	alert("Error!! formato de VENCIMIENTO_CONTRATO debe ser aaaa-mm-dd, los separadores son signos menos");
+      	return true;
+    }
+}
+
+
+
 
 /* VALIDA FECHA DE NACIMIENTO */
 function validarFormatoFecha2() {
@@ -719,14 +743,12 @@ $(document).ready(function(){
 
 /* url: "{% url 'validate_username' %}", */
 $(document).ready(function(){
-	$("#id_username").blur(function () {
+	$("#id_username2").blur(function () {
 		/* var username = $(this).val(); */
-		var username = $("#id_username").val();
+		var username2 = $("#id_username").val();
         $.ajax({
-			url: '{% url "validate_username" %}',
-			data: {
-				'username': username
-			},
+			url: "{% url 'validate_username' %}",
+			data: {'username': username2},
 			dataType: 'json',
       
 			/*
@@ -859,71 +881,6 @@ function confirmaelimcui2(nombre,id){
 }
 
 
-/* NO BORRAR */
-function confirmaelimcui(){
-	var nombre = document.getElementById("nombre").value; 
-	$('#mensaje').html("No está autorizado para borrar !!");
-	/* en plantilla HTML: <div style="color:#F7021C" id="mensaje"></div> 
-	Y LA ACCION QUE DISPARA: onclick="confirmaelimcui();"
-	*/
-}
-
-
-$(document).ready(function(){
-	$('#rut').blur(function(evento){
- 		var rut = $('input#rut').val();
-
-		var request = $.ajax({
-	    	url: "/siexiste_cui/",
-			method: 'GET',
-			data: {"rut":rut},
-			dataType: 'json',
-		});
-
-		request.done(function(data) {
-        	if (data.is_taken) {
-        		alert("El cuidador ya existe!!.");
-        	}		
-		})
-
-		request.fail( function(jqXHR, textStatus, errorThrown) {
-   		  if (jqXHR.status === 0) {
-		
-		    alert('Sin coenxión: Revise la Network.');
-		
-		  } else if (jqXHR.status == 404) {
-			/* xx = textSatus.toString()+' '+errorThrown.toString(); */
-		    alert('La página solicitada no existe [404]: '); 
-		
-		  } else if (jqXHR.status == 500) {
-		
-		    alert('Error interno del servidor [500].');
-		
-		  } else if (textStatus === 'parsererror') {
-		
-		    alert('Requested JSON parse failed.');
-		
-		  } else if (textStatus === 'timeout') {
-		
-		    alert('Error de expiración de tiempo.');
-		
-		  } else if (textStatus === 'abort') {
-		
-		    alert('Solicitud Ajax abortada.');
-		
-		  } else {
-		
-		    alert('Uncaught Error: ' + jqXHR.responseText);
-		
-		  }
-
-		})
-		
-  	});
-  	
-});
-
-
 /* Toma el focus del objeto */
 function ayuda4(mensajetexto){
 	/* lo despliega en el span de la PLANTILLA_BASE */
@@ -935,4 +892,84 @@ function ayuda5(){
 	/* lo despliega en el span de la PLANTILLA_BASE */
 	$('#mensaje').html("");
 }
+
+
+/* NO BORRAR */
+function confirmaelimcui(){
+	var nombre = document.getElementById("nombre").value; 
+	$('#mensaje').html("No está autorizado para borrar !!");
+	/* en plantilla HTML: <div style="color:#F7021C" id="mensaje"></div> 
+	Y LA ACCION QUE DISPARA: onclick="confirmaelimcui();"
+	*/
+}
+
+
+function funcionprueba(){
+	var rut = document.getElementById("rut").value;
+	$('#mensaje').html(rut);
+}
+
+
+"use strict";
+let map;
+function initMap2() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: {
+      lat: -36.489491,
+      lng: -72.712028,
+    },
+    zoom: 8
+  });
+}
+
+
+function initMap() {
+  var myLatLng = {lat: -33.485815, lng: -70.592673};
+  map = new google.maps.Map(document.getElementById("map"), {
+  center: {
+      lat: -33.485815,
+      lng: -70.592673,
+    },
+    zoom: 17,
+  });
+  var marker = new google.maps.Marker({
+    map:map,
+    position: myLatLng,
+    title:"Puedes arrastrarme",
+    draggable: true,
+  })
+  
+}
+
+
+$(document).ready(function(){
+	$('#rut').blur(function(){
+ 		var rut = $('input#rut').val();
+		var request = $.ajax({
+	    	url: 'https://www.google.com/', 
+	    	type: "GET",
+    		success: function(response) {
+                $('#mensaje').html(response);
+            }
+        });
+
+		request.fail( function(jqXHR, textStatus, errorThrown) {
+   			 if (jqXHR.status === 0) {
+			   alert('Sin coenxión: Revise la Network. => jqXHR.status='+jqXHR.status.toString());
+			 } else if (jqXHR.status == 404) {
+			   alert('La página solicitada no existe [404]'); 
+			 } else if (jqXHR.status == 500) {
+			   alert('Error interno del servidor [500].');
+			 } else if (textStatus === 'parsererror') {
+			   alert('Requested JSON parse failed.');
+			 } else if (textStatus === 'timeout') {
+			   alert('Error de expiración de tiempo.');
+			 } else if (textStatus === 'abort') {
+			   alert('Solicitud Ajax abortada.');
+			 } else {
+			   alert('Uncaught Error: ' + jqXHR.responseText);
+			 }
+		})
+  	});
+});
 

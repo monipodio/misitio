@@ -23,6 +23,7 @@ from django.urls import path,include
 urlpatterns = [
 	path('/',include('misitio.ai.urls')),
 	path('login_ini/',include('misitio.ai.urls')),
+    #path('siexiste_cui/','views.siexiste_cui'),
     path('admin/', admin.site.urls),
 ]
 

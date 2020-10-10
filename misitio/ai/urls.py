@@ -8,7 +8,7 @@ from misitio.ai.views import EliminaCui,grid_cuidadores,NuevoCui
 from misitio.ai.views import EliminaPac,grid_pacientes,NuevoPac
 from misitio.ai.views import EliminaApod,grid_apoderados,NuevoApod,grid_anticipos
 from misitio.ai.views import ActualizaCui,addlinkfarmaco,Eliminafarmaco,csvfarmacos
-from misitio.ai.views import ActualizaPac
+from misitio.ai.views import ActualizaPac,siexiste_cui,acercade
 from misitio.ai.views import ActualizaPauta
 from misitio.ai.forms import CuidadoresForm
 from misitio.ai.forms import PacientesForm
@@ -29,10 +29,12 @@ from misitio.ai.views import info_mensual
 from misitio.ai.views import info_diario,subefotos
 from misitio.ai.views import exceldetalle,excelmensual,ponenombresaldos
 from misitio.ai.views import pdfdetalle,altacondeuda,siexisterut
-from misitio.ai.views import NuevoPac2,grid_cheques,grid_login
+from misitio.ai.views import NuevoPac2,grid_cheques,grid_login,NuevoCui3
 from misitio.ai.views import grid_receta,fichafarmaco,eliminafarma
 from django.contrib.auth.decorators import login_required
 #
+# solo pruebas laboratorio
+#from core import views
 #
 urlpatterns = [
 	path('',views.login_ini, name='login_ini'),
@@ -80,7 +82,7 @@ urlpatterns = [
 	path('subefotos/',views.subefotos,name="subefotos"),
 	path('pdfdetalle/',views.pdfdetalle,name="pdfdetalle"),
 	path('altacondeuda/',views.altacondeuda,name="altacondeuda"),
-	path('NuevoPac2/',views.NuevoPac2,name="NuevoPac2"),		
+	path('NuevoPac2/',views.NuevoPac2,name="NuevoPac2"),
 	path('siexisterut/',views.siexisterut,name="siexisterut"),
 	path('grid_cheques/',views.grid_cheques,name="grid_cheques"),
 	path('grid_login/',views.grid_login,name="grid_login"),		
@@ -99,6 +101,11 @@ urlpatterns = [
 	path('addlinkfarmaco/<int:id>',views.addlinkfarmaco,name="addlinkfarmaco"),	
 	path('Eliminafarmaco/<int:id>',views.Eliminafarmaco,name="Eliminafarmaco"),	
 	path('csvfarmacos/',views.csvfarmacos,name="csvfarmacos"),	
-	path('siexiste_cui/<rut>',views.siexiste_cui,name="siexiste_cui"),
+	path('siexiste_cui/',views.siexiste_cui,name="siexiste_cui"),
+	path('NuevoCui3/',views.NuevoCui3,name="NuevoCui3"),
+	path('contrato/',views.contrato,name="contrato"),	
+	path('coordenadas/',views.coordenadas,name="coordenadas"),
+	path('georeferencia/',views.georeferencia,name="georeferencia"),
+	path('acercade/',views.acercade,name="acercade"),	
 ]
 

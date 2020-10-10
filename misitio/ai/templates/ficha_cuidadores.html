@@ -32,52 +32,48 @@
 			</table>
 
 			<table class="table table-striped" border = '0' style="font-size:14px; color:#098979">
+
 		    {% if error_new == "error1" %}
     	    	<p class="error1">R.U.T. ya existe !!</p>
         	{% endif %}
 		
 			<td>
 				<img  src="{{ fotito }}" border:3px/>
-				<!-- {{form.media|attr:'onchange:cambiar()'|attr:'id:file-upload'}} -->
 			</td>	
 
 			<tr style="font-size:13px; color:#098979">
 				<td>R.U.T.:</td>
-				<td >
+				<td>
+
 				{% if variable2 == 'modifica_rut' %}	
-					{{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onchange:upperCase()'|attr:'tabindex:1'}}
+					{form.rut|attr:'size:10'|attr:'id:rut'|attr:'onchange:upperCase()'|attr:'tabindex:1'|attr:'onfocus:ayuda5()'}
 				{% else %}
 					{{form.rut|attr:'size:10'|attr:'readonly:True'}} 
 				{% endif %}
 
 
 				{% if variable2 == 'nomodifica_rut' %}
-				<d>
-				{{form.extran|attr:'type:checkbox'|attr:'disabled:True'|attr:'id:extran'|attr:'tabindex:2'}} extranjero
-				</d>
+					<d>
+					{% if extran == '0' %}
+						{{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:2'|attr:'checked'}} extranjero
+					{% else %}
+						{{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:2'}} extranjero
+					{%endif%}
+					</d>
 				{% else %}
-				<d>
-				{{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:3'}} extranjero
-				<div style="color:#F7021C" id="mensaje"></div>
-				</d>
+					<d>
+					{{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:3'}} extranjero
+					<!-- <div style="color:#F7021C" id="mensaje"></div> -->
+					</d>
 				{% endif %}
-
-				<!--
-				</td>
-				<d>
-					<p align="right"><u><a href="{% url 'principal' %}">Inicio</a></u></p>
-				</d>
-				-->
 			</tr>
 
 
 			{% if nuevo_cui != 1 %}
-			<d>
-			{{form.estado|attr:'type:checkbox'|attr:'tabindex:4'}} Pasivo (estado)
-				<!--
-				{{form.elim_foto|attr:'type:checkbox'|attr:'value:0'}} Elimina foto
-				-->
-			</d>
+				<d>
+				{{form.estado|attr:'type:checkbox'|attr:'tabindex:4'}} Pasivo (estado)
+				</d>
+				{{form.elim_foto|attr:'type:checkbox'|attr:'tabindex:4'}} marca elimina foto
 			{%endif%}
 
 			<tr>
@@ -87,9 +83,17 @@
 					</d>
 
 					{% if nuevo_cui == 0 %}
-					<u><a href="#" onclick="alert('Documento no disponible aún..!!')">Contrato</a></u>
+					<u><a href="{% url 'contrato' %}" target="_blank">Contrato</a></u>
 					{% endif %}
 
+				</td>
+			</tr>
+
+			<tr>
+				<td>Nacionalidad</td> 
+				<td>
+					<d>{{ form.nacionalidad|attr:'id:nacionalidad'|attr:'size:30'|attr:'onkeyup:mayuscula(this)'|attr:'tabindex:5'|attr:'placeholder:vacio se asume chilena'}}
+					</d>
 				</td>
 			</tr>
 
@@ -101,6 +105,16 @@
 					</d>
 				</td>
 			</tr>
+
+			<tr>
+				<td>Fecha venc. Contrato</td> 
+				<td>
+					<d>	
+					{{form.vence_contrato|attr:'id:vence_contrato'|attr:'size:17'|attr:'type:text'|attr:'required:True'|attr:'placeholder:aaaa-mm-dd'|attr:'tabindex:7'|attr:'onblur: return valifechavencimiento_contrato()'}}
+					</d>
+				</td>
+			</tr>
+
 		
 			<tr>
 				<td>Tipo Contrato</td>
@@ -147,6 +161,25 @@
 				</td>			
 			</tr>
 
+
+			<td>Estado Civil</td>
+				<td>
+					<select	name="ecivil" id = "ecivil" tabindex="6">
+					{%if var_ecivil == None %}
+						<option value ="0">SELECCIONE ESTADO CIVIL</option>
+					{%endif%}
+					{% for ec in ecivil %}
+						{% if ec.codigo == var_ecivil %}
+							<option value ="{{ec.codigo}}" selected = "selected"> {{ec.descrip}} </option>
+						{% else %}	
+							<option value ="{{ec.codigo}}">{{ec.descrip}}</option>
+						{% endif %}
+					{% endfor %}			
+					</select>
+				</td>			
+			</tr>
+
+
 			<tr>
 				<td>Nivel educacional</td>
 				<td>
@@ -172,6 +205,20 @@
 			</tr>
 
 			<tr>
+				<td>Previsión</td>
+				<td>
+					<d>{{form.afp|attr:'id:afp'|attr:'size:30'|attr:'requiered:True'|attr:'tabindex:13'|attr:'placeholder:AFP u otra institución'|attr:'onkeyup:mayuscula(this)'}}</d>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Inst. Salud</td>
+				<td>
+					<d>{{form.salud|attr:'id:salud'|attr:'size:30'|attr:'requiered:True'|attr:'tabindex:13'|attr:'placeholder:Por ejemplo FONASA'|attr:'onkeyup:mayuscula(this)'}}</d>
+				</td>
+			</tr>
+
+			<tr>
 				<td>Direccion</td>
 				<td>
 					<d>{{form.direccion|attr:'id:direccion'|attr:'size:60'|attr:'requiered:True'|attr:'tabindex:13'}}</d>
@@ -193,7 +240,6 @@
 					<d>{{form.correo|attr:'onblur:return validaemail()'|attr:'requiered:True'|attr:'size:40'|attr:'id:correo'|attr:'tabindex:16'}}</d>
 				</td>
 			</tr>
-
 
 			<td>Region</td>
 				<td>
@@ -226,6 +272,7 @@
 			<tr>
 			<td>Valor a pago mañana</td>
 				<td>
+				<d>	
 				{{form.apago1|attr:'id:apago1'|attr:'size:17'|attr:'requiered:True'|attr:'tabindex:19'}}
 				</d>
 				</td>
@@ -234,6 +281,7 @@
 			<tr>
 			<td>Valor a pago tarde</td>
 				<td>
+				<d>	
 				{{form.apago2|attr:'id:apago2'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:20'}}
 				</d>
 				</td>
@@ -242,6 +290,7 @@
 			<tr>
 			<td>Valor a pago noche</td>
 				<td>
+				<d>	
 				{{form.apago3|attr:'id:apago3'|attr:'size:17'|attr:'type:text'|attr:'requiered:True'|attr:'tabindex:21'}}
 				</d>
 				</td>

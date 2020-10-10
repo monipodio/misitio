@@ -6,24 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
 
-    <link src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/>
+   <link src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtRJUcKnpQI-9jvaSDHAmXgfrsLxM6RyA&callback=initMap&libraries=&v=weeklydefer">
+
+
     <link src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"/>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
     <!-- para pantalla login --> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+    <link src="https://code.jquery.com/jquery-3.3.1.js">
     
     <script src="{% static 'js/myjs2.js' %}"></script>
     
-    <!--
-    <script src="{% static 'js/prototype.js' %}"></script>
-    -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
     
     <!--pra prueba -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>    
@@ -36,28 +42,29 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <link src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js">
-  
     <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
-  
     <title id = "title">AI-Asistencia Integral</title>
-
 </head>
 
   <div>
     <body>
     	{% csrf_token %}
       <div class="table-responsive">
-    	<section class='section'>
+    	<section class='section'> 
         <br>
         <table border = "0">
           <tr>
-            <td width="100">
+            <td>
             </td> 
-
-            <td width="750" valign="bottom" >
-                <h4><b href="#"><font color=#045579>{{ variable1 }}</font></b></h4> 
-            </td>
             
+            <!-- TITULO DE LA VENTANA -->
+            <td width="750" valign="bottom" >
+                <h4>
+                  <b class ="titulo_aux" style="font-size:18px; color:#098979">{{ variable1 }}</b>
+                </h4> 
+            </td>
+
+            <!-- NOMBRE DEL USUARIO -->
             <td width="90">
               <p align="right" class="text-center text-muted small">
               {% if user.username != None %}
@@ -66,6 +73,15 @@
               </p>
             </td>
      	    </tr>
+      
+          <tr>
+            <td></td>  
+            <td align="center">
+              <b style="font-size:12px; color:#098979" >{{ variable3 }}</b>
+            </td>  
+          </tr>
+   
+
         </table>
 
         <tr>
@@ -73,25 +89,31 @@
         </tr>  
 
         <br>
-      </section>
- 
+      </section> 
+
       {% block content %}
       {% endblock %}
 
+       </section> 
       <br>
+
+
       <footer class = 'footer'>
           <small>
           <font color = #FFFFFF>  
-          Gerente de ASISTENCIA INTEGRAL: Antonio Castillo R.  
+          ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
+          <!--
           <br>
           Derechos Reservados | GMI Desarrollos de Sistemas informáticos &copy | Gabriel Araya Garcia
           <br>
           gabrielaraya2011@gmail.com
           <br>
           Toda la aplicacion fué desarrollada en Framework Django 2.1.7 basado en Python 3.8 y base de datos Sqlite3
+          -->
           </font>
           </small>
       </footer>
+
  
     </body>
   </div>  

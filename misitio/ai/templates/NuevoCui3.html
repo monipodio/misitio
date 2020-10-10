@@ -1,0 +1,88 @@
+{% extends "plantilla_base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+
+<section class='section2'>
+    <form method="POST" action="#"> 
+        {% csrf_token %}
+        <table  border="0">
+            {% if resultado == True %}
+                <!--PACIENTE YA EXISTE -->
+                <p style="color: #ff0000;font-size:11px"> {{variable2}} </p>
+            {% endif %}
+          
+            <tr>
+                <!-- AYUDA -->
+                <td width="800" align="right">
+                <u>
+                   <a onclick="alert('Si el RUT ya existe, entonces dará la posibilidad de mostrar la ficha con los datos existentes. Si no quieres verla, te devuelves. En caso contrario, es decir que el cuidador sea nuevo, mostrará la ficha vacia, lista para llenar.')"> Ayuda /
+                   </a>
+                </u>
+                </td>
+
+                <!-- REGRESA A PANTALLA ANTERIOR -->
+                <td width="100" align="right">
+                <u>
+                    <a align="right" href="{% url 'grid_cuidadores' %}">Regresa /</a>
+                </u>
+                </td>
+    
+                <!-- REGRESA AL INICIO -->
+                <td width="50" align="right">
+                <u>
+                    <a align="right" href="{% url 'principal' %}">Inicio</a>
+                </u>
+                </td>
+            </tr>
+        </table>        
+
+        
+        <!-- <div class="tablita"> -->
+        <table border = '0' class="table table-striped"> 
+             
+            <tr>
+                <td width="20" align="left">R.U.T.:</td>
+                
+                <!-- RUT -->
+                {% if resultado == False %}                        
+                <td width="40" align="left">
+                   <d> {{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onblur:return validarut_cui()'|attr:'onchange:upperCase()'|attr:'onfocus:ayuda5()'|attr:'placeholder:9999999-9'|attr:'requiered:True'|attr:'tabindex:1'}}
+                    </d>
+                </td>
+                {% else %}
+                <td width="40" align="left">
+                    <d> {{ form.rut|attr:'size:10'|attr:'id:rut'|attr:'onfocus:ayuda5()'|attr:'tabindex:1'|attr:'readonly:True'}}
+                    </d>
+                </td>
+                {% endif %}
+
+                <!-- SI NO EXISTE -->
+                {% if resultado == False %}        
+                    <td width="200" align="left">
+                    <d>
+                    {{form.extran|attr:'type:checkbox'|attr:'id:extran'|attr:'tabindex:3'|attr:'onMouseOver:ayuda4("Marcar si es extranjero para que no valide el rut !!")'|attr:'onMouseOut:ayuda5()'}} extranjero
+                    </d>
+                    </td>
+                {% else %}
+                   <td>
+                   <u><a align="right" href="{% url 'NuevoCui3' %}">digita otro RUT</a></u>
+                   </td>
+                {% endif %}
+
+            </tr>
+         </table>
+        <!-- </div> -->
+
+        {% if resultado == False %}        
+        <a>
+           <button type="submit" id="submit" name = "submit" class="btn btn-primary">Agrega</button>
+        </a>
+        {% endif %}
+    
+        {% if resultado == True %}        
+            <a href="{% url 'ActualizaCui' id_x %}">Revisa Cuidador encontrado</a>
+        {% endif %}
+
+    </form>
+</section>
+{% endblock %}

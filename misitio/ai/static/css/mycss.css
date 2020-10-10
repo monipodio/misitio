@@ -1,4 +1,4 @@
-/* ID (#)  y clases (.), (gato y punto respectivamente) */
+/* ID=(#)  y clases=(.), (gato y punto respectivamente) */
 
 h2 a { color:#FF3333;
   	display: flex;
@@ -7,9 +7,9 @@ h2 a { color:#FF3333;
   	text-decoration: none;
 }
 
-section {
+.section {
 	background: #E9F9F6;
-	width:900;
+  width:900;
 	margin-left: auto;
 	margin-right: auto;
 	border:2px solid #ccc;
@@ -18,6 +18,22 @@ section {
   padding: 0 20px;
   border-radius: 15px;
 }
+
+.section2 {
+  background: #E9F9F6;
+  width:900;
+  margin-left: auto;
+  margin-right: auto;
+  border:2px solid #ccc;
+  text-decoration:none;
+  display: block;
+  padding: 0 20px;
+  border-radius: 15px;
+}
+
+
+
+
 
 .search {
   border-radius: 15px;
@@ -40,7 +56,7 @@ section {
     margin-bottom: 10px;
     margin-left: 30px;
     padding: 20px;
-    border: red 1px solid;
+    border: grey 1px solid;
     border-radius: 15px;
 }
 
@@ -74,17 +90,20 @@ p label u {
 }
 
 .footer {
-  background-color: #060A7C ;
+  background-color: #098979 ;
   line-height: 3;
   text-align: center;
   bottom: 0;
   position: relative;
-  height: 150px;
+  height: 50px;
+  border-radius: 15px;
 }
 
+/*
 .footer a {
   color: #FFFFFF;
 }
+*/
 
 .tit_table {
   color: #FFFFFF;
@@ -246,4 +265,134 @@ input[type=file].hidden {
   display: grid;
   grid-template-columns: 130px 30px;
  }
+
+
+#extran[disabled]{
+     background: #D4D4D4;     
+}
+
+.container2 {
+  border: 1px solid #000;
+  height: 380px;
+  margin: 1 auto;
+  width:50;
+}
+
+.container {
+  background: #E9F9F6;
+  width:900;
+  margin-left: auto;
+  margin-right: auto;
+  border:2px solid #ccc;
+  text-decoration:none;
+  display: block;
+  padding: 0 20px;
+  box-shadow: 0 0 10px #000,
+  border-radius: 15px;
+ }
+
+
+#map {
+  height: 80%;
+  width: 50%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+
+
+html,
+body {
+  height: 100%;
+  margin: 45;
+  padding: 0;
+}
+
+
+.table .td {
+  background-color: #95DE93;
+}
+
+.titulo_aux {
+  color: #fff;
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 1.5em;
+}    
+
+
+.section_flex {
+  display: flex;  /* se generan los 2 ejes */
+  /*justify-content:center;  /* justifica los items a  */ 
+  justify-content: flex-end; /* justifica a la derecha los items dentro de la caja padre */
+  /* flex-wrap:wrap; */
+  background-color: #E9F9F6 ;
+  font-size:18px;
+  line-height: 3;
+  width:70%;
+  /* margin:auto; */   
+  margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
+  bottom: 0;
+  height: 70px;
+  border-radius: 15px;
+  /* justify-content:right; /* alinea horizontalmente los items dentro de la caja padre */
+  align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
+}
+
+
+/* 
+.texto_izquierda {
+  color:#E9F9F6;
+}
+*/
+
+
+/* padding: 25px 50px 75px 100px; */
+/* top, right, bottom, left */
+
+
+.titulo_aux {
+  color:#098979;  /* color del texto */
+  width: 600;
+  align:center;
+  padding: 20px; /* distancia que hay entre el item y el borde del contenedor */
+  /* background-color: #9699A9; */
+  text-align: center;
+}
+
+
+.nombre_usuario {
+  font-size:12px;
+  color:#A5B1AC;
+  width: 100;
+  /*background-color: #F5F592; */
+  text-align: center;
+}
+
+
+.footer {
+  display: flex;  /* se generan los 2 ejes */
+  color:#FFFFFF;
+  flex-wrap:wrap;
+}
+
+
+.texo_footer {
+  color:#FFFFFF;  /* color de la letra */
+  background-color: #F5F592; /* color de fondo del item */
+  width: 100;
+}
+
+/* alinea el texto dentro de la celda de la table */ 
+ td {
+  text-align: right;  
+}
+
+.bars::before,.bars::after {
+background: #999;
+center:"";
+display: inline-block;
+height:2px;
+position: absolute;
+width:18px;
+}
+
 

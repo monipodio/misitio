@@ -426,3 +426,29 @@ def ingresopaciente(request):
 
 
 
+@login_required(login_url='login_ini')
+def georeferencia(request):
+	variable1 = 'Geo-referencia'
+	rut_aux = request.session.get('rut_x') # rescata variable global  
+	paciente  =  Pacientes.objects.get(rut=rut_aux) # busca
+	paciente_id = paciente.id
+	coordenadas = paciente.coordenadas
+	localizacion = paciente.localizacion
+
+	if coordenadas == None:
+		return HttpResponse("Ficha no posee coordenadas de georeferenciación")
+		return redirect('ActualizaPac',paciente_id) # ficha paciente
+
+	lat = coordenadas[0:10]
+	lng = coordenadas[12:22]
+	context = {
+		'variable1':variable1,
+		'paciente_id':paciente_id,
+		'variable3':paciente.nombre,
+		'lat':lat,
+		'lng':lng,
+		'localizacion':localizacion,
+	}	
+	#return render(request,'georeferencia.html',context)
+	return render(request,'ejemplo_georeferencia.html',context)
+

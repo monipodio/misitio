@@ -1,7 +1,7 @@
 {% extends 'plantilla_base.html' %}
-
 {% block content %}
-	<section class='section2'>
+	<section class='section' >
+
 		{% if not user.is_authenticated %} 
         	<a href="{% url 'login_ini' %}">
         {% endif %}
@@ -10,24 +10,24 @@
 				<table border="0">
     			<tbody>	
 				<tr>
-					<!-- caja de busqueda -->
-					<td style="font-size:14px;color:#098979">
+					<!-- caja de busqueda ---->
+					<td width="170" style="font-size:14px;color:#098979">
 					<label for="mySearch">Patrón de busqueda:</label>
 					<input type="text" size="12" name = "buscar" title="Busca en columna NOMBRE" placeholder="vacio todos">
 					</td>
 					
 					<!-- BOTON BUSCA -->
-					<td width="90">
+					<td width="150">
 			     	<input style="font-size:11px" type="submit" value="Busca" class="btn btn-primary">
 					</td>
 					
 					<!-- NUEVO -->
 					<td  width="100">
-					<a  style="font-size:11px" class="btn btn-primary" href="{% url 'NuevoCui' %}" role="button">Nuevo</a>
+					<a  style="font-size:11px" class="btn btn-primary" href="{% url 'NuevoCui3' %}" role="button">Nuevo</a>
 					</td>
 
 					<!-- TOTAL CUIDADORES -->
-           			<td width="180" align="right">
+           			<td width="420" align="right">
               		<a class="text-right text-muted small">
     		           	Tot cuidadores: {{cuenta}}
 	        		</a>

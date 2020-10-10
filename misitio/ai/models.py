@@ -43,6 +43,7 @@ class Pacientes(models.Model):
     fe_alta = models.DateTimeField(blank=True, null=True)
     ecivil = models.CharField(max_length=1, blank=True,null=True) # estado civil
     previ = models.CharField(max_length=1, blank=True,null=True) # FONASA,CONVENIO,ISAPRE,PART.
+    coordenadas = models.CharField(max_length=80,blank=True)
 
     def __str__(self):
         return self.nombre.strip() 
@@ -76,6 +77,11 @@ class Cuidadores(models.Model):
     apago1  = models.IntegerField(blank=True) # salario
     apago2  = models.IntegerField(blank=True) # salario
     apago3  = models.IntegerField(blank=True) # salario
+    nacionalidad = models.CharField(max_length=30, blank=True,default='')
+    ecivil = models.CharField(max_length=1, blank=True,default='')
+    vence_contrato = models.DateTimeField(blank=True, null=True)
+    afp = models.CharField(max_length=30, blank=True,default='')
+    salud = models.CharField(max_length=30, blank=True,default='')
     #foto = models.ImageField(upload_to='img')
 
     def __str__(self):
@@ -385,7 +391,8 @@ class Otrospermisos(models.Model):
             ('btn_acep_fichapaut','btn_acep_fichapaut'),
             ('btn_acep_fichaparam','btn_acep_fichaparam'),
             ('btn_acep_fichafar','btn_acep_fichafar'),
-            ('btn_grid_eliminafar','btn_grid_eliminafar'),            
+            ('btn_grid_eliminafar','btn_grid_eliminafar'),    
+            ('btn_coordenadas','btn_coordenadas'),    
             )
 
 

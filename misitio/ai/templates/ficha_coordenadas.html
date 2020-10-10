@@ -1,0 +1,46 @@
+{% extends 'plantilla_base.html' %}
+{% block content %}
+	<section class='section2'>
+		<form id="form" name="form" action="#" method="POST"> 
+			{% load widget_tweaks %} 			             
+ 			{% csrf_token %}
+
+ 			<table border="0">
+    			<tbody>
+				<tr>
+					<!-- link regresa a PANTALLA ANTERIOR -->
+				    <td width="860" align="right">
+					<u>
+					<a href="{% url 'ActualizaPac' paciente_id %}">Pantalla ant.</a>
+					</u>
+					</td>
+
+				</tr>
+    			</tbody>
+			</table>
+			
+			<table class="table table-dark" border = '1'>
+				<tr style="color:#696767">
+				<td width="200">Paciente:</td> 
+				<td><d>{{ form.nombre|attr:'readonly:true'|attr:'size:80'}}</d></td>
+				</tr>
+				
+				<tr style="color:#696767">
+				<td width="200">Localizacion:</td> 
+				<td><d>{{ form.localizacion|attr:'readonly:true'|attr:'size:80'}}</d></td>
+				</tr>
+
+
+				<tr style="color:#098979">
+				<td>Coordenadas:</td> 
+				<td><d>{{form.coordenadas|attr:'size:80'|attr:'placeholder:Ingrese coordenadas. Ejemplo -33.486194, -70.592815'|attr:'required:True'}}</d></td>
+				</tr>
+
+			</table>
+
+			<input type="submit" value="Grabar" name="submit" id="submit" class="btn btn-primary">
+
+		</form>
+	</section>
+
+{% endblock %}

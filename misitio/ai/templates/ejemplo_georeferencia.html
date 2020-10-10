@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtRJUcKnpQI-9jvaSDHAmXgfrsLxM6RyA&callback=initMap&libraries=&v=weekly"defer
+    ></script>
+
+    <style type="text/css">
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+
+      html,body {
+        height: 100%;
+        margin: 45;
+        padding: 0;
+      }
+
+      table td {
+        background-color: #95DE93;
+      }
+
+    </style>
+
+
+    <script>
+      "use strict";
+      let map;
+      function initMap() {
+        /* document.getElementById("latFld").value = latLng.lat(); */
+        /* document.getElementById("lngFld").value = latLng.lng(); */
+        /* GEvent.addListener(map, "click", function(overlay, latLng) */
+
+        var myLatLng = {lat: -33.485815, lng: -70.592673};
+
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: {
+            lat: -33.485815,
+            lng: -70.592673,
+          },
+          zoom: 17,
+        });
+
+        var marker = new google.maps.Marker({
+          map:map,
+          position: myLatLng,
+          title:"Puedes arrastrarme",
+          draggable: true,
+        })
+        
+      }
+    </script>
+  </head>
+
+
+  <table border="0">
+    <tbody>
+    <tr>
+      <td width="150" align="left">
+      <u>
+      <a href="{% url 'ActualizaPac' paciente_id %}">Pantalla Anterior</a></
+      </u>
+      </td>
+
+      <td align="center" width="400">
+        {{ variable3 }}
+      </td>
+
+      <td align="center" width="250">
+        Lat: {{ lat }} Lng: {{ lng }} 
+      </td>
+      
+      <td align="center" width="480">
+        Dir: {{ localizacion }}
+      </td>
+
+    </tr>
+    </tbody>
+  </table>  
+
+
+  <body>
+    <div id="map"></div>
+  </body>
+
+</html>
+
+
+
