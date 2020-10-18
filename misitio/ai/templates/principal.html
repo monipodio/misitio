@@ -8,7 +8,6 @@
     {% csrf_token %}     
     <tr> 
         <td width="260" valign="top"> 
-		<br>
         <aside class="col-xs-12 col-md-3"> 
         	<div class="btn-group-vertical"> 
             {% if not user.is_active %} 
@@ -69,7 +68,6 @@
     </tbody>    
     </table>
 
-
     <div class="table-responsive" style="color:#025D5D">
 		<article class=article>
     		El Sistema de Administracion del Personal tiene por objeto efectuar el seguimiento 
@@ -82,5 +80,6 @@
     <br>
     
     </section>
+
 {% endblock %}  
 

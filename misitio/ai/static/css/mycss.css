@@ -7,17 +7,6 @@ h2 a { color:#FF3333;
   	text-decoration: none;
 }
 
-.section {
-	background: #E9F9F6;
-  width:900;
-	margin-left: auto;
-	margin-right: auto;
-	border:2px solid #ccc;
-	text-decoration:none;
-  display: block;
-  padding: 0 20px;
-  border-radius: 15px;
-}
 
 .section2 {
   background: #E9F9F6;
@@ -30,10 +19,6 @@ h2 a { color:#FF3333;
   padding: 0 20px;
   border-radius: 15px;
 }
-
-
-
-
 
 .search {
   border-radius: 15px;
@@ -89,15 +74,8 @@ p label u {
     position: absolute;
 }
 
-.footer {
-  background-color: #098979 ;
-  line-height: 3;
-  text-align: center;
-  bottom: 0;
-  position: relative;
-  height: 50px;
-  border-radius: 15px;
-}
+
+
 
 /*
 .footer a {
@@ -271,13 +249,6 @@ input[type=file].hidden {
      background: #D4D4D4;     
 }
 
-.container2 {
-  border: 1px solid #000;
-  height: 380px;
-  margin: 1 auto;
-  width:50;
-}
-
 .container {
   background: #E9F9F6;
   width:900;
@@ -292,6 +263,14 @@ input[type=file].hidden {
  }
 
 
+.container2 {
+  border: 1px solid #000;
+  height: 380px;
+  margin: 1 auto;
+  width:50;
+}
+
+
 #map {
   height: 80%;
   width: 50%;
@@ -300,8 +279,8 @@ input[type=file].hidden {
 /* Optional: Makes the sample page fill the window. */
 
 
-html,
-body {
+
+html,body {
   height: 100%;
   margin: 45;
   padding: 0;
@@ -312,80 +291,85 @@ body {
   background-color: #95DE93;
 }
 
+
+/*
 .titulo_aux {
   color: #fff;
   text-shadow: 1px 1px 1px #ccc;
   font-size: 1.5em;
 }    
+*/
 
+.section {
+  background: #E9F9F6;
+  width:900;
+  margin-left: auto;
+  margin-right: auto;
+  border:2px solid #ccc;
+  text-decoration:none;
+  display: block;
+  padding: 0 20px;
+  border-radius: 15px;
+}
 
 .section_flex {
   display: flex;  /* se generan los 2 ejes */
-  /*justify-content:center;  /* justifica los items a  */ 
+  flex-wrap:wrap;
   justify-content: flex-end; /* justifica a la derecha los items dentro de la caja padre */
-  /* flex-wrap:wrap; */
   background-color: #E9F9F6 ;
   font-size:18px;
   line-height: 3;
-  width:70%;
-  /* margin:auto; */   
+  width:900;
   margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
   bottom: 0;
-  height: 70px;
+  height: 100px;
   border-radius: 15px;
-  /* justify-content:right; /* alinea horizontalmente los items dentro de la caja padre */
   align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
+  align-items: baseline;  /* todos los textos de los items quedan alineados por la base */
 }
-
-
-/* 
-.texto_izquierda {
-  color:#E9F9F6;
-}
-*/
-
-
-/* padding: 25px 50px 75px 100px; */
-/* top, right, bottom, left */
-
 
 .titulo_aux {
   color:#098979;  /* color del texto */
-  width: 600;
-  align:center;
-  padding: 20px; /* distancia que hay entre el item y el borde del contenedor */
-  /* background-color: #9699A9; */
+  width: 700;     /* ancho de la cajita que contiene el item */
+  height: 50px;   /* alto de la cajita que contiene el item */
+  align:center;   /* alinea el texto en la cajita del item */
+  padding: 20px;  /* distancia que hay entre el item y el borde del contenedor */
+  /*background-color: #9699A9; /* color de la cajita del item */
   text-align: center;
+  text-shadow: 1px 1px 1px #ccc;
 }
-
 
 .nombre_usuario {
   font-size:12px;
-  color:#A5B1AC;
+  color:#A5B1AC;  /* color del texto del item */
   width: 100;
-  /*background-color: #F5F592; */
+  /*background-color: #F5F592; /* color de la cajita del item */
   text-align: center;
 }
 
-
 .footer {
-  display: flex;  /* se generan los 2 ejes */
-  color:#FFFFFF;
+  display: flex;    /* se generan los 2 ejes */
   flex-wrap:wrap;
+  background-color: #098979 ; /* color del contenedor padre */
+  bottom: 10;
+  width: 65%; 
+  height: 70px;   /* alto de la caja padre */
+  border-radius: 15px;
+  margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
+  align-items:center; /* alinea verticalemnte los items dentro de la caja padre */
+  justify-content:center; /* alinea horizontalmente los items dentro de la caja padre */
+}
+
+.texto_footer {
+  font-size:14px; 
+  color:#FFFFFF; 
+  width: 600;
+  text-align: center;
+  /* background-color: #F9B4B4; /* color fondo de la cajita del item */
 }
 
 
-.texo_footer {
-  color:#FFFFFF;  /* color de la letra */
-  background-color: #F5F592; /* color de fondo del item */
-  width: 100;
-}
-
-/* alinea el texto dentro de la celda de la table */ 
- td {
-  text-align: right;  
-}
-
+/*
 .bars::before,.bars::after {
 background: #999;
 center:"";
@@ -394,5 +378,8 @@ height:2px;
 position: absolute;
 width:18px;
 }
+*/
 
-
+/* notas */
+/* padding: 25px 50px 75px 100px; */
+/* top, right, bottom, left */

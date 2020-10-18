@@ -5,8 +5,14 @@
     <meta charset="UTF-8">
     <meta name ="description", content="">
 
-    <meta name="viewport" content="with=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0,">
-    
+        
+    <!-- para responsive 
+    <meta name="viewport" content="with=device-width, user-scalable=no, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
@@ -38,8 +44,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>   <!-- NUEVO -->
     
-    <link rel="stylesheet" href="{% static 'css/mycss.css' %}">
-  
+    <!-- <link rel="stylesheet" href="{% static 'css/mycss.css' %}">  -->
+    <link rel="stylesheet" href="{% static 'css/mycss_flex.css' %}">  
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <link src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js">
@@ -47,15 +54,16 @@
     <title id = "title">AI-Asistencia Integral</title>
 </head>
 
-    <body>
-    <div class='section_flex'>  
+  <body>
+    <header>
+        <label class="lnr lnr-menu"></label>
+    </header>
+    <div class="section_flex">  
     	 {% csrf_token %}
     
             <!-- TITULO DE LA VENTANA -->
             <div class ="titulo_aux">
-            <h4>
-              {{ variable1 }}
-            </h4> 
+                <h4> {{ variable1 }} </h4> 
             </div>
     
     
@@ -63,21 +71,16 @@
             <div class="nombre_usuario">
                {{ user.username }}
             </div>
+
     </div>
-    
-
-      {% block content %}
-      {% endblock %}
-
-       </section> 
-      <br>
-
-      <footer class = 'footer'>
-        <div class='texto_footer'>
-          <small>
-          ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
-          </small>
-        </div>  
-      </footer>
-    </body>
+    {% block content %}
+   
+    {% endblock %}
+    <br>
+    <footer class = "footer">
+        <div class = "texto_footer">
+            ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
+        </div>
+    </footer>
+  </body>
 </html>

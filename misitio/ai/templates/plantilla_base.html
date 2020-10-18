@@ -51,7 +51,6 @@
     	{% csrf_token %}
       <div class="table-responsive">
     	<section class='section'> 
-        <br>
         <table border = "0">
           <tr>
             <td>
@@ -65,7 +64,7 @@
             </td>
 
             <!-- NOMBRE DEL USUARIO -->
-            <td width="90">
+            <td width="100">
               <p align="right" class="text-center text-muted small">
               {% if user.username != None %}
                 {{ user.username }}
@@ -95,22 +94,12 @@
       {% endblock %}
 
        </section> 
-      <br>
-
 
       <footer class = 'footer'>
           <small>
-          <font color = #FFFFFF>  
+          <!-- <font color = #FFFFFF>  --> 
           ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
-          <!--
-          <br>
-          Derechos Reservados | GMI Desarrollos de Sistemas informáticos &copy | Gabriel Araya Garcia
-          <br>
-          gabrielaraya2011@gmail.com
-          <br>
-          Toda la aplicacion fué desarrollada en Framework Django 2.1.7 basado en Python 3.8 y base de datos Sqlite3
-          -->
-          </font>
+          <!-- </font> -->
           </small>
       </footer>
 
