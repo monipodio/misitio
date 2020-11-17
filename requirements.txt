@@ -24,7 +24,7 @@ matplotlib==3.1.2
 numpy==1.18.0
 openpyxl==3.0.2
 pdfkit==0.6.1
-Pillow==6.2.1
+Pillow==7.1.0
 protobuf==3.11.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
