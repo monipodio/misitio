@@ -1,8 +1,6 @@
 {% extends 'plantilla_base.html' %}
-
 {% block content %}
-	<section class='section2'>
-
+	<section class='section'>
 		{% if user.username == None %} 
             <a href="{% url 'login_ini' %}">
         {% endif %}
@@ -10,21 +8,19 @@
 			<!-- muestra mensajes de error creado en la VIEW.PY -->
 			{% if messages %}
     		<ul class="messages">
-        	{% for message in messages %}
-        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
-        			  {{ message }}
-        		</li>
-        	{% endfor %}
+        		{% for message in messages %}
+        			<li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        				  {{ message }}
+        			</li>
+        		{% endfor %}
     		</ul>    
 			{% endif %}
 
-			<form  class = "" method='GET' action= "{% url 'grid_paramBusca' %}">
-					{% csrf_token %}
-	
+			<form method='GET' action= "{% url 'grid_paramBusca' %}">{% csrf_token %}	
 				<table border="0">
     				<tbody>	
 					<tr>
-						<td width="300">
+						<td width="230" style="color:#098979; font-size:15px">
 						<label for="mySearch">Busca Tipo:</label>
 						<input type="text" class = "search-query" size="12" name = "buscar" value='{{buscar}}' title="busca en columna TIPO" id="busca" placeholder="vacio todos" onfocus="limpia()">
 						</td>
@@ -52,7 +48,7 @@
 						</label>
 						</td>
 					</tr>
-				</tbody>
+					</tbody>
 				</table>
 				</form>
 		<table class="table table-striped w-auto" border="1">	

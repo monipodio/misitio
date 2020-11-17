@@ -302,7 +302,7 @@ html,body {
 
 .section {
   background: #E9F9F6;
-  width:900;
+  width:72%;   /*900*/
   margin-left: auto;
   margin-right: auto;
   border:2px solid #ccc;
@@ -319,7 +319,7 @@ html,body {
   background-color: #E9F9F6 ;
   font-size:18px;
   line-height: 3;
-  width:900;
+  width:72%;  /*900*/
   margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
   bottom: 0;
   height: 100px;
@@ -352,7 +352,7 @@ html,body {
   flex-wrap:wrap;
   background-color: #098979 ; /* color del contenedor padre */
   bottom: 10;
-  width: 65%; 
+  width: 72%; 
   height: 70px;   /* alto de la caja padre */
   border-radius: 15px;
   margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */

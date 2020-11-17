@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name ="description", content="">
-
         
     <!-- para responsive 
     <meta name="viewport" content="with=device-width, user-scalable=no, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
 
 
@@ -41,9 +41,9 @@
     <!--pra prueba -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>    
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>   <!-- NUEVO -->
-    
+    <script src="https://kit.font-awesome.com/a076d05399.js"></script>
+
     <!-- <link rel="stylesheet" href="{% static 'css/mycss.css' %}">  -->
     <link rel="stylesheet" href="{% static 'css/mycss_flex.css' %}">  
 
@@ -54,12 +54,23 @@
     <title id = "title">AI-Asistencia Integral</title>
 </head>
 
-  <body class='bodito'>
+    <body class='bodito'>
+    
+    <!--
     <header>
         <label class="lnr lnr-menu"></label>
+        <a href="#menu">
+            &#9776;
+        </a>
     </header>
+        -->
+
     <div class="section_flex">  
     	 {% csrf_token %}
+
+            <div class = "logo99">
+                <img  class="center-block" src="{{ logo_corp_chico }}">
+            </div>
     
             <!-- TITULO DE LA VENTANA -->
             <div class ="titulo_aux">
@@ -78,9 +89,15 @@
     {% endblock %}
     <br>
     <footer class = "footer">
+
         <div class = "texto_footer">
-            ASISTENCIA INTEGRAL LIMITADA | Gerente General: Antonio Castillo R.  
+            ASISTENCIA INTEGRAL LIMITADA   
         </div>
+
+        <div class = "texto_footer2">
+             --Gerente General: Antonio Castillo R.  
+        </div>
+
     </footer>
   </body>
 </html>

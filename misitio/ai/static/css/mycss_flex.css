@@ -1,17 +1,22 @@
+ 
+ /* color de fondo de la pagina navegadora HTML */
  .bodito {
-  background-color: #F8F9A8;
+   background-color: #F8F9A8;
  }
 
+/* padre  */
 .section_flex {
   display:flex;  /* se generan los 2 ejes */
-  justify-content: flex-end; /* justifica a la derecha los items dentro de la caja padre */
+  /*justify-content: flex-end; /* justifica a la derecha los items dentro de la caja padre */
   flex-wrap:wrap;
   flex-direction: row; /* ordenas items horizontalmente */
+  justify-content: space-between; /* space-between distribuye equitativamente horizontal los items dentro de la caja padre */
+  padding: 12px;  
   background-color: #3FA9A9; /* color de fondo de la caja contenedora padre */ 
   font-size:18px;            /* tamaño de la letra dentro del contenedor padre */
   line-height: 3;  /* interlineado de texto */
   width:65%;       /* ancho de la caja contenedora padre */
-  height: 100px;   /* alto de la caja contenedora */
+  height: auto;   /* 100% alto de la caja contenedora */
   margin:auto;     /* centra el contenedor padre c/respecto a la pantalla html */
   bottom: 0;
   border-radius: 15px; /* redondeo de las esquinas de la caja contenedora */
@@ -24,16 +29,14 @@
 /* padding: 25px 50px 75px 100px; */
 /* top, right, bottom, left */
 
-
 .titulo_aux {
   color:#FFFFFF; /* color del texto */
-  width: 52%;     /* 42 ancho de la caja contenedora del item */
-  height: 60;    /* alto de la caja contenedora del item */
-  align-content:left;  /* alinea el texto dentro de la cajita del item */
+  width: 35%;     /* 35% ancho de la caja contenedora del item */
+  height: 60;     /* alto de la caja contenedora del item */
   /*align-content:center;  /* alinea el texto dentro de la cajita del item */
   padding: 20px;  /* distancia que hay entre el item y el borde del contenedor */
   /* background-color: #9699A9; /* color de la caja contenedora del item */
-  text-align: left; /* alineacion dentro de la cajita item */
+  text-align: center; /* alineacion dentro de la cajita item */
   text-shadow: 7px 4px 5px blue;
 }
 
@@ -41,34 +44,89 @@
   font-size:12px;
   color: #FFFFFF; /*#A5B1AC; */
   width: 100;
-  /*background-color: #F5F592; /* color de fondo la cajita del item*/
-  text-align: center;  /* alineacion dentro de la cajita item */
+  /*background-color:#F5F592; /* color de fondo la cajita del item*/
+  text-align: right;       /* alineacion dentro de la cajita item */
 }
+
+.cuerpo_malo {
+  display: flex;  /* se generan los 2 ejes */
+  flex-wrap:wrap; 
+  flex-direction: row;  /* row se alinean horizontalmente */
+  justify-content:space-between; /* space-between, distribuye equitativamente horizontal los items dentro de la caja padre */
+  font-size:12px;
+  line-height: 3;
+  width:65%;      /* ancho de la caja contenedora padre */
+  margin:auto;    /* centra el contenedor padre c/respecto a la pantalla html */
+  bottom: 0;
+  height: auto; 
+  border-radius: 15px;
+  border: 1px solid #50BCCF; 
+  align-items:center;   /* center alinea verticalemnte los items dentro de la caja padre */
+  /*align-items: baseline;  /* todos los textos de los items quedan alineados por la base */
+  background-color: #3FA9A9;
+  box-shadow: 10px 10px 10px #999;  /* sombra del borde de la caja padre*/
+  }
 
 .cuerpo {
   display: flex;  /* se generan los 2 ejes */
-  margin:auto;
-  justify-content: flex-end;
   flex-wrap:wrap;
-  width:65%;
-  height: auto;  /* el alto se adapta al contenido */
-  background-color: #E9F9F6 ;
-  line-height: 2;  
-  border: 1px solid #50BCCF; /* borde de la caja contenedora y su color */
-  padding: 20px;
-  border-radius: 15px; /* redondeo de las esquinas de la caja contenedora */
-  box-shadow: 10px 10px 10px #999;
+  flex-direction: row;  /* se alinean horizontalmente */
+  font-size:12px;
+  line-height: 3;
+  width:65%;      /* ancho de la caja contenedora padre */
+  margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
+  bottom: 0;
+  height: auto;
+  border-radius: 15px;
+  border: 1px solid #50BCCF;
+  align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
+  /*align-items: baseline;  /* todos los textos de los items quedan alineados por la base */
+  background-color: #3FA9A9;
+  box-shadow: 10px 10px 10px #999;  /* sombra del borde de la caja padre*/
+  }
+
+
+/* padre */
+.cerrar_padre {
+  display:flex;        /* se generan los 2 ejes */
+  justify-content:space-between; /* space-between, distribuye equitativamente horizontal los items dentro de la caja padre */
+  flex-wrap:wrap;
+  flex-direction: row;  /* se alinean horizontalmente */
+  width:100%;            /* ancho de la caja contenedora del item */
+  bottom: 0;
+  height: auto;        /* alto de la caja contenedora del item */
+  padding: 5px;        /* distancia que hay entre el item y el borde del contenedor */
+  /*background-color: #DFDFDF; /* color de la caja contenedora del item */
+  }
+
+/* item */
+.subtitulo {
+  width: auto;   /* 38% ancho de la cajita contenedora del item */ 
+  font-size:14px;
+  color: #2135B0;           /* color del texto */
+  text-align:center;
+  /* background-color:#F5F592; /* amarillo color de fondo la cajita del item*/
+  border-radius: 10px;
 }
 
+/* item */
+.cerrar_sesion u a {
+  font-size:14px;
+  width: auto;   /* 20% ancho de la cajita contenedora del item */ 
+  color: #ffffff; /*#A5B1AC; */
+  /*background-color:#F18C7A; /* color de fondo la cajita del item*/
+  text-align: right;       /* alineacion dentro de la cajita item */
+  }
 
+/* padre */
 .footer {
   display: flex;  /* se generan los 2 ejes */
   justify-content: center;  /* centra la cajita del item con respecto a la caja contenedora */
   flex-wrap:wrap;
+  flex-direction: row;  /* se alinean horizontalmente */
   font-size:12px;
   line-height: 3;
-  width:65%;
-  height: auto;  /* el alto se adapta al contenido */
+  width:65%;      /* ancho de la caja contenedora padre */
   margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
   bottom: 0;
   height: 100px;
@@ -76,29 +134,156 @@
   border: 1px solid #50BCCF; 
   align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
   /*align-items: baseline;  /* todos los textos de los items quedan alineados por la base */
-  /* background-color: #098979 ; */
   background-color: #3FA9A9;
   box-shadow: 10px 10px 10px #999;  /* sombra del borde de la caja padre*/
+  }
+
+.div_table {
+  align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
 }
 
 .texto_footer {
-  color:#FFFFFF;  /* (blanco) color de la letra */
-  /*background-color: #9699A9; /* color de fondo de la cajita contendora del item */
-  width: 70%; /* ancho ajustable al espacio que va quedando */
+  color:#FFFFFF;  /* (blanco) color de la letra de la cajita contendora del item */
+  background-color: #9699A9; /* color de fondo de la cajita contendora del item */
+  width: auto;   /* 100% ancho ajustable al espacio que va quedando */
   text-align: center;  /* alineacion dentro de la cajita item */
+  }
+
+.texto_footer2 {
+  color:#FFFFFF;  /* (blanco) color de la letra de la cajita contendora del item */
+  background-color: #9699A9; /* color de fondo de la cajita contendora del item */
+  width: auto;   /* 100% ancho ajustable al espacio que va quedando */
+  text-align: center;  /* alineacion dentro de la cajita item */
+  }
+
+
+/* ********** LABORATORIO *************************** */
+table {
+  border-collapse: collapse;
+  border-spacing: 6;
+  width: 100%;
+  border:5px solid #ddd;    /* borde, tipo y color  alrededor de la table*/
 }
+
+th, td {
+  text-align: left;
+  padding: 12px; /*  9; */
+}
+
+u {
+  /* background-color: #9699A9;*/
+  text-align: right;
+  width: 100%;
+}
+
+
+/* color verde claro fila por medio*/
+tr:nth-child(even){background-color: #ADED9C}
+
+
+/* ancho de cada columna */
+table td:first-child {
+  width: 130px;
+  height: 30px; /* da el alto a todas las filas */
+}
+table td:nth-child(2) {
+  width: 130px;
+}
+table td:nth-child(3) {
+  width: 60px;
+}
+
+table td:nth-child(4) {
+  width: 60px;
+}
+table td:nth-child(5) {
+  width: 60px;
+}
+table td:nth-child(6) {
+  width: 60px;
+}
+table td:nth-child(7) {
+  width: 60px;
+}
+table td:nth-child(8) {
+  width: 60px;
+}
+table td:nth-child(9) {
+  width: 60px;
+}
+table td:nth-child(10) {
+  width: 70px;
+}
+table td:nth-child(11) {
+  width: 60px;
+}
+table td:last-child {
+  width: 150px;
+}
+
+
+.checkbtn {
+  font-size: 30px;
+  color: white;
+  float: left;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+#check {
+  display:none;
+}
+
+/* === FIN DEL LABORATORIO ===================== */
 
 /* On screens that are 992px or less, set the class */
 @media (max-width: 992px) {
   .section_flex {
-    background-color: red;
+    /* background-color: red; */
+    width:95%;       /* ancho de la caja contenedora padre */
     flex-direction: column;
-    justify-content: center; 
+    /* justify-content: flex-start; /* distribuye a la derecha los items dentro de la caja padre */
     flex-wrap:wrap;
-  } 
+    } 
+
   .titulo_aux {
-    text-align: center;  /* alineacion de texto dentro de la cajita item */
+    /* text-align: ;  /* alineacion de texto dentro de la cajita item */
+    flex-wrap: wrap;
     width: 100%;         /* ancho de la caja contenedora del item */
-  }
+    titulo_aux:right;
+    }
+
+.nombre_usuario {
+    text-align:center;       /* alineacion dentro de la cajita item */
+}    
+
+.cuerpo {
+    width:95%;         /* ancho de la caja contenedora del(los) items */
+    height: auto;    
 }
+
+/* padre */
+.footer {
+  display: flex;  /* se generan los 2 ejes */
+  /* justify-content: center;  /* centra la cajita del item con respecto a la caja contenedora */
+  flex-wrap:wrap;
+  flex-direction: column;  /* se alinean horizontalmente */
+  font-size:12px;
+  line-height: 3;
+  width:95%;      /* ancho de la caja contenedora padre */
+  margin:auto;  /* centra el contenedor padre c/respecto a la pantalla html */
+  bottom: 0;
+  height: auto;
+  border-radius: 15px;
+  border: 1px solid #50BCCF; 
+  align-items:center;   /*  alinea verticalemnte los items dentro de la caja padre */
+  /*align-items: baseline;  /* todos los textos de los items quedan alineados por la base */
+  background-color: #3FA9A9;
+  box-shadow: 10px 10px 10px #999;  /* sombra del borde de la caja padre*/
+  }
+
+}
+/* fin @media ============================== */
+
 

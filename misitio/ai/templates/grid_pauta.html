@@ -1,7 +1,6 @@
 {% extends 'plantilla_base.html' %}
 {% block content %}
-	<section class='section2'>
-
+	<section class='section'>
 		{% if not user.is_authenticated %}
             <a href="{% url 'login_ini' %}">
         {% endif %}
@@ -9,16 +8,15 @@
 			<!-- muestra mensajes de error creado en la VIEW.PY -->
 			{% if messages %}
     		<ul class="messages">
-        	{% for message in messages %}
-        		<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        		{% for message in messages %}
+        			<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
         			  {{ message }}
-        		</li>
-        	{% endfor %}
+        			</li>
+        		{% endfor %}
     		</ul>
 			{% endif %}
 
-			<form method='GET' action="{% url 'grid_pautaBusca' %}">
-				{% csrf_token %}
+			<form method='GET' action="{% url 'grid_pautaBusca' %}">{% csrf_token %}
 				<table border="0">
     				{% if error1 == "hay_error" %}
    	    				<p class="error1">Error. !! El mes seleccionado no tiene ese numero de dia !!</p>

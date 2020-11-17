@@ -93,8 +93,13 @@ import os.path as path
 def principal(request):
     variable1 = 'PAGINA PRINCIPAL'
     logo = "/static/img/Logo_AsistenciaIntegral.jpg"
+    logo2 = "/static/img/Logo_AsistenciaIntegral2.jpg"
     #logo = "/staticfiles/img/Logo_AsistenciaIntegral.jpg" # for PythonAnyWhere
-    context ={"variable1":variable1,"logo_corp":logo, }
+    context ={
+    	"variable1":variable1,
+    	"logo_corp":logo, 
+    	"logo_corp_chico":logo2, 
+    }
     return render(request,'principal_flex.html',context)
 
 def login_ini2(request):
@@ -115,9 +120,7 @@ def login_ini(request):
 			request.session['id_x'] = user.id 	# variable gobal
 			#return HttpResponse(str(user.id))
 			return HttpResponseRedirect("principal")
-
 		error_log = "error"
-		
 	context ={"variable1":variable1,"error_log":error_log,}
 	return render(request,"login_ini.html",context)
 	context ={

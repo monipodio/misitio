@@ -35,7 +35,7 @@
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>    
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>   <!-- NUEVO -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>   <!--NUEVO -->
     
     <link rel="stylesheet" href="{% static 'css/mycss.css' %}">
   
@@ -46,15 +46,12 @@
     <title id = "title">AI-Asistencia Integral</title>
 </head>
 
-  <div>
-    <body>
-    	{% csrf_token %}
+  <!-- <div> -->
+    <body> {% csrf_token %}
       <div class="table-responsive">
     	<section class='section'> 
         <table border = "0">
           <tr>
-            <td>
-            </td> 
             
             <!-- TITULO DE LA VENTANA -->
             <td width="750" valign="bottom" >
@@ -64,7 +61,7 @@
             </td>
 
             <!-- NOMBRE DEL USUARIO -->
-            <td width="100">
+            <td width="120">
               <p align="right" class="text-center text-muted small">
               {% if user.username != None %}
                 {{ user.username }}
@@ -79,8 +76,7 @@
               <b style="font-size:12px; color:#098979" >{{ variable3 }}</b>
             </td>  
           </tr>
-   
-
+ 
         </table>
 
         <tr>
@@ -105,5 +101,5 @@
 
  
     </body>
-  </div>  
+  <!-- </div>  -->
 </html>

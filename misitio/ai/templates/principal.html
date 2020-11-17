@@ -1,4 +1,4 @@
-{% extends 'plantilla_base_flex.html' %}
+{% extends 'plantilla_base.html' %}
 {% load static %}
 
 {% block content %}
@@ -10,9 +10,6 @@
         <td width="260" valign="top"> 
         <aside class="col-xs-12 col-md-3"> 
         	<div class="btn-group-vertical"> 
-            {% if not user.is_active %} 
-                <a href="{% url 'login_ini' %}">
-            {% endif %}
   
             {% if perms.ai.menu_cuidadores %} 
             <a class="btn btn-primary" href="{% url 'grid_cuidadores' %}" role="button" style="margin: 5px">Cuidadores</a>
